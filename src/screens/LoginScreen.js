@@ -7,7 +7,11 @@ export default function LoginScreen() {
 
   const handleLogin = () => {
     console.log('Your username is: ', username);
-    
+    console.log('Your password is: ', password);
+  }
+
+  const handleRegister = () => {
+    console.log('Navigate to register screen');
   }
 
   return (
@@ -27,7 +31,10 @@ export default function LoginScreen() {
         secureTextEntry
       />
       <TouchableOpacity onPress={handleLogin} style={styles.loginButton}>
-          <Text style={styles.loginText}>Login</Text>
+        <Text style={styles.loginText}>Login</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.innerContainer} onPress={handleRegister}>
+        <Text style={styles.notRegistered}>Not a subscriber? Register</Text>
       </TouchableOpacity>
     </View>
   )
@@ -48,26 +55,40 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20
   },
-    input: {
-      height: 40,
-      backgroundColor: 'white',
-      width: '100%',
-      borderRadius: 5,
-      paddingHorizontal: 10,
-      // fontSize: 20,
-      marginBottom: 20
-    },
-    loginButton: {
-      height: 40,
-      backgroundColor: 'blue',
-      width: '100%',
-      borderRadius: 5,
-      padding: 10,
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center'
-    },
-    loginText: {
-      color: 'white'
-    }
+  input: {
+    height: 40,
+    backgroundColor: 'white',
+    width: '100%',
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    // fontSize: 20,
+    marginBottom: 20
+  },
+  loginButton: {
+    height: 40,
+    backgroundColor: 'blue',
+    width: '100%',
+    borderRadius: 5,
+    padding: 10,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  loginText: {
+    color: 'white'
+  },
+  innerContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: 'white',
+    // backgroundColor: 'red',
+    width: '100%',
+    marginTop: 20
+  },
+  notRegistered: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 16
+  },
 })
