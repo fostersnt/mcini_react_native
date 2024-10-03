@@ -1,13 +1,23 @@
 import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
 import React from 'react'
+import { userLoginAPI } from '../api/userLoginAPI';
 
 export default function LoginScreen() {
-  const [username, setUsername] = React.useState('');
+  const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [isError, setIsError] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState('');
 
-  const handleLogin = () => {
-    console.log('Your username is: ', username);
+  const handleLogin = async () => {
+    // console.log('Your email is: ', email);
     console.log('Your password is: ', password);
+    const responseData = await userLoginAPI(email, password);
+    if (responseData['success'] == 'false') {
+      setIsError(true);
+      setErrorMessage(responseData['message']);
+    }
+    console.log('USER LOGIN API RESPONSE: ', responseData);
+    
   }
 
   const handleRegister = () => {
@@ -17,11 +27,12 @@ export default function LoginScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Sign In</Text>
+      {isError ? <Text style={styles.errorText}>{errorMessage}</Text> : ''}
       <TextInput
         style={styles.input}
-        placeholder='username'
+        placeholder='email'
         // placeholderTextColor={'grey'}
-        onChangeText={(text) => setUsername(text)}
+        onChangeText={(text) => setEmail(text)}
       />
       <TextInput
         style={styles.input}
@@ -48,6 +59,11 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  errorText: {
+    color: 'red',
+    fontWeight: 'bold',
+    marginBottom: 20,
   },
   title: {
     fontSize: 20,
