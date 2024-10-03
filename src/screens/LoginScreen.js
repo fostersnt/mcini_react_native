@@ -49,17 +49,19 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
     input: {
+      height: 40,
       backgroundColor: 'white',
       width: '100%',
-      borderRadius: 20,
-      padding: 10,
-      fontSize: 20,
+      borderRadius: 5,
+      paddingHorizontal: 10,
+      // fontSize: 20,
       marginBottom: 20
     },
     loginButton: {
+      height: 40,
       backgroundColor: 'blue',
       width: '100%',
-      borderRadius: 20,
+      borderRadius: 5,
       padding: 10,
       display: 'flex',
       justifyContent: 'center',
