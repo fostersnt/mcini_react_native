@@ -20,7 +20,8 @@ const getIcon = ({name, color, size}) => {
 
 export default function BottomTabNav() {
   return (
-    <Tab.Navigator initialRouteName='Home'
+    <Tab.Navigator 
+    // initialRouteName='Home'
     screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: '#23527c',

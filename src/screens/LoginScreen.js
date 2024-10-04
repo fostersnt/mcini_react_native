@@ -1,6 +1,10 @@
 import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
 import React from 'react'
 import { userLoginAPI } from '../api/userLoginAPI';
+import AlertComponent from '../components/AlertComponent';
+import { useNavigation } from '@react-navigation/native';
+import { Screen } from 'react-native-screens';
+import RegisterScreen from './RegisterScreen';
 
 export default function LoginScreen() {
   const [email, setEmail] = React.useState('');
@@ -8,24 +12,35 @@ export default function LoginScreen() {
   const [isError, setIsError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
 
+  const navigation = useNavigation();
+
   const handleLogin = async () => {
     // console.log('Your email is: ', email);
     console.log('Your password is: ', password);
     const responseData = await userLoginAPI(email, password);
-    if (responseData['success'] == 'false') {
+    if (responseData.success == 'false') {
       setIsError(true);
       setErrorMessage(responseData['message']);
+    } else if (responseData.success == 'true') {
+      navigation.navigate('BottomTabNav', {
+        Screen: 'HomeScreen'
+      });
     }
     console.log('USER LOGIN API RESPONSE: ', responseData);
-    
+
   }
 
   const handleRegister = () => {
-    console.log('Navigate to register screen');
+    navigation.navigate('Register', {
+      screen: RegisterScreen
+    });
   }
 
   return (
     <View style={styles.container}>
+
+      {/* {isError ? AlertComponent('Login', errorMessage) : ''} */}
+
       <Text style={styles.title}>Sign In</Text>
       {isError ? <Text style={styles.errorText}>{errorMessage}</Text> : ''}
       <TextInput
