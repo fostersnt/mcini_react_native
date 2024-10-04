@@ -67,8 +67,12 @@ export const checkAuthAPI = async (phone) => {
             };
         }
         return data;
+        
     } catch (error) {
         console.log('CHECK AUTH API ERROR: ', error);
-        
+        return {
+            'success': 'false',
+            'message': `User is not authenticated`
+        };
     }
 }

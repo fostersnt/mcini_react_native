@@ -4,6 +4,7 @@ import { userLoginAPI, checkAuthAPI } from '../api/userLoginAPI';
 import AlertComponent from '../components/AlertComponent';
 import { useNavigation } from '@react-navigation/native';
 import { Screen } from 'react-native-screens';
+import { storeData, getData } from '../utilities/LocalStorage';
 // import RegisterScreen from './RegisterScreen';
 // import AppNavigation from '../navigation/AppNavigation';
 
@@ -12,29 +13,50 @@ export default function LoginScreen() {
   const [isError, setIsError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
 
-  React.useEffect( () =>  {
-    const authData = async () => {
-      const response = await checkAuthAPI(phone);
+  React.useEffect(() => {
+    const authData = async (subcriberPhone) => {
+
+      const storageData = await getData(phone);
+    console.log('STORAGE DATA IS: ', storageData);
+
+      const response = await checkAuthAPI(subcriberPhone);
       console.log('CHECK AUTH FINAL DATA: ', response);
+      if (response.success == 'true') {
+        navigation.navigate('BottomTabNav', {
+          Screen: 'HomeScreen',
+          
+          params: { movies: response.data }
+        });
+      }
     }
+
+
     //Calling the authCheck function
-    authData();
-    
+    try {
+      authData(phone);
+    } catch (error) {
+      console.log('USE EFFECT ERROR: ', error);
+
+    }
+
   }, []);
 
   const navigation = useNavigation();
 
   const handleLogin = async () => {
     // console.log('Your phone is: ', phone);
-    console.log('Your password is: ', password);
-    const responseData = await userLoginAPI(phone, password);
+    console.log('Your msisdn is: ', phone);
+    const responseData = await userLoginAPI(phone);
+
+    await storeData(phone);
+
     if (responseData.success == 'false') {
       setIsError(true);
       setErrorMessage(responseData['message']);
     } else if (responseData.success == 'true') {
       navigation.navigate('BottomTabNav', {
         Screen: 'HomeScreen',
-        params: {movies: responseData.data}
+        params: { movies: responseData.data }
       });
     }
     console.log('USER LOGIN API RESPONSE: ', responseData);
@@ -60,13 +82,13 @@ export default function LoginScreen() {
         // placeholderTextColor={'grey'}
         onChangeText={(text) => setPhone(text)}
       />
-      <TextInput
+      {/* <TextInput
         style={styles.input}
         placeholder='password'
         // placeholderTextColor={'grey'}
         onChangeText={(text) => setPassword(text)}
         secureTextEntry
-      />
+      /> */}
       <TouchableOpacity onPress={handleLogin} style={styles.loginButton}>
         <Text style={styles.loginText}>Login</Text>
       </TouchableOpacity>
