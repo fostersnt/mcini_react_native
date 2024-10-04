@@ -4,8 +4,8 @@ import React from 'react'
 export default function HeaderComponent() {
     return (
         <View style={styles.viewContainer}>
-            <Text>HeaderComponent</Text>
-            <Text>HeaderComponent</Text>
+            <Text style={styles.txtContent}>HeaderComponent</Text>
+            <Text style={styles.txtContent}>HeaderComponent</Text>
         </View>
     )
 }
@@ -15,9 +15,14 @@ const styles = StyleSheet.create({
         // flex: 1,
         // width: '100%',
         height: 500,
-        backgroundColor: 'red',
+        backgroundColor: 'black',
         padding: 20,
         marginBottom: 20,
         // borderRadius: 20,
+    },
+    txtContent: {
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: 20,
     }
 })

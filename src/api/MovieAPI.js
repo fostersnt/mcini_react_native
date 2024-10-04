@@ -1,5 +1,5 @@
 //This function checks if subscriber is authenticated
-export const movieList = async () => {
+export const movieListAPI = async () => {
     const options = {
         method: 'POST',
         headers: {
