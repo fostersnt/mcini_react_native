@@ -1,10 +1,11 @@
-import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, StatusBar, Image } from 'react-native'
 import React from 'react'
 import { userLoginAPI, checkAuthAPI, userLogout } from '../api/UserAPI';
 import AlertComponent from '../components/AlertComponent';
 import { useNavigation } from '@react-navigation/native';
 import { Screen } from 'react-native-screens';
 import { storeData, getData } from '../utilities/LocalStorage';
+const mciniLogo = require('../assets/images/logo/mcini.jpg')
 // import RegisterScreen from './RegisterScreen';
 // import AppNavigation from '../navigation/AppNavigation';
 
@@ -17,7 +18,7 @@ export default function LoginScreen() {
     const authData = async (subcriberPhone) => {
 
       const storageData = await getData(phone);
-    console.log('STORAGE DATA IS: ', storageData);
+      console.log('STORAGE DATA IS: ', storageData);
 
       const response = await checkAuthAPI(subcriberPhone);
       console.log('CHECK AUTH FINAL DATA: ', response);
@@ -66,35 +67,39 @@ export default function LoginScreen() {
 
   return (
     <View style={styles.container}>
-
+      <StatusBar hidden={true}></StatusBar>
       {/* {isError ? AlertComponent('Login', errorMessage) : ''} */}
-
-      <Text style={styles.title}>Sign In</Text>
-      {isError ? <Text style={styles.errorText}>{errorMessage}</Text> : ''}
-      <TextInput
-        style={styles.input}
-        placeholder='phone'
-        // placeholderTextColor={'grey'}
-        onChangeText={(text) => setPhone(text)}
-      />
-      {/* <TextInput
-        style={styles.input}
-        placeholder='password'
-        // placeholderTextColor={'grey'}
-        onChangeText={(text) => setPassword(text)}
-        secureTextEntry
-      /> */}
-      <TouchableOpacity onPress={handleLogin} style={styles.loginButton}>
-        <Text style={styles.loginText}>Login</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.innerContainer} onPress={handleRegister}>
-        <Text style={styles.notRegistered}>Not a subscriber? Register</Text>
-      </TouchableOpacity>
+      <Image
+        style={styles.logo}
+        source={mciniLogo}
+      >
+      </Image>
+      <View style={styles.innerContainer}>
+        <Text style={styles.title}>Sign In</Text>
+        {isError ? <Text style={styles.errorText}>{errorMessage}</Text> : ''}
+        <TextInput
+          style={styles.input}
+          placeholder='phone'
+          // placeholderTextColor={'grey'}
+          onChangeText={(text) => setPhone(text)}
+        />
+        <TouchableOpacity onPress={handleLogin} style={styles.loginButton}>
+          <Text style={styles.loginText}>Login</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.innerContainer} onPress={handleRegister}>
+          <Text style={styles.notRegistered}>Not a subscriber? Register</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
+  logo: {
+    marginBottom: 20,
+    width: 50,
+    height: 50
+  },
   container: {
     flex: 1,
     padding: 20,
@@ -112,7 +117,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: 'white',
     fontWeight: 'bold',
-    marginBottom: 20
+    marginBottom: 20,
+    alignSelf: 'flex-start'
   },
   input: {
     height: 40,
