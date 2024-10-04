@@ -58,12 +58,12 @@ export const checkAuthAPI = async (phone) => {
 
         const data = response.json()
 
-        console.log('MAIN USER LOGIN API RESPONSE: ', data);
+        console.log('MAIN AUTH CHECK API RESPONSE: ', data);
         
         if (!response.ok) {
             return {
                 'success': 'false',
-                'message': 'Unable to perform login'
+                'message': `User with ${phone} is not authenticated`
             };
         }
         return data;

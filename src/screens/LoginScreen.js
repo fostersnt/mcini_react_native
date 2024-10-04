@@ -13,8 +13,12 @@ export default function LoginScreen() {
   const [errorMessage, setErrorMessage] = React.useState('');
 
   React.useEffect( () =>  {
-    const authData = async () => await checkAuthAPI(phone);
-    console.log('CHECK AUTH FINAL DATA: ', authData);
+    const authData = async () => {
+      const response = await checkAuthAPI(phone);
+      console.log('CHECK AUTH FINAL DATA: ', response);
+    }
+    //Calling the authCheck function
+    authData();
     
   }, []);
 
