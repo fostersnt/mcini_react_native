@@ -1,16 +1,10 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React from 'react';
 import {
   SafeAreaView,
   StyleSheet,
   Text,
   View,
+  StatusBar
 } from 'react-native';
 import WebView from 'react-native-webview';
 
@@ -26,8 +20,8 @@ const handleOnRenderProcessGone = (syntheticEvent) => {
 
 function MoviePlayerScreen() {
   return (
-    // <SafeAreaView style={styles.container}>
-    // <View>
+    <View style={styles.container}>
+      <StatusBar hidden={true}></StatusBar>
       <WebView
         style={styles.videoContainer}
         source={{ uri: "https://iframe.mediadelivery.net/embed/182548/e941715e-7de1-4875-a42b-c52a982fa72c?autoplay=true" }}
@@ -43,8 +37,7 @@ function MoviePlayerScreen() {
         )}
         onRenderProcessGone={handleOnRenderProcessGone}
       />
-    // </View>
-    // </SafeAreaView>
+    </View>
   );
 }
 
@@ -54,8 +47,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   videoContainer: {
-    width: '100%',  // Use '100%' instead of '100'
-    height: 300,    // Set a specific height
+    // flex: 1,
+    // width: '100%',  // Use '100%' instead of '100'
+    // height: 300,    // Set a specific height
   },
   errorContainer: {
     flex: 1,
