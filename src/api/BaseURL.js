@@ -1,0 +1,1 @@
+export const BaseURL = () => 'https://mcini.tv/api/v1';

@@ -1,3 +1,5 @@
+import { BaseURL } from "./BaseURL";
+
 //This function sends subscriber login request
 export const userLoginAPI = async (phone) => {
 
@@ -12,7 +14,7 @@ export const userLoginAPI = async (phone) => {
         })
     };
 
-    url = 'https://mcini.tv/api/v1/user/login';
+    url = `${BaseURL}/user/login`;
 
     try {
         console.log('API STARTING');
@@ -48,7 +50,7 @@ export const checkAuthAPI = async (phone) => {
         })
     };
 
-    url = 'https://mcini.tv/api/v1/user/check-auth';
+    url = `${BaseURL}/user/check-auth`;
 
     try {
         console.log('CHECK AUTH API STARTING');
@@ -89,7 +91,7 @@ export const userLogout = async (phone) => {
         })
     };
 
-    url = 'https://mcini.tv/api/v1/user/logout';
+    url = `${BaseURL}/user/logout`;
 
     try {
         console.log('USER LOGOUT API STARTING');

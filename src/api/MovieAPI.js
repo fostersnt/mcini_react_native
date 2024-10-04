@@ -1,4 +1,6 @@
 //This function checks if subscriber is authenticated
+import { BaseURL } from "./BaseURL";
+
 export const movieListAPI = async () => {
     const options = {
         method: 'POST',
@@ -11,7 +13,7 @@ export const movieListAPI = async () => {
         // })
     };
 
-    url = 'https://mcini.tv/api/v1/movies/list';
+    url = `${BaseURL}/movies/list`;
 
     try {
         console.log('MOVIE LIST API STARTING');
