@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
 import React from 'react'
-import { userLoginAPI, checkAuthAPI } from '../api/userLoginAPI';
+import { userLoginAPI, checkAuthAPI, userLogout } from '../api/UserAPI';
 import AlertComponent from '../components/AlertComponent';
 import { useNavigation } from '@react-navigation/native';
 import { Screen } from 'react-native-screens';
@@ -42,7 +42,6 @@ export default function LoginScreen() {
   const navigation = useNavigation();
 
   const handleLogin = async () => {
-    // console.log('Your phone is: ', phone);
     console.log('Your msisdn is: ', phone);
     const responseData = await userLoginAPI(phone);
 
