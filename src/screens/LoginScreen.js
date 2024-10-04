@@ -24,12 +24,10 @@ export default function LoginScreen() {
       if (response.success == 'true') {
         navigation.navigate('BottomTabNav', {
           Screen: 'HomeScreen',
-          
           params: { movies: response.data }
         });
       }
     }
-
 
     //Calling the authCheck function
     try {
