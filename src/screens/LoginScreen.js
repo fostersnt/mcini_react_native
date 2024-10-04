@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, StatusBar, Image } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, StatusBar, Image, KeyboardAvoidingView } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { userLoginAPI, checkAuthAPI, userLogout } from '../api/UserAPI';
 import { useNavigation } from '@react-navigation/native';
@@ -10,7 +10,7 @@ export default function LoginScreen() {
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [country, setCountry] = useState('option1');
-  
+
   useEffect(() => {
     const authData = async (subcriberPhone) => {
 
@@ -67,35 +67,47 @@ export default function LoginScreen() {
   }
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'android' ? 'padding' : 'height'}
+    >
       <StatusBar hidden={true}></StatusBar>
-      {/* {isError ? AlertComponent('Login', errorMessage) : ''} */}
-      <Image
-        style={styles.logo}
-        source={mciniLogo}
-      >
-      </Image>
-      <View style={styles.innerContainer}>
-        <Text style={styles.title}>Sign In</Text>
-        {isError ? <Text style={styles.errorText}>{errorMessage}</Text> : ''}
-        <TextInput
-          style={styles.input}
-          placeholder='phone number'
-          // placeholderTextColor={'grey'}
-          onChangeText={(text) => setPhone(text)}
-        />
-        <TouchableOpacity onPress={handleLogin} style={styles.loginButton}>
-          <Text style={styles.loginText}>Login</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.innerContainer} onPress={handleRegister}>
-          <Text style={styles.notRegistered}>Not a subscriber? Register</Text>
-        </TouchableOpacity>
+      <View style = {styles.logoContainer}>
+        <Image
+          style={styles.logo}
+          source={mciniLogo}
+        >
+        </Image>
       </View>
-    </View>
+      <View>
+        {/* {isError ? AlertComponent('Login', errorMessage) : ''} */}
+        <View style={styles.innerContainer}>
+          <Text style={styles.title}>Sign In</Text>
+          {isError ? <Text style={styles.errorText}>{errorMessage}</Text> : ''}
+          <TextInput
+            style={styles.input}
+            placeholder='phone number'
+            // placeholderTextColor={'grey'}
+            onChangeText={(text) => setPhone(text)}
+          />
+          <TouchableOpacity onPress={handleLogin} style={styles.loginButton}>
+            <Text style={styles.loginText}>Login</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.innerContainer} onPress={handleRegister}>
+            <Text style={styles.notRegistered}>Not a subscriber? Register</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </KeyboardAvoidingView>
   )
 }
 
 const styles = StyleSheet.create({
+  logoContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   logo: {
     marginBottom: 20,
     width: 50,
@@ -107,7 +119,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center'
   },
   errorText: {
     color: 'red',
