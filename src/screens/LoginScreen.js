@@ -1,29 +1,36 @@
 import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
 import React from 'react'
-import { userLoginAPI } from '../api/userLoginAPI';
+import { userLoginAPI, checkAuthAPI } from '../api/userLoginAPI';
 import AlertComponent from '../components/AlertComponent';
 import { useNavigation } from '@react-navigation/native';
 import { Screen } from 'react-native-screens';
-import RegisterScreen from './RegisterScreen';
+// import RegisterScreen from './RegisterScreen';
+// import AppNavigation from '../navigation/AppNavigation';
 
 export default function LoginScreen() {
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [phone, setPhone] = React.useState('');
   const [isError, setIsError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
+
+  React.useEffect( () =>  {
+    const authData = async () => await checkAuthAPI(phone);
+    console.log('CHECK AUTH FINAL DATA: ', authData);
+    
+  }, []);
 
   const navigation = useNavigation();
 
   const handleLogin = async () => {
-    // console.log('Your email is: ', email);
+    // console.log('Your phone is: ', phone);
     console.log('Your password is: ', password);
-    const responseData = await userLoginAPI(email, password);
+    const responseData = await userLoginAPI(phone, password);
     if (responseData.success == 'false') {
       setIsError(true);
       setErrorMessage(responseData['message']);
     } else if (responseData.success == 'true') {
       navigation.navigate('BottomTabNav', {
-        Screen: 'HomeScreen'
+        Screen: 'HomeScreen',
+        params: {movies: responseData.data}
       });
     }
     console.log('USER LOGIN API RESPONSE: ', responseData);
@@ -31,8 +38,8 @@ export default function LoginScreen() {
   }
 
   const handleRegister = () => {
-    navigation.navigate('Register', {
-      screen: RegisterScreen
+    navigation.navigate('AppNavigation', {
+      screen: 'RegisterScreen'
     });
   }
 
@@ -45,9 +52,9 @@ export default function LoginScreen() {
       {isError ? <Text style={styles.errorText}>{errorMessage}</Text> : ''}
       <TextInput
         style={styles.input}
-        placeholder='email'
+        placeholder='phone'
         // placeholderTextColor={'grey'}
-        onChangeText={(text) => setEmail(text)}
+        onChangeText={(text) => setPhone(text)}
       />
       <TextInput
         style={styles.input}
