@@ -17,12 +17,9 @@ export const userLoginAPI = async (phone) => {
     url = `${BaseURL}/user/login`;
 
     try {
-        console.log('API STARTING');
-        
        const response = await fetch(url, options);
 
         const data = response.json()
-        console.log('MAIN USER LOGIN API RESPONSE: ', data);
         
         if (!response.ok) {
             return {
@@ -32,7 +29,10 @@ export const userLoginAPI = async (phone) => {
         }
         return data;
     } catch (error) {
-        console.log('USER LOGIN API ERROR: ', error);
+        return {
+            'success': 'false',
+            'message': error.toString()
+        };
     }
 }
 

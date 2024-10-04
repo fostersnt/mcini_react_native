@@ -1,20 +1,17 @@
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, StatusBar, Image } from 'react-native'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { userLoginAPI, checkAuthAPI, userLogout } from '../api/UserAPI';
-import AlertComponent from '../components/AlertComponent';
 import { useNavigation } from '@react-navigation/native';
-import { Screen } from 'react-native-screens';
 import { storeData, getData } from '../utilities/LocalStorage';
 const mciniLogo = require('../assets/images/logo/mcini.jpg')
-// import RegisterScreen from './RegisterScreen';
-// import AppNavigation from '../navigation/AppNavigation';
 
 export default function LoginScreen() {
-  const [phone, setPhone] = React.useState('');
-  const [isError, setIsError] = React.useState(false);
-  const [errorMessage, setErrorMessage] = React.useState('');
-
-  React.useEffect(() => {
+  const [phone, setPhone] = useState('');
+  const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [country, setCountry] = useState('option1');
+  
+  useEffect(() => {
     const authData = async (subcriberPhone) => {
 
       const storageData = await getData(phone);
@@ -42,9 +39,12 @@ export default function LoginScreen() {
 
   const navigation = useNavigation();
 
+  //LOGIN FUNCTION
   const handleLogin = async () => {
     console.log('Your msisdn is: ', phone);
     const responseData = await userLoginAPI(phone);
+
+    console.log('MAIN USER LOGIN API RESPONSE: ', responseData);
 
     await storeData(phone);
 
@@ -61,6 +61,7 @@ export default function LoginScreen() {
 
   }
 
+  //REGISTER NAVIGATION
   const handleRegister = () => {
     navigation.navigate('Register');
   }
@@ -79,7 +80,7 @@ export default function LoginScreen() {
         {isError ? <Text style={styles.errorText}>{errorMessage}</Text> : ''}
         <TextInput
           style={styles.input}
-          placeholder='phone'
+          placeholder='phone number'
           // placeholderTextColor={'grey'}
           onChangeText={(text) => setPhone(text)}
         />
@@ -131,16 +132,18 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     height: 40,
-    backgroundColor: 'blue',
+    backgroundColor: 'red',
     width: '100%',
     borderRadius: 5,
     padding: 10,
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   loginText: {
-    color: 'white'
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold'
   },
   innerContainer: {
     display: 'flex',
