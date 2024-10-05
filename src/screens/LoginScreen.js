@@ -45,7 +45,6 @@ export default function LoginScreen() {
     }
 
     //Calling the authCheck function
-
     authData();
 
   }, []);

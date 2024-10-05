@@ -9,6 +9,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5'
 import IonIcons from 'react-native-vector-icons/Ionicons'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import AntIcons from 'react-native-vector-icons/AntDesign'
+import { AppStyles } from '../utilities/AppStyles'
 
 const Tab = createBottomTabNavigator();
 
@@ -24,10 +25,10 @@ export default function BottomTabNav() {
     // initialRouteName='Home'
     screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#23527c',
-        tabBarInactiveTintColor: '#fff',
-        tabBarInactiveBackgroundColor: '#23527c',
-        tabBarActiveBackgroundColor: '#fff',
+        tabBarActiveTintColor: '#fff',
+        tabBarInactiveTintColor: '',
+        tabBarInactiveBackgroundColor: AppStyles.generalColors.dark_four,
+        tabBarActiveBackgroundColor: AppStyles.generalColors.dark_one,
         tabBarShowLabel: false
         }}>
       <Tab.Screen name="Home" component={HomeScreen} options={{tabBarIcon: ({color, size}) => (

@@ -25,6 +25,7 @@ export const AppStyles = {
         lower: 5,
     },
     generalPadding: {
+        top: 30,
         higher: 20,
         medium: 15,
         low: 10,

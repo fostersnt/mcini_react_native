@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import MoviePlayerScreen from './MoviePlayerScreen'
 import MovieBanner from '../components/MovieBanner'
 import { movieListAPI } from '../api/MovieAPI'
+import { AppStyles } from '../utilities/AppStyles'
 
 export default function HomeScreen({ route }) {
   //Retrieving route data
@@ -19,9 +20,21 @@ export default function HomeScreen({ route }) {
   }, []);
 
   return (
-    <View style={styles.homeView}>
+    <View style={[
+      styles.homeView,
+      {
+        backgroundColor: AppStyles.generalColors.dark_one,
+        paddingTop: AppStyles.generalPadding.top,
+        padding: AppStyles.generalPadding.low
+      }
+    ]}>
       <StatusBar translucent backgroundColor={'transparent'}></StatusBar>
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.content}>
+        <MovieBanner />
+        <MovieBanner />
+        <MovieBanner />
+        <MovieBanner />
+        <MovieBanner />
         <MovieBanner />
         <MovieBanner />
       </ScrollView>
