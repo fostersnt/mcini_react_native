@@ -1,11 +1,11 @@
 import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
 
-export default function HeaderComponent() {
+export default function MovieBanner() {
     return (
         <View style={styles.viewContainer}>
-            <Text style={styles.txtContent}>HeaderComponent</Text>
-            <Text style={styles.txtContent}>HeaderComponent</Text>
+            <Text style={styles.txtContent}>MovieBanner</Text>
+            <Text style={styles.txtContent}>MovieBanner</Text>
         </View>
     )
 }

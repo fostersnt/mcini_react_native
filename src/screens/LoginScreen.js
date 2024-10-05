@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react'
 import { userLoginAPI, checkAuthAPI, userLogout } from '../api/UserAPI';
 import { useNavigation } from '@react-navigation/native';
 import { storeData, getData } from '../utilities/LocalStorage';
+import { AppStyles } from '../utilities/AppStyles';
+
 const mciniLogo = require('../assets/images/logo/mcini.jpg')
 
 export default function LoginScreen() {
@@ -68,7 +70,7 @@ export default function LoginScreen() {
 
   return (
     <KeyboardAvoidingView
-      style={styles.container}
+      style={[styles.container, {backgroundColor: AppStyles.generalColors.dark_four}]}
       behavior={Platform.OS === 'android' ? 'padding' : 'height'}
     >
       <StatusBar translucent backgroundColor='transparent'></StatusBar>
@@ -117,7 +119,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: 'black',
+    // backgroundColor: 'black',
     display: 'flex',
     justifyContent: 'center',
   },

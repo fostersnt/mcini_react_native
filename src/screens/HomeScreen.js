@@ -1,10 +1,10 @@
 import { View, Text, StyleSheet, ScrollView, StatusBar } from 'react-native'
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import MoviePlayerScreen from './MoviePlayerScreen'
-import HeaderComponent from '../components/HeaderComponent'
+import MovieBanner from '../components/MovieBanner'
 import { movieListAPI } from '../api/MovieAPI'
 
-export default function HomeScreen({route}) {
+export default function HomeScreen({ route }) {
   //Retrieving route data
   const [userWatchList, setUserWatchList] = useState(route.params.movies)
   const [movieList, setMovieList] = useState([]);
@@ -19,23 +19,28 @@ export default function HomeScreen({route}) {
   }, []);
 
   return (
-    <ScrollView style={styles.homeView} contentContainerStyle={styles.content}>
+    <View style={styles.homeView}>
+      <ScrollView style={styles.scrollView} contentContainerStyle={styles.content}>
         <StatusBar translucent backgroundColor={'transparent'}></StatusBar>
         {/* <MoviePlayerScreen/> */}
-        <HeaderComponent/>
-        <HeaderComponent/>
-    </ScrollView>
+        <MovieBanner />
+        <MovieBanner />
+      </ScrollView>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
-    homeView: {
-        flex: 1,
-        // backgroundColor: 'yellow'
-        // width: '100%',
-        // height: '50%'
-    },
-    content: {
-        // padding: 10
-    }
+  homeView: {
+    flex: 1,
+    // backgroundColor: 'yellow'
+    // width: '100%',
+    // height: '50%'
+  },
+  scrollView: {
+    flex: 1,
+  },
+  content: {
+    // padding: 10
+  }
 })
