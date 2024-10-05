@@ -9,7 +9,8 @@ import { useRoute } from '@react-navigation/native'
 export default function HomeScreen() {
   //Retrieving route data
   const route = useRoute();
-  const [userWatchList, setUserWatchList] = useState(route.params.movies)
+  // const {movies} = route.params;
+  // const [userWatchList, setUserWatchList] = useState(movies)
   const [movieList, setMovieList] = useState([]);
 
   useEffect(() => {

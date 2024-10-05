@@ -30,7 +30,7 @@ export default function LoginScreen() {
 
         console.log('CHECK AUTH FINAL DATA: ', response);
 
-        if (response.success == 'true' && message == 'user not authenticated!') {
+        if (response.success == 'true' && message == 'user authenticated!') {
           navigation.navigate('BottomTabNav', {
             Screen: 'HomeScreen',
             params: { movies: response.data }
@@ -67,7 +67,9 @@ export default function LoginScreen() {
       setIsError(true);
       setErrorMessage(responseData['message']);
     } else if (responseData.success == 'true') {
-      navigation.navigate('BottomTabNav', {
+      setIsError(false);
+      setErrorMessage('');
+      navigation.replace('BottomTabNav', {
         screen: 'HomeScreen',
         params: { movies: responseData.data }
       });
@@ -83,18 +85,18 @@ export default function LoginScreen() {
 
   return (
     <ImageBackground
-    style={[
-      styles.container,
-      {
-        // backgroundColor: AppStyles.generalColors.dark_four,
-        padding: AppStyles.generalPadding.higher
-      }
-    ]}
+      style={[
+        styles.container,
+        {
+          // backgroundColor: AppStyles.generalColors.dark_four,
+          padding: AppStyles.generalPadding.higher
+        }
+      ]}
       source={bannerImage}
       resizeMode='cover'
     >
       <KeyboardAvoidingView
-        
+
         behavior={Platform.OS === 'android' ? 'padding' : 'height'}
       >
         <StatusBar translucent backgroundColor='transparent'></StatusBar>
@@ -115,11 +117,20 @@ export default function LoginScreen() {
                 marginBottom: AppStyles.generalMargin.higher
               }
             ]}>Sign In</Text>
-            {isError ? <Text style={{
-              color: AppStyles.generalColors.red_one,
-              fontWeight: AppStyles.generalFontWeight.weight_one,
-              marginBottom: AppStyles.generalMargin.higher,
-            }}>{errorMessage}</Text> : ''}
+            {isError ?
+              <View style={{
+                width: '100%', borderColor: 'white', borderWidth: 1, marginBottom: 10,
+                display: 'flex', alignItems: 'center',
+                justifyContent: 'center',
+                padding: 10
+                }}>
+                <Text style={{
+                  color: AppStyles.generalColors.red_one,
+                  fontWeight: AppStyles.generalFontWeight.weight_one,
+                  // marginBottom: AppStyles.generalMargin.higher,
+                }}>{errorMessage}</Text>
+              </View>
+              :''}
             <TextInput
               style={[
                 styles.input,
