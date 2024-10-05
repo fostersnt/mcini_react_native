@@ -4,7 +4,6 @@ import { movieListAPI } from "./MovieAPI";
 
 //This function sends subscriber login request
 export const userLoginAPI = async (phone) => {
-
     const options = {
         method: 'POST',
         headers: {
@@ -22,31 +21,41 @@ export const userLoginAPI = async (phone) => {
         const response = await fetch(url, options);
 
         const subscriberData = await response.json()
-        // console.log('DATA NOW: ', data);
-        const finalSubscriberData = subscriberData['data'];
+
+        var finalSubscriberData = null;
 
         const movieData = await movieListAPI();
 
+        var success = 'false';
+        var message = '';
+
         if (!response.ok) {
+            message = 'Error occurred during login';
             return {
-                'success': 'false',
-                'message': 'Unable to perform login',
+                'success': success,
+                'message': message,
                 'status_code': `${response.status}`,
             };
         }
 
-
+        if (subscriberData['success'] == 'true' && subscriberData['data'] != null) {
+            finalSubscriberData = subscriberData['data'];
+            success = subscriberData['success'];
+        }else{
+            message = subscriberData['message'];
+        }
         return {
-            'success': 'true',
-            'message': 'Data fetching successful',
+            'success': success,
+            'message': message,
             'subscriberData': finalSubscriberData,
             'movieData': movieData
         }
 
     } catch (error) {
+        message = error.toString();
         return {
             'success': 'false',
-            'message': error.toString()
+            'message': message
         };
     }
 }
@@ -68,12 +77,8 @@ export const checkAuthAPI = async (phone) => {
     const url = `${BaseURL}/user/check-auth`;
 
     try {
-        // console.log('CHECK AUTH API STARTING');
-
         const response = await fetch(url, options);
         const data = await response.json()
-
-        // console.log('MAIN AUTH CHECK API RESPONSE: ', data);
 
         if (!response.ok) {
             return {
@@ -83,12 +88,10 @@ export const checkAuthAPI = async (phone) => {
             };
         }
         else {
-            // console.log('TTTTTT: ', response);            
             return data;
         }
 
     } catch (error) {
-        // console.log('CHECK AUTH API ERROR: ', error);
         return {
             'success': 'false',
             'message': error.toString()
@@ -112,11 +115,7 @@ export const userLogout = async (phone) => {
     const url = `${BaseURL}/user/logout`;
 
     try {
-        console.log('USER LOGOUT API STARTING');
-
         const response = await fetch(url, options);
-
-        console.log('MAIN LOGOUT API RESPONSE: ', data);
 
         if (!response.ok) {
             return {
@@ -129,7 +128,6 @@ export const userLogout = async (phone) => {
         return data;
 
     } catch (error) {
-        console.log('USER LOGOUT API ERROR: ', error);
         return {
             'success': 'false',
             'message': error.toString()
@@ -137,7 +135,98 @@ export const userLogout = async (phone) => {
     }
 }
 
-//This function performs user subscription
+//--------------------This function fetches user favourite movies--------------------
+export const userFavouriteMoviesAPI = async (phone) => {
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+            msisdn: phone,
+        })
+    };
+
+    const url = `${BaseURL}/movies/favorites/list`;
+
+    try {
+        const response = await fetch(url, options);
+
+        if (!response.ok) {
+            return {
+                'success': 'false',
+                'message': `Unable to logout`
+            };
+        }
+
+        const data = await response.json()
+        return data;
+
+    } catch (error) {
+        return {
+            'success': 'false',
+            'message': error.toString()
+        };
+    }
+}
+
+
+//--------------------This function fetches user watch-list movies--------------------
+export const userWatchListAPI = async (phone) => {
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+            msisdn: phone,
+        })
+    };
+
+    const url = `${BaseURL}/movies/watch/list`;
+
+    try {
+        const response = await fetch(url, options);
+
+        if (!response.ok) {
+            return {
+                'success': 'false',
+                'message': `Unable to logout`
+            };
+        }
+        const data = await response.json()
+        return data;
+
+    } catch (error) {
+        return {
+            'success': 'false',
+            'message': error.toString()
+        };
+    }
+}
+
+
+//-------------------This function put all user data together---------------------------
+export const allUserData = async (subscriberMsisdn) => {
+    var status = 'false';
+    var message = '';
+
+    const subscriberData = await userLoginAPI(subscriberMsisdn);
+
+    const allMovies = await movieListAPI();
+
+    const favouriteMovies = await userFavouriteMoviesAPI(subscriberMsisdn);
+
+    const userWatchList = await userWatchListAPI(subscriberMsisdn);
+
+    if (subscriberData['success'] == 'true') {
+        
+    }
+}
+
+//--------------------------This function performs user subscription------------------------------
 export const user_MTN_subscription = async (payload) => {
     const options = {
         method: 'POST',
@@ -152,11 +241,7 @@ export const user_MTN_subscription = async (payload) => {
     const url = `${BaseURL}/mtn/subscription`;
 
     try {
-        console.log('USER MOVIE SUBSCRIPTION API STARTING');
-
         const response = await fetch(url, options);
-
-        console.log('MAIN MOVIE SUBSCRIPTION API RESPONSE: ', data);
 
         if (!response.ok) {
             return {
@@ -170,7 +255,6 @@ export const user_MTN_subscription = async (payload) => {
         return data;
 
     } catch (error) {
-        console.log('USER MOVIE SUBSCRIPTION API ERROR: ', error);
         return {
             'success': 'false',
             'message': error.toString()
@@ -193,11 +277,7 @@ export const user_MTN_unSubscription = async (payload) => {
     const url = `${BaseURL}/mtn/unsubscription`;
 
     try {
-        console.log('USER MOVIE UNSUBSCRIPTION API STARTING');
-
         const response = await fetch(url, options);
-
-        console.log('MAIN MOVIE UNSUBSCRIPTION API RESPONSE: ', data);
 
         if (!response.ok) {
             return {
@@ -211,7 +291,6 @@ export const user_MTN_unSubscription = async (payload) => {
         return data;
 
     } catch (error) {
-        console.log('USER MOVIE UNSUBSCRIPTION API ERROR: ', error);
         return {
             'success': 'false',
             'message': error.toString()

@@ -9,12 +9,17 @@ import { useRoute } from '@react-navigation/native'
 export default function HomeScreen() {
   //Retrieving route data
   const route = useRoute();
+
   const {movies} = route.params;
-  console.log('HOME SCREEN MOVIES === ', movies);
+
+  // console.log('HOME SCREEN MOVIES === ', movies);
+  console.log('HOME SCREEN MOVIE URL === ', movies[0]['video_url']);
+  
   
   const [userWatchList, setUserWatchList] = useState(movies)
   
   const [movieList, setMovieList] = useState([]);
+
 
   useEffect(() => {
     const getMovieData = async () => {
@@ -30,13 +35,13 @@ export default function HomeScreen() {
       styles.homeView,
       {
         backgroundColor: AppStyles.generalColors.dark_one,
-        paddingTop: AppStyles.generalPadding.top,
-        padding: AppStyles.generalPadding.low
+        // paddingTop: AppStyles.generalPadding.top,
+        // padding: AppStyles.generalPadding.low
       }
     ]}>
       <StatusBar translucent backgroundColor={'transparent'}></StatusBar>
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.content}>
-        <MoviePlayerScreen videoURL={userWatchList[0]['video_url']}></MoviePlayerScreen>
+        <MoviePlayerScreen videoURL={userWatchList[0]['video_url']} />
         <MovieBanner />
         <MovieBanner />
         <MovieBanner />
@@ -44,6 +49,7 @@ export default function HomeScreen() {
         <MovieBanner />
         <MovieBanner />
         <MovieBanner />
+
       </ScrollView>
     </View>
   )
@@ -57,7 +63,7 @@ const styles = StyleSheet.create({
     // height: '50%'
   },
   scrollView: {
-    flex: 1,
+    // flex: 1,
   },
   content: {
     // padding: 10

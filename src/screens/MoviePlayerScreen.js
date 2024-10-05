@@ -18,13 +18,12 @@ const handleOnRenderProcessGone = (syntheticEvent) => {
   console.warn('WebView Crashed: ', nativeEvent.didCrash);
 }
 
-function MoviePlayerScreen() {
+function MoviePlayerScreen({videoURL}) {
+  const url = "https://iframe.mediadelivery.net/embed/182548/e941715e-7de1-4875-a42b-c52a982fa72c?autoplay=true";
   return (
-    <View style={styles.container}>
-      <StatusBar translucent backgroundColor={'transparent'}></StatusBar>
       <WebView
         style={styles.videoContainer}
-        source={{ uri: "https://iframe.mediadelivery.net/embed/182548/e941715e-7de1-4875-a42b-c52a982fa72c?autoplay=true" }}
+        source={{ uri: videoURL }}
         javaScriptEnabled={true}
         domStorageEnabled={true}
         allowsInlineMediaPlayback={true}
@@ -35,9 +34,12 @@ function MoviePlayerScreen() {
             <Text style={styles.errorText}>Failed to load page.</Text>
           </View>
         )}
+
         onRenderProcessGone={handleOnRenderProcessGone}
-      />
-    </View>
+      >
+      <StatusBar translucent backgroundColor={'transparent'}></StatusBar>
+
+      </WebView>
   );
 }
 
@@ -47,9 +49,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   videoContainer: {
-    // flex: 1,
-    // width: '100%',  // Use '100%' instead of '100'
-    // height: 300,    // Set a specific height
+    flex: 1,
+    width: '100%',  // Use '100%' instead of '100'
+    height: 300,    // Set a specific height
   },
   errorContainer: {
     flex: 1,

@@ -58,32 +58,43 @@ export default function LoginScreen() {
   const handleLogin = async () => {
     console.log('Your msisdn is: ', phone);
 
-    const responseData = await userLoginAPI(phone);
-
-    // console.log('MAIN USER LOGIN API RESPONSE: ', responseData['subscriberData']);
-    // console.log('MAIN USER LOGIN API RESPONSE: ', responseData['movieData']);
-    if (responseData['movieData'].length > 0) {
-      console.log('FIRST MOVIE DATA URL === ', responseData['movieData'][0]['video_url']);
-    }
-
-    const formattedPhone = replaceFirstDigitWith233(phone);
-
-    setPhone(formattedPhone);
-    await storeData(formattedPhone);
-
-    if (responseData.success == 'false') {
+    if (phone.length < 1) {
       setIsError(true);
-      setErrorMessage(responseData['message']);
-    } else if (responseData.success == 'true') {
-      setIsError(false);
-      setErrorMessage('');
-      navigation.replace('BottomTabNav', {
-        screen: 'Home', //This is the name I used in the BottomTabNav for the HomeScreen
-        params: { movies: responseData } //This is the data I am passing to the HomeScreen
-      });
-      // navigation.replace('BottomTabNav',
-      //   { movies: responseData['data'] }
-      // );
+      setErrorMessage('Phone number is required');
+    } else {
+      const responseData = await userLoginAPI(phone);
+
+      // console.log('QQQQQQQQQQ'); 
+      
+      console.log('MAIN USER LOGIN API RESPONSE: ', responseData['subscriberData']);
+
+      // console.log('MAIN USER LOGIN API RESPONSE: ', responseData['movieData']);
+      // if (responseData['movieData'].length > 0) {
+      //   console.log('FIRST MOVIE DATA URL === ', responseData['movieData'][0]['video_url']); 
+      // }
+
+      const formattedPhone = replaceFirstDigitWith233(phone);
+
+      setPhone(formattedPhone);
+
+      await storeData(formattedPhone);
+
+      if (responseData['success'] == 'false') {
+        setIsError(true);
+        setErrorMessage(responseData['message']);
+      } else if (responseData['success'] == 'true') {
+        // console.log('TRUE TRUE === ', responseData['subscriberData']);
+        setIsError(false);
+        setErrorMessage('');
+
+        navigation.navigate('BottomTabNav', {
+          screen: 'Home', //This is the name I used in the BottomTabNav for the HomeScreen
+          params: { movies: responseData['movieData'] } //This is the data I am passing to the HomeScreen
+        });
+        // navigation.replace('BottomTabNav',
+        //   { movies: responseData['data'] }
+        // );
+      }
     }
   }
 
@@ -116,15 +127,15 @@ export default function LoginScreen() {
           >
           </Image>
         </View> */}
-        <View  style={[
-            // styles.innerContainer,
-            {
-              backgroundColor: AppStyles.generalColors.dark_one,
-              paddingVertical: 50,
-              padding: AppStyles.generalPadding.higher,
-              // borderRadius: AppStyles.generalBorderRadius.radius_two
-            }
-            ]}>
+        <View style={[
+          // styles.innerContainer,
+          {
+            backgroundColor: AppStyles.generalColors.dark_one,
+            paddingVertical: 50,
+            padding: AppStyles.generalPadding.higher,
+            // borderRadius: AppStyles.generalBorderRadius.radius_two
+          }
+        ]}>
           {/* {isError ? AlertComponent('Login', errorMessage) : ''} */}
           <View>
             <Text style={[
