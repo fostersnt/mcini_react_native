@@ -70,12 +70,17 @@ export default function LoginScreen() {
 
   return (
     <KeyboardAvoidingView
-      style={[styles.container, {backgroundColor: AppStyles.generalColors.dark_four}]}
+      style={[
+        styles.container,
+        {
+          backgroundColor: AppStyles.generalColors.dark_four,
+          padding: AppStyles.generalPadding.higher
+        }
+      ]}
       behavior={Platform.OS === 'android' ? 'padding' : 'height'}
     >
       <StatusBar translucent backgroundColor='transparent'></StatusBar>
-      {/* <StatusBar hidden={true}></StatusBar> */}
-      <View style = {styles.logoContainer}>
+      <View style={styles.logoContainer}>
         <Image
           style={styles.logo}
           source={mciniLogo}
@@ -85,16 +90,44 @@ export default function LoginScreen() {
       <View>
         {/* {isError ? AlertComponent('Login', errorMessage) : ''} */}
         <View style={styles.innerContainer}>
-          <Text style={styles.title}>Sign In</Text>
-          {isError ? <Text style={styles.errorText}>{errorMessage}</Text> : ''}
+          <Text style={[
+            styles.title,
+            {
+              fontSize: AppStyles.generalFontSize.large,
+              marginBottom: AppStyles.generalMargin.higher
+            }
+          ]}>Sign In</Text>
+          {isError ? <Text style={{
+            color: AppStyles.generalColors.red_one,
+            fontWeight: AppStyles.generalFontWeight.weight_one,
+            marginBottom: AppStyles.generalMargin.higher,
+          }}>{errorMessage}</Text> : ''}
           <TextInput
-            style={styles.input}
+            style={[
+              styles.input,
+              {
+                height: AppStyles.generalHeight.height_one,
+                marginBottom: AppStyles.generalMargin.higher,
+                borderRadius: AppStyles.generalBorderRadius.radius_one
+              }
+            ]}
             placeholder='phone number'
-            // placeholderTextColor={'grey'}
             onChangeText={(text) => setPhone(text)}
           />
-          <TouchableOpacity onPress={handleLogin} style={styles.loginButton}>
-            <Text style={styles.loginText}>Login</Text>
+          <TouchableOpacity onPress={handleLogin} style={[
+            styles.loginButton,
+            {
+              backgroundColor: AppStyles.generalColors.red_one,
+              padding: AppStyles.generalPadding.lower,
+              height: AppStyles.generalHeight.height_one,
+              borderRadius: AppStyles.generalBorderRadius.radius_one
+            }
+          ]}>
+            <Text style={{
+              color: AppStyles.generalColors.white_one,
+              fontSize: AppStyles.generalFontSize.normal,
+              fontWeight: AppStyles.generalFontWeight.weight_one
+            }}>Login</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.innerContainer} onPress={handleRegister}>
             <Text style={styles.notRegistered}>Not a subscriber? Register</Text>
@@ -118,53 +151,40 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    padding: 20,
-    // backgroundColor: 'black',
     display: 'flex',
     justifyContent: 'center',
   },
-  errorText: {
-    color: 'red',
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
+  // errorText: {
+  //   color: 'red',
+  //   fontWeight: 'bold',
+  //   marginBottom: 20,
+  // },
   title: {
-    fontSize: 20,
     color: 'white',
     fontWeight: 'bold',
-    marginBottom: 20,
     alignSelf: 'flex-start'
   },
   input: {
-    height: 40,
     backgroundColor: 'white',
     width: '100%',
-    borderRadius: 5,
     paddingHorizontal: 10,
-    // fontSize: 20,
-    marginBottom: 20
   },
   loginButton: {
-    height: 40,
-    backgroundColor: 'red',
     width: '100%',
-    borderRadius: 5,
-    padding: 10,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  loginText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold'
-  },
+  // loginText: {
+  //   color: 'white',
+  //   fontSize: 16,
+  //   fontWeight: 'bold'
+  // },
   innerContainer: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     color: 'white',
-    // backgroundColor: 'red',
     width: '100%',
     marginTop: 20
   },
