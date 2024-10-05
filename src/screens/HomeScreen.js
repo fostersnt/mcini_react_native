@@ -20,9 +20,8 @@ export default function HomeScreen({ route }) {
 
   return (
     <View style={styles.homeView}>
+      <StatusBar translucent backgroundColor={'transparent'}></StatusBar>
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.content}>
-        <StatusBar translucent backgroundColor={'transparent'}></StatusBar>
-        {/* <MoviePlayerScreen/> */}
         <MovieBanner />
         <MovieBanner />
       </ScrollView>
