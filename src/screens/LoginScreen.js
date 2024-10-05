@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, StatusBar, Image, KeyboardAvoidingView, ImageBackground } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import { userLoginAPI, checkAuthAPI, userLogout } from '../api/UserAPI';
+import { checkAuthAPI, allUserData } from '../api/UserAPI';
 import { useNavigation } from '@react-navigation/native';
 import { storeData, getData } from '../utilities/LocalStorage';
 import { AppStyles } from '../utilities/AppStyles';
@@ -8,7 +8,7 @@ import { replaceFirstDigitWith233 } from '../utilities/Validations';
 
 const bannerImage = require('../assets/images/banner.png');
 
-const mciniLogo = require('../assets/images/logo/mcini.jpg')
+// const mciniLogo = require('../assets/images/logo/mcini.jpg')
 
 export default function LoginScreen() {
   const [phone, setPhone] = useState('');
@@ -29,9 +29,8 @@ export default function LoginScreen() {
         const message = response.message.toString().toLowerCase();
         console.log('MESSAGE: ', message);
 
-        console.log('CHECK AUTH FINAL DATA: ', response);
 
-        if (response.success == 'true' && message == 'user authenticated!') {
+        if (response.success == 'true' && message == 'user authenticated') {
           navigation.navigate('BottomTabNav', {
             Screen: 'HomeScreen',
             params: { movies: response.data }
@@ -56,22 +55,14 @@ export default function LoginScreen() {
 
   //LOGIN FUNCTION
   const handleLogin = async () => {
-    console.log('Your msisdn is: ', phone);
-
     if (phone.length < 1) {
       setIsError(true);
       setErrorMessage('Phone number is required');
     } else {
-      const responseData = await userLoginAPI(phone);
+      // const responseData = await userLoginAPI(phone);
+      const responseData = await allUserData(phone);
 
-      // console.log('QQQQQQQQQQ'); 
-      
-      console.log('MAIN USER LOGIN API RESPONSE: ', responseData['subscriberData']);
-
-      // console.log('MAIN USER LOGIN API RESPONSE: ', responseData['movieData']);
-      // if (responseData['movieData'].length > 0) {
-      //   console.log('FIRST MOVIE DATA URL === ', responseData['movieData'][0]['video_url']); 
-      // }
+      console.log('MAIN USER LOGIN API RESPONSE: ', responseData);
 
       const formattedPhone = replaceFirstDigitWith233(phone);
 
@@ -82,14 +73,14 @@ export default function LoginScreen() {
       if (responseData['success'] == 'false') {
         setIsError(true);
         setErrorMessage(responseData['message']);
+
       } else if (responseData['success'] == 'true') {
-        // console.log('TRUE TRUE === ', responseData['subscriberData']);
         setIsError(false);
         setErrorMessage('');
 
         navigation.navigate('BottomTabNav', {
           screen: 'Home', //This is the name I used in the BottomTabNav for the HomeScreen
-          params: { movies: responseData['movieData'] } //This is the data I am passing to the HomeScreen
+          params: { movies: responseData['movies'] } //This is the data I am passing to the HomeScreen
         });
         // navigation.replace('BottomTabNav',
         //   { movies: responseData['data'] }

@@ -22,40 +22,43 @@ export const userLoginAPI = async (phone) => {
 
         const subscriberData = await response.json()
 
-        var finalSubscriberData = null;
+        // var finalSubscriberData = null;
 
-        const movieData = await movieListAPI();
+        // const movieData = await movieListAPI();
 
-        var success = 'false';
-        var message = '';
+        return subscriberData;;
 
-        if (!response.ok) {
-            message = 'Error occurred during login';
-            return {
-                'success': success,
-                'message': message,
-                'status_code': `${response.status}`,
-            };
-        }
+        // var success = 'false';
+        // var message = '';
 
-        if (subscriberData['success'] == 'true' && subscriberData['data'] != null) {
-            finalSubscriberData = subscriberData['data'];
-            success = subscriberData['success'];
-        }else{
-            message = subscriberData['message'];
-        }
-        return {
-            'success': success,
-            'message': message,
-            'subscriberData': finalSubscriberData,
-            'movieData': movieData
-        }
+        // if (!response.ok) {
+        //     message = 'Error occurred during login';
+        //     return {
+        //         'success': success,
+        //         'message': message,
+        //         'status_code': `${response.status}`,
+        //     };
+        // }
+
+        // if (subscriberData['success'] == 'true' && subscriberData['data'] != null) {
+        //     finalSubscriberData = subscriberData['data'];
+        //     success = subscriberData['success'];
+        // }else{
+        //     message = subscriberData['message'];
+        // }
+        // return {
+        //     'success': success,
+        //     'message': message,
+        //     'subscriberData': finalSubscriberData,
+        //     'movieData': movieData
+        // }
 
     } catch (error) {
         message = error.toString();
         return {
             'success': 'false',
-            'message': message
+            'message': message,
+            'data': null
         };
     }
 }
@@ -153,12 +156,12 @@ export const userFavouriteMoviesAPI = async (phone) => {
     try {
         const response = await fetch(url, options);
 
-        if (!response.ok) {
-            return {
-                'success': 'false',
-                'message': `Unable to logout`
-            };
-        }
+        // if (!response.ok) {
+        //     return {
+        //         'success': 'false',
+        //         'message': `Unable to logout`
+        //     };
+        // }
 
         const data = await response.json()
         return data;
@@ -166,7 +169,8 @@ export const userFavouriteMoviesAPI = async (phone) => {
     } catch (error) {
         return {
             'success': 'false',
-            'message': error.toString()
+            'message': error.toString(),
+            'data': null
         };
     }
 }
@@ -190,19 +194,20 @@ export const userWatchListAPI = async (phone) => {
     try {
         const response = await fetch(url, options);
 
-        if (!response.ok) {
-            return {
-                'success': 'false',
-                'message': `Unable to logout`
-            };
-        }
+        // if (!response.ok) {
+        //     return {
+        //         'success': 'false',
+        //         'message': `Unable to logout`
+        //     };
+        // }
         const data = await response.json()
         return data;
 
     } catch (error) {
         return {
             'success': 'false',
-            'message': error.toString()
+            'message': error.toString(),
+            'data': null
         };
     }
 }

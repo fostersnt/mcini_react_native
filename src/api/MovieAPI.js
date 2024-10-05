@@ -8,29 +8,24 @@ export const movieListAPI = async () => {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
         },
-        // body: JSON.stringify({
-        //     msisdn: phone,
-        // })
     };
 
     url = `${BaseURL}/movies/list`;
 
     try {
-        console.log('MOVIE LIST API STARTING');
         
        const response = await fetch(url, options);
 
         const movieResponse = await response.json()
 
-        // console.log('MAIN MOVIE LIST API RESPONSE: ', movieResponse);
-        
-        if (!response.ok) {
-            return [];
-        }
-        return movieResponse['data'];
+        return movieResponse;
 
     } catch (error) {
         console.log('MOVIE LIST API ERROR: ', error);
-        return [];
+        return {
+            'success': 'false',
+            'message': error.toString(),
+            'data': null
+        };
     }
 }

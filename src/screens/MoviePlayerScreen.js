@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',  // Use '100%' instead of '100'
     height: 300,    // Set a specific height
+    marginBottom: 20
   },
   errorContainer: {
     flex: 1,
