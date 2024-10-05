@@ -4,7 +4,9 @@ import MoviePlayerScreen from './MoviePlayerScreen'
 import HeaderComponent from '../components/HeaderComponent'
 import { movieListAPI } from '../api/MovieAPI'
 
-export default function HomeScreen() {
+export default function HomeScreen({route}) {
+  //Retrieving route data
+  const [userWatchList, setUserWatchList] = useState(route.params.movies)
   const [movieList, setMovieList] = useState([]);
 
   useEffect(() => {
@@ -18,7 +20,7 @@ export default function HomeScreen() {
 
   return (
     <ScrollView style={styles.homeView} contentContainerStyle={styles.content}>
-        <StatusBar hidden={true}></StatusBar>
+        <StatusBar translucent backgroundColor={'transparent'}></StatusBar>
         {/* <MoviePlayerScreen/> */}
         <HeaderComponent/>
         <HeaderComponent/>

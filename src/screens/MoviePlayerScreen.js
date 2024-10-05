@@ -21,7 +21,7 @@ const handleOnRenderProcessGone = (syntheticEvent) => {
 function MoviePlayerScreen() {
   return (
     <View style={styles.container}>
-      <StatusBar hidden={true}></StatusBar>
+      <StatusBar translucent backgroundColor={'transparent'}></StatusBar>
       <WebView
         style={styles.videoContainer}
         source={{ uri: "https://iframe.mediadelivery.net/embed/182548/e941715e-7de1-4875-a42b-c52a982fa72c?autoplay=true" }}

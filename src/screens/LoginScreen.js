@@ -71,7 +71,8 @@ export default function LoginScreen() {
       style={styles.container}
       behavior={Platform.OS === 'android' ? 'padding' : 'height'}
     >
-      <StatusBar hidden={true}></StatusBar>
+      <StatusBar translucent backgroundColor='transparent'></StatusBar>
+      {/* <StatusBar hidden={true}></StatusBar> */}
       <View style = {styles.logoContainer}>
         <Image
           style={styles.logo}
