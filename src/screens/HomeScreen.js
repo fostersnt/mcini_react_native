@@ -4,10 +4,12 @@ import MoviePlayerScreen from './MoviePlayerScreen'
 import MovieBanner from '../components/MovieBanner'
 import { movieListAPI } from '../api/MovieAPI'
 import { AppStyles } from '../utilities/AppStyles'
+import { useRoute } from '@react-navigation/native'
 
-export default function HomeScreen({ route }) {
+export default function HomeScreen() {
   //Retrieving route data
-  // const [userWatchList, setUserWatchList] = useState(route.params.movies)
+  const route = useRoute();
+  const [userWatchList, setUserWatchList] = useState(route.params.movies)
   const [movieList, setMovieList] = useState([]);
 
   useEffect(() => {

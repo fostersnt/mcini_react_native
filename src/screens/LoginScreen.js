@@ -1,9 +1,11 @@
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, StatusBar, Image, KeyboardAvoidingView } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, StatusBar, Image, KeyboardAvoidingView, ImageBackground } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { userLoginAPI, checkAuthAPI, userLogout } from '../api/UserAPI';
 import { useNavigation } from '@react-navigation/native';
 import { storeData, getData } from '../utilities/LocalStorage';
 import { AppStyles } from '../utilities/AppStyles';
+
+const bannerImage = require('../assets/images/banner.png');
 
 const mciniLogo = require('../assets/images/logo/mcini.jpg')
 
@@ -54,6 +56,7 @@ export default function LoginScreen() {
   //LOGIN FUNCTION
   const handleLogin = async () => {
     console.log('Your msisdn is: ', phone);
+
     const responseData = await userLoginAPI(phone);
 
     console.log('MAIN USER LOGIN API RESPONSE: ', responseData);
@@ -65,7 +68,7 @@ export default function LoginScreen() {
       setErrorMessage(responseData['message']);
     } else if (responseData.success == 'true') {
       navigation.navigate('BottomTabNav', {
-        Screen: 'HomeScreen',
+        screen: 'HomeScreen',
         params: { movies: responseData.data }
       });
     }
@@ -79,72 +82,78 @@ export default function LoginScreen() {
   }
 
   return (
-    <KeyboardAvoidingView
-      style={[
-        styles.container,
-        {
-          backgroundColor: AppStyles.generalColors.dark_four,
-          padding: AppStyles.generalPadding.higher
-        }
-      ]}
-      behavior={Platform.OS === 'android' ? 'padding' : 'height'}
+    <ImageBackground
+    style={[
+      styles.container,
+      {
+        // backgroundColor: AppStyles.generalColors.dark_four,
+        padding: AppStyles.generalPadding.higher
+      }
+    ]}
+      source={bannerImage}
+      resizeMode='cover'
     >
-      <StatusBar translucent backgroundColor='transparent'></StatusBar>
-      <View style={styles.logoContainer}>
-        <Image
-          style={styles.logo}
-          source={mciniLogo}
-        >
-        </Image>
-      </View>
-      <View>
-        {/* {isError ? AlertComponent('Login', errorMessage) : ''} */}
-        <View style={styles.innerContainer}>
-          <Text style={[
-            styles.title,
-            {
-              fontSize: AppStyles.generalFontSize.large,
-              marginBottom: AppStyles.generalMargin.higher
-            }
-          ]}>Sign In</Text>
-          {isError ? <Text style={{
-            color: AppStyles.generalColors.red_one,
-            fontWeight: AppStyles.generalFontWeight.weight_one,
-            marginBottom: AppStyles.generalMargin.higher,
-          }}>{errorMessage}</Text> : ''}
-          <TextInput
-            style={[
-              styles.input,
+      <KeyboardAvoidingView
+        
+        behavior={Platform.OS === 'android' ? 'padding' : 'height'}
+      >
+        <StatusBar translucent backgroundColor='transparent'></StatusBar>
+        {/* <View style={styles.logoContainer}>
+          <Image
+            style={styles.logo}
+            source={mciniLogo}
+          >
+          </Image>
+        </View> */}
+        <View>
+          {/* {isError ? AlertComponent('Login', errorMessage) : ''} */}
+          <View style={styles.innerContainer}>
+            <Text style={[
+              styles.title,
               {
+                fontSize: AppStyles.generalFontSize.large,
+                marginBottom: AppStyles.generalMargin.higher
+              }
+            ]}>Sign In</Text>
+            {isError ? <Text style={{
+              color: AppStyles.generalColors.red_one,
+              fontWeight: AppStyles.generalFontWeight.weight_one,
+              marginBottom: AppStyles.generalMargin.higher,
+            }}>{errorMessage}</Text> : ''}
+            <TextInput
+              style={[
+                styles.input,
+                {
+                  height: AppStyles.generalHeight.height_one,
+                  marginBottom: AppStyles.generalMargin.higher,
+                  borderRadius: AppStyles.generalBorderRadius.radius_one
+                }
+              ]}
+              placeholder='phone number'
+              onChangeText={(text) => setPhone(text)}
+            />
+            <TouchableOpacity onPress={handleLogin} style={[
+              styles.loginButton,
+              {
+                backgroundColor: AppStyles.generalColors.red_one,
+                padding: AppStyles.generalPadding.lower,
                 height: AppStyles.generalHeight.height_one,
-                marginBottom: AppStyles.generalMargin.higher,
                 borderRadius: AppStyles.generalBorderRadius.radius_one
               }
-            ]}
-            placeholder='phone number'
-            onChangeText={(text) => setPhone(text)}
-          />
-          <TouchableOpacity onPress={handleLogin} style={[
-            styles.loginButton,
-            {
-              backgroundColor: AppStyles.generalColors.red_one,
-              padding: AppStyles.generalPadding.lower,
-              height: AppStyles.generalHeight.height_one,
-              borderRadius: AppStyles.generalBorderRadius.radius_one
-            }
-          ]}>
-            <Text style={{
-              color: AppStyles.generalColors.white_one,
-              fontSize: AppStyles.generalFontSize.normal,
-              fontWeight: AppStyles.generalFontWeight.weight_one
-            }}>Login</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.innerContainer} onPress={handleRegister}>
-            <Text style={styles.notRegistered}>Not a subscriber? Register</Text>
-          </TouchableOpacity>
+            ]}>
+              <Text style={{
+                color: AppStyles.generalColors.white_one,
+                fontSize: AppStyles.generalFontSize.normal,
+                fontWeight: AppStyles.generalFontWeight.weight_one
+              }}>Login</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.innerContainer} onPress={handleRegister}>
+              <Text style={styles.notRegistered}>Not a subscriber? Register</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+    </ImageBackground>
   )
 }
 
