@@ -1,1 +1,1 @@
-export const BaseURL = () => 'https://mcini.tv/api/v1';
+export const BaseURL = 'https://mcini.tv/api/v1';

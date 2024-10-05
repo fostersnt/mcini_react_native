@@ -14,28 +14,39 @@ export default function LoginScreen() {
   const [country, setCountry] = useState('option1');
 
   useEffect(() => {
-    const authData = async (subcriberPhone) => {
+    const authData = async () => {
 
-      const storageData = await getData(phone);
-      console.log('STORAGE DATA IS: ', storageData);
+      try {
+        const msisdnFromStorage = await getData(phone);
+        console.log('STORAGE DATA IS: ', msisdnFromStorage);
+        // console.log('PHONE NUMBER:', phone);
 
-      const response = await checkAuthAPI(subcriberPhone);
-      console.log('CHECK AUTH FINAL DATA: ', response);
-      if (response.success == 'true') {
-        navigation.navigate('BottomTabNav', {
-          Screen: 'HomeScreen',
-          params: { movies: response.data }
-        });
+        const response = await checkAuthAPI(msisdnFromStorage);
+
+        const message = response.message.toString().toLowerCase();
+        console.log('MESSAGE: ', message);
+
+        console.log('CHECK AUTH FINAL DATA: ', response);
+
+        if (response.success == 'true' && message == 'user not authenticated!') {
+          navigation.navigate('BottomTabNav', {
+            Screen: 'HomeScreen',
+            params: { movies: response.data }
+          });
+          // navigation.replace('BottomTabNav', {
+          //   Screen: 'HomeScreen',
+          //   params: { movies: response.data },
+          // });
+        }
+      } catch (error) {
+        console.log('USE EFFECT ERROR AT LOGIN SCREEN: ', error.toString());
+
       }
     }
 
     //Calling the authCheck function
-    try {
-      authData(phone);
-    } catch (error) {
-      console.log('USE EFFECT ERROR: ', error);
 
-    }
+    authData();
 
   }, []);
 

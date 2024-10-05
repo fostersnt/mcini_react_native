@@ -6,7 +6,7 @@ import { movieListAPI } from '../api/MovieAPI'
 
 export default function HomeScreen({ route }) {
   //Retrieving route data
-  const [userWatchList, setUserWatchList] = useState(route.params.movies)
+  // const [userWatchList, setUserWatchList] = useState(route.params.movies)
   const [movieList, setMovieList] = useState([]);
 
   useEffect(() => {

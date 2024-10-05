@@ -14,17 +14,19 @@ export const userLoginAPI = async (phone) => {
         })
     };
 
-    url = `${BaseURL}/user/login`;
+    const url = `${BaseURL}/user/login`;
 
     try {
-       const response = await fetch(url, options);
+        const response = await fetch(url, options);
 
-        const data = response.json()
-        
+        const data = await response.json()
+        // console.log('DATA NOW: ', data);
+
         if (!response.ok) {
             return {
                 'success': 'false',
-                'message': 'Unable to perform login'
+                'message': 'Unable to perform login',
+                'status_code': `${response.status}`
             };
         }
         return data;
@@ -50,27 +52,30 @@ export const checkAuthAPI = async (phone) => {
         })
     };
 
-    url = `${BaseURL}/user/check-auth`;
+    const url = `${BaseURL}/user/check-auth`;
 
     try {
-        console.log('CHECK AUTH API STARTING');
-        
-       const response = await fetch(url, options);
+        // console.log('CHECK AUTH API STARTING');
 
-        const data = response.json()
+        const response = await fetch(url, options);
+        const data = await response.json()
 
-        console.log('MAIN AUTH CHECK API RESPONSE: ', data);
-        
+        // console.log('MAIN AUTH CHECK API RESPONSE: ', data);
+
         if (!response.ok) {
             return {
                 'success': 'false',
-                'message': `User with ${phone} is not authenticated`
+                'message': `User with ${phone} is not authenticated`,
+                // 'status_code': response.status.toString()
             };
         }
-        return data;
+        else {
+            // console.log('TTTTTT: ', response);            
+            return data;
+        }
 
     } catch (error) {
-        console.log('CHECK AUTH API ERROR: ', error);
+        // console.log('CHECK AUTH API ERROR: ', error);
         return {
             'success': 'false',
             'message': error.toString()
@@ -78,7 +83,7 @@ export const checkAuthAPI = async (phone) => {
     }
 }
 
-//This function checks if subscriber is authenticated
+//This function performs user logout
 export const userLogout = async (phone) => {
     const options = {
         method: 'POST',
@@ -91,23 +96,23 @@ export const userLogout = async (phone) => {
         })
     };
 
-    url = `${BaseURL}/user/logout`;
+    const url = `${BaseURL}/user/logout`;
 
     try {
         console.log('USER LOGOUT API STARTING');
-        
-       const response = await fetch(url, options);
 
-        const data = response.json()
+        const response = await fetch(url, options);
 
         console.log('MAIN LOGOUT API RESPONSE: ', data);
-        
+
         if (!response.ok) {
             return {
                 'success': 'false',
                 'message': `Unable to logout`
             };
         }
+        
+        const data = await response.json()
         return data;
 
     } catch (error) {
