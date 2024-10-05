@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, StatusBar } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, StatusBar, FlatList } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import MoviePlayerScreen from './MoviePlayerScreen'
 import MovieBanner from '../components/MovieBanner'
@@ -10,13 +10,13 @@ export default function HomeScreen() {
   //Retrieving route data
   const route = useRoute();
 
-  const {movies} = route.params;
+  const {subscriber, movies, favourites, watchList} = route.params;
 
   // console.log('HOME SCREEN MOVIES === ', movies);
   console.log('HOME SCREEN MOVIE URL === ', movies[0]['video_url']);
   
   
-  const [userWatchList, setUserWatchList] = useState(movies)
+  const [allMovies, setAllMovies] = useState(movies)
   
   const [movieList, setMovieList] = useState([]);
 
@@ -41,15 +41,18 @@ export default function HomeScreen() {
     ]}>
       <StatusBar translucent backgroundColor={'transparent'}></StatusBar>
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.content}>
-        <MoviePlayerScreen videoURL={userWatchList[0]['video_url']} />
-        <MovieBanner />
-        <MovieBanner />
-        <MovieBanner />
-        <MovieBanner />
-        <MovieBanner />
-        <MovieBanner />
-        <MovieBanner />
+        <MoviePlayerScreen
+        videoURL={allMovies[0]['video_url']} 
 
+        />
+        <FlatList
+        pagingEnabled
+          data={movies}
+          keyExtractor={(item) => item.id}
+          renderItem={SingleMovie}
+          horizontal
+          showsHorizontalScrollIndicator
+        />
       </ScrollView>
     </View>
   )

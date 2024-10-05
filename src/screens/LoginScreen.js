@@ -62,7 +62,7 @@ export default function LoginScreen() {
       // const responseData = await userLoginAPI(phone);
       const responseData = await allUserData(phone);
 
-      console.log('MAIN USER LOGIN API RESPONSE: ', responseData);
+      console.log('MAIN USER LOGIN API RESPONSE: ', responseData['favourites']);
 
       const formattedPhone = replaceFirstDigitWith233(phone);
 

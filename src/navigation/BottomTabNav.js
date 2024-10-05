@@ -20,11 +20,12 @@ const getIcon = ({name, color, size}) => {
     )
 }
 
-export default function BottomTabNav({route}) {
+export default function BottomTabNav() {
 
   // const route = useRoute();
-  // const {params} = route.params;
-  // console.log('MY MOVIES: ', params);
+  const route = useRoute();
+  const {subscriber, movies, favourites, watchList } = route.params
+  console.log('MY MOVIES: ', movies);
   
 
   return (
@@ -41,13 +42,13 @@ export default function BottomTabNav({route}) {
       <Tab.Screen  name="Home" component={HomeScreen} options={{tabBarIcon: ({color, size}) => (
         <AntIcons name='home' color={color} size={size} />
       )}} />
-      <Tab.Screen name="Search" component={SearchScreen} options={{tabBarIcon: ({color, size}) => (
+      <Tab.Screen initialParams={{movies}} name="Search" component={SearchScreen} options={{tabBarIcon: ({color, size}) => (
         <Icon name='search' color={color} size={size} />
       )}} />
       <Tab.Screen name="Settings" component={SettingsScreen} options={{tabBarIcon: ({color, size}) => (
         <IonIcons name='settings-outline' color={color} size={size} />
       )}} />
-      <Tab.Screen name="Favourites" component={FavouriteScreen} options={{tabBarIcon: ({color, size}) => (
+      <Tab.Screen initialParams={{favourites}} name="Favourites" component={FavouriteScreen} options={{tabBarIcon: ({color, size}) => (
         <MaterialIcons name='favorite-outline' color={color} size={size} />
       )}} />
     </Tab.Navigator>
