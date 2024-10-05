@@ -1,9 +1,11 @@
 export const replaceFirstDigitWith233 = (phoneNumber) => {
-    var msisdn = 'n/a';
-    if (phoneNumber.length > 1) {
+    var msisdn = phoneNumber;
+    if (phoneNumber.length > 1 && phoneNumber[0] == '0') {
         msisdn = '233' + phoneNumber.slice(1);
     }
     
     // Replace the first digit with '233'
+    console.log('FINAL PHONE NUMBER: ', msisdn);
+    
     return msisdn;
 }
