@@ -263,7 +263,7 @@ export const allUserData = async (subscriberMsisdn) => {
         'subscriber': subscriber,
         'movies': movies,
         'favourites': favourites,
-        'waitchList': watchList
+        'watchList': watchList
     }
 }
 

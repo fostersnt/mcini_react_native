@@ -80,7 +80,12 @@ export default function LoginScreen() {
 
         navigation.navigate('BottomTabNav', {
           screen: 'Home', //This is the name I used in the BottomTabNav for the HomeScreen
-          params: { movies: responseData['movies'] } //This is the data I am passing to the HomeScreen
+          params: { 
+            subscriber: responseData['subscriber'],
+            movies: responseData['movies'],
+            favourites: responseData['favourites'],
+            watchList: responseData['waitchList']
+           } //This is the data I am passing to the HomeScreen
         });
         // navigation.replace('BottomTabNav',
         //   { movies: responseData['data'] }
