@@ -210,19 +210,55 @@ export const userWatchListAPI = async (phone) => {
 
 //-------------------This function put all user data together---------------------------
 export const allUserData = async (subscriberMsisdn) => {
-    var status = 'false';
+    var success = 'false';
     var message = '';
+    var subscriber = null;
+    var movies = null;
+    var favourites = null;
+    var watchList = null;
 
+    console.log('=== USER LOGIN API STARTED ===');
     const subscriberData = await userLoginAPI(subscriberMsisdn);
 
+    console.log('=== MOVIES LIST API STARTED ===');
     const allMovies = await movieListAPI();
 
+    console.log('=== FAVOURITE MOVIES API STARTED ===');
     const favouriteMovies = await userFavouriteMoviesAPI(subscriberMsisdn);
 
+    console.log('=== WATCH-LIST API STARTED ===');
     const userWatchList = await userWatchListAPI(subscriberMsisdn);
 
+    message = subscriberData['message'];
+
+    //Checking login data or subscriber information
     if (subscriberData['success'] == 'true') {
-        
+        success = subscriberData['success'];
+        subscriber = subscriberData['data'];
+    }
+    
+    //Checking all movies data
+    if (allMovies['success'] == 'true') {
+        movies = allMovies['data'];
+    }
+
+    //Checking favourite movies data
+    if (favouriteMovies['success'] == 'true') {
+        favourites = favouriteMovies['data'];
+    }
+
+    //Checking watch-list data
+    if (userWatchList['success'] == 'true') {
+        watchList = userWatchList['data'];
+    }
+
+    return {
+        'success': success,
+        'message': message,
+        'subscriber': subscriber,
+        'movies': movies,
+        'favourites': favourites,
+        'waitchList': watchList
     }
 }
 
