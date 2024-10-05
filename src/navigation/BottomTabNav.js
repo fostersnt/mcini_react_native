@@ -23,8 +23,8 @@ const getIcon = ({name, color, size}) => {
 export default function BottomTabNav({route}) {
 
   // const route = useRoute();
-  const {params} = route.params;
-  console.log('MY MOVIES: ', params);
+  // const {params} = route.params;
+  // console.log('MY MOVIES: ', params);
   
 
   return (

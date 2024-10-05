@@ -60,7 +60,11 @@ export default function LoginScreen() {
 
     const responseData = await userLoginAPI(phone);
 
-    console.log('MAIN USER LOGIN API RESPONSE: ', responseData['data']);
+    // console.log('MAIN USER LOGIN API RESPONSE: ', responseData['subscriberData']);
+    // console.log('MAIN USER LOGIN API RESPONSE: ', responseData['movieData']);
+    if (responseData['movieData'].length > 0) {
+      console.log('FIRST MOVIE DATA URL === ', responseData['movieData'][0]['video_url']);
+    }
 
     const formattedPhone = replaceFirstDigitWith233(phone);
 
@@ -74,8 +78,8 @@ export default function LoginScreen() {
       setIsError(false);
       setErrorMessage('');
       navigation.replace('BottomTabNav', {
-        screen: 'HomeScreen',
-        params: { movies: responseData['data'] }
+        screen: 'Home', //This is the name I used in the BottomTabNav for the HomeScreen
+        params: { movies: responseData } //This is the data I am passing to the HomeScreen
       });
       // navigation.replace('BottomTabNav',
       //   { movies: responseData['data'] }
@@ -112,14 +116,22 @@ export default function LoginScreen() {
           >
           </Image>
         </View> */}
-        <View>
+        <View  style={[
+            // styles.innerContainer,
+            {
+              backgroundColor: AppStyles.generalColors.dark_one,
+              paddingVertical: 50,
+              padding: AppStyles.generalPadding.higher,
+              // borderRadius: AppStyles.generalBorderRadius.radius_two
+            }
+            ]}>
           {/* {isError ? AlertComponent('Login', errorMessage) : ''} */}
-          <View style={styles.innerContainer}>
+          <View>
             <Text style={[
               styles.title,
               {
                 fontSize: AppStyles.generalFontSize.large,
-                marginBottom: AppStyles.generalMargin.higher
+                marginBottom: AppStyles.generalMargin.higher,
               }
             ]}>Sign In</Text>
             {isError ?

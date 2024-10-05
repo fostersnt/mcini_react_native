@@ -1,5 +1,6 @@
 import { replaceFirstDigitWith233 } from "../utilities/Validations";
 import { BaseURL } from "./BaseURL";
+import { movieListAPI } from "./MovieAPI";
 
 //This function sends subscriber login request
 export const userLoginAPI = async (phone) => {
@@ -20,17 +21,28 @@ export const userLoginAPI = async (phone) => {
     try {
         const response = await fetch(url, options);
 
-        const data = await response.json()
+        const subscriberData = await response.json()
         // console.log('DATA NOW: ', data);
+        const finalSubscriberData = subscriberData['data'];
+
+        const movieData = await movieListAPI();
 
         if (!response.ok) {
             return {
                 'success': 'false',
                 'message': 'Unable to perform login',
-                'status_code': `${response.status}`
+                'status_code': `${response.status}`,
             };
         }
-        return data;
+
+
+        return {
+            'success': 'true',
+            'message': 'Data fetching successful',
+            'subscriberData': finalSubscriberData,
+            'movieData': movieData
+        }
+
     } catch (error) {
         return {
             'success': 'false',

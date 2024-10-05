@@ -20,23 +20,17 @@ export const movieListAPI = async () => {
         
        const response = await fetch(url, options);
 
-        const data = response.json()
+        const movieResponse = await response.json()
 
-        console.log('MAIN MOVIE LIST API RESPONSE: ', data);
+        // console.log('MAIN MOVIE LIST API RESPONSE: ', movieResponse);
         
         if (!response.ok) {
-            return {
-                'success': 'false',
-                'message': 'Failed to retrieve movies'
-            };
+            return [];
         }
-        return data;
+        return movieResponse['data'];
 
     } catch (error) {
         console.log('MOVIE LIST API ERROR: ', error);
-        return {
-            'success': 'false',
-            'message': error.toString()
-        };
+        return [];
     }
 }

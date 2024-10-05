@@ -8,9 +8,12 @@ import { useRoute } from '@react-navigation/native'
 
 export default function HomeScreen() {
   //Retrieving route data
-  // const route = useRoute();
-  // const {movies} = route.params;
-  // const [userWatchList, setUserWatchList] = useState(route.params.movies)
+  const route = useRoute();
+  const {movies} = route.params;
+  console.log('HOME SCREEN MOVIES === ', movies);
+  
+  const [userWatchList, setUserWatchList] = useState(movies)
+  
   const [movieList, setMovieList] = useState([]);
 
   useEffect(() => {
@@ -33,6 +36,7 @@ export default function HomeScreen() {
     ]}>
       <StatusBar translucent backgroundColor={'transparent'}></StatusBar>
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.content}>
+        <MoviePlayerScreen videoURL={userWatchList[0]['video_url']}></MoviePlayerScreen>
         <MovieBanner />
         <MovieBanner />
         <MovieBanner />
