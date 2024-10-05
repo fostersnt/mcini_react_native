@@ -1,3 +1,4 @@
+import { replaceFirstDigitWith233 } from "../utilities/validations";
 import { BaseURL } from "./BaseURL";
 
 //This function sends subscriber login request
@@ -40,7 +41,7 @@ export const userLoginAPI = async (phone) => {
 
 //This function checks if subscriber is authenticated
 export const checkAuthAPI = async (phone) => {
-
+    phoneMain = replaceFirstDigitWith233(phone)
     const options = {
         method: 'POST',
         headers: {
@@ -48,7 +49,7 @@ export const checkAuthAPI = async (phone) => {
             'Accept': 'application/json',
         },
         body: JSON.stringify({
-            msisdn: phone,
+            msisdn: phoneMain,
         })
     };
 

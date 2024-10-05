@@ -4,6 +4,7 @@ import { userLoginAPI, checkAuthAPI, userLogout } from '../api/UserAPI';
 import { useNavigation } from '@react-navigation/native';
 import { storeData, getData } from '../utilities/LocalStorage';
 import { AppStyles } from '../utilities/AppStyles';
+import { replaceFirstDigitWith233 } from '../utilities/validations';
 
 const bannerImage = require('../assets/images/banner.png');
 
@@ -60,8 +61,8 @@ export default function LoginScreen() {
     const responseData = await userLoginAPI(phone);
 
     console.log('MAIN USER LOGIN API RESPONSE: ', responseData);
-
-    await storeData(phone);
+    const formattedPhone = replaceFirstDigitWith233(phone);
+    await storeData(formattedPhone);
 
     if (responseData.success == 'false') {
       setIsError(true);

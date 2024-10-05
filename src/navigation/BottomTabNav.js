@@ -26,7 +26,7 @@ export default function BottomTabNav() {
     screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: '#fff',
-        tabBarInactiveTintColor: '',
+        tabBarInactiveTintColor: 'grey',
         tabBarInactiveBackgroundColor: AppStyles.generalColors.dark_four,
         tabBarActiveBackgroundColor: AppStyles.generalColors.dark_one,
         tabBarShowLabel: false
