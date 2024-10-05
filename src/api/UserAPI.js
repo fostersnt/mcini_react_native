@@ -1,4 +1,4 @@
-import { replaceFirstDigitWith233 } from "../utilities/validations";
+import { replaceFirstDigitWith233 } from "../utilities/Validations";
 import { BaseURL } from "./BaseURL";
 
 //This function sends subscriber login request

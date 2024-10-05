@@ -10,6 +10,7 @@ import IonIcons from 'react-native-vector-icons/Ionicons'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import AntIcons from 'react-native-vector-icons/AntDesign'
 import { AppStyles } from '../utilities/AppStyles'
+import { useRoute } from '@react-navigation/native'
 
 const Tab = createBottomTabNavigator();
 
@@ -19,7 +20,13 @@ const getIcon = ({name, color, size}) => {
     )
 }
 
-export default function BottomTabNav() {
+export default function BottomTabNav({route}) {
+
+  // const route = useRoute();
+  const {params} = route.params;
+  console.log('MY MOVIES: ', params);
+  
+
   return (
     <Tab.Navigator 
     // initialRouteName='Home'
@@ -31,7 +38,7 @@ export default function BottomTabNav() {
         tabBarActiveBackgroundColor: AppStyles.generalColors.dark_one,
         tabBarShowLabel: false
         }}>
-      <Tab.Screen name="Home" component={HomeScreen} options={{tabBarIcon: ({color, size}) => (
+      <Tab.Screen  name="Home" component={HomeScreen} options={{tabBarIcon: ({color, size}) => (
         <AntIcons name='home' color={color} size={size} />
       )}} />
       <Tab.Screen name="Search" component={SearchScreen} options={{tabBarIcon: ({color, size}) => (

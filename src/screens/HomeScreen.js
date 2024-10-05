@@ -6,7 +6,7 @@ import { movieListAPI } from '../api/MovieAPI'
 import { AppStyles } from '../utilities/AppStyles'
 import { useRoute } from '@react-navigation/native'
 
-export default function HomeScreen({route}) {
+export default function HomeScreen() {
   //Retrieving route data
   // const route = useRoute();
   // const {movies} = route.params;

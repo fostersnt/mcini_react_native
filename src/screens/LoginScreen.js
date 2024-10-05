@@ -4,7 +4,7 @@ import { userLoginAPI, checkAuthAPI, userLogout } from '../api/UserAPI';
 import { useNavigation } from '@react-navigation/native';
 import { storeData, getData } from '../utilities/LocalStorage';
 import { AppStyles } from '../utilities/AppStyles';
-import { replaceFirstDigitWith233 } from '../utilities/validations';
+import { replaceFirstDigitWith233 } from '../utilities/Validations';
 
 const bannerImage = require('../assets/images/banner.png');
 
@@ -60,9 +60,10 @@ export default function LoginScreen() {
 
     const responseData = await userLoginAPI(phone);
 
-    console.log('MAIN USER LOGIN API RESPONSE: ', responseData);
+    console.log('MAIN USER LOGIN API RESPONSE: ', responseData['data']);
 
     const formattedPhone = replaceFirstDigitWith233(phone);
+
     setPhone(formattedPhone);
     await storeData(formattedPhone);
 
@@ -74,11 +75,12 @@ export default function LoginScreen() {
       setErrorMessage('');
       navigation.replace('BottomTabNav', {
         screen: 'HomeScreen',
-        params: { movies: responseData.data }
+        params: { movies: responseData['data'] }
       });
+      // navigation.replace('BottomTabNav',
+      //   { movies: responseData['data'] }
+      // );
     }
-    console.log('USER LOGIN API RESPONSE: ', responseData);
-
   }
 
   //REGISTER NAVIGATION
@@ -126,14 +128,14 @@ export default function LoginScreen() {
                 display: 'flex', alignItems: 'center',
                 justifyContent: 'center',
                 padding: 10
-                }}>
+              }}>
                 <Text style={{
                   color: AppStyles.generalColors.red_one,
                   fontWeight: AppStyles.generalFontWeight.weight_one,
                   // marginBottom: AppStyles.generalMargin.higher,
                 }}>{errorMessage}</Text>
               </View>
-              :''}
+              : ''}
             <TextInput
               style={[
                 styles.input,
