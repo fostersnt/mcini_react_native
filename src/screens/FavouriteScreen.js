@@ -1,6 +1,6 @@
 import { View, Text, FlatList, ActivityIndicator, StatusBar, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { userWatchListAPI } from '../api/UserAPI';
+import { addOrRemoveFavourite, userFavouriteMoviesAPI, userWatchListAPI } from '../api/UserAPI';
 import { getStorageData } from '../utilities/LocalStorage';
 import SingleFavouriteScreen from '../components/SingleFavouriteScreen';
 import WebView from 'react-native-webview';
@@ -21,7 +21,8 @@ export default function FavouriteScreen() {
         const msisdn = await getStorageData();
         console.log('MY STORAGE DATA === ', msisdn);
 
-        const data = await userWatchListAPI(msisdn);
+        const data = await userFavouriteMoviesAPI(msisdn);
+        // const data = await userWatchListAPI(msisdn);
         setFavourites(data.data);  // Use data.data as per your API response
         console.log('USER FAVOURITE MOVIES === ', data.data);
       } catch (error) {
@@ -42,7 +43,6 @@ export default function FavouriteScreen() {
     <View style={{
       flex: 1,
       backgroundColor: AppStyles.generalColors.dark_four,
-
     }}>
       {favourites != null && favourites.length > 0 ? (
         <FlatList
@@ -60,7 +60,8 @@ export default function FavouriteScreen() {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 flexDirection: 'row',
-                padding: 10
+                padding: 10,
+                marginBottom: 10
               }}
             >
               <View
@@ -94,10 +95,20 @@ export default function FavouriteScreen() {
                 >{truncateTitle(item['video']['title'])}</Text>
               </View>
               <View>
-                <TouchableOpacity onPress={() => {
+                <TouchableOpacity onPress={async () => {
                   console.log('FAVOURITE MOVIE DELETED');
-                  const updatedMovies = favourites.filter(currentMovie => currentMovie.id !== item.id);
-                  setFavourites(updatedMovies)
+                  const msisdn = await getStorageData();
+                  const movieId = item.id;
+                  const payload = {
+                    msisdn: msisdn,
+                    movieId: movieId,
+                    isFavourite: 0
+                  }
+                  const result = await addOrRemoveFavourite(payload);
+                  if (result['success'] == 'true') {
+                    const updatedMovies = favourites.filter(currentMovie => currentMovie.id !== item.id);
+                    setFavourites(updatedMovies)
+                  }
                 }}>
                   <AntIcons name='delete' size={20}
                     style={{
@@ -112,7 +123,9 @@ export default function FavouriteScreen() {
         />
       ) : (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text>No favourites available</Text>
+          <Text 
+            style={{color: AppStyles.generalColors.white_one}}
+          >No favourites available</Text>
         </View>
       )}
     </View>

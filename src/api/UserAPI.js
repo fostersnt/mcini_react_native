@@ -175,6 +175,33 @@ export const userFavouriteMoviesAPI = async (phone) => {
     }
 }
 
+//--------------------This function fetches user favourite movies--------------------
+export const addOrRemoveFavourite = async (payload) => {
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        body: JSON.stringify(payload)
+    };
+
+    const url = `${BaseURL}/movies/favorites`;
+
+    try {
+        const response = await fetch(url, options);
+
+        const data = await response.json()
+        return data;
+
+    } catch (error) {
+        return {
+            'success': 'false',
+            'message': error.toString(),
+            'data': null
+        };
+    }
+}
 
 //--------------------This function fetches user watch-list movies--------------------
 export const userWatchListAPI = async (phone) => {
