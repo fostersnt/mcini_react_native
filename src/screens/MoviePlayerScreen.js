@@ -1,3 +1,4 @@
+import { useRoute } from '@react-navigation/native';
 import React from 'react';
 import {
   SafeAreaView,
@@ -18,12 +19,14 @@ const handleOnRenderProcessGone = (syntheticEvent) => {
   console.warn('WebView Crashed: ', nativeEvent.didCrash);
 }
 
-function MoviePlayerScreen({ videoURL }) {
+function MoviePlayerScreen() {
+const route = useRoute();
+const {singleMovie} = route.params;
   const url = "https://iframe.mediadelivery.net/embed/182548/e941715e-7de1-4875-a42b-c52a982fa72c?autoplay=true";
   return (
     <WebView
       style={styles.videoContainer}
-      source={{ uri: videoURL }}
+      source={{ uri: singleMovie['video_url'] }}
       javaScriptEnabled={true}
       domStorageEnabled={true}
       allowsInlineMediaPlayback={true}
@@ -52,7 +55,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',  // Use '100%' instead of '100'
     height: 300,    // Set a specific height
-    marginBottom: 20
+    // marginBottom: 20
   },
   errorContainer: {
     flex: 1,

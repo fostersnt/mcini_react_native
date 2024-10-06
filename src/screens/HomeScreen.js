@@ -9,7 +9,8 @@ const MemoizedMovieBanner = memo(MovieBanner);
 const MemoizedSingleMovieCard = memo(SingleMovieCard);
 
 export default function HomeScreen() {
-  const { width: screenWidth } = Dimensions.get('window');
+
+const { width: screenWidth } = Dimensions.get('window');
   const route = useRoute();
   const { subscriber, movies, favourites, watchList } = route.params;
 
@@ -53,12 +54,14 @@ export default function HomeScreen() {
       <FlatList
         data={displayItems}
         horizontal={true}
+        showsHorizontalScrollIndicator={false}
         keyExtractor={(subItem) => subItem.id.toString()}
         renderItem={({ item }) => (
-          <MemoizedSingleMovieCard
-            myWidth={screenWidth}
-            movie={item}
-          />
+          
+            <MemoizedSingleMovieCard
+              myWidth={screenWidth}
+              movie={item}
+            />
         )}
         ListFooterComponent={showViewAll ? (
           <TouchableOpacity>
