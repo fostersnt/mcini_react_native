@@ -27,17 +27,11 @@ export default function HomeScreen() {
 
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-
-  // useEffect(() => {
-  //   const getMovieData = async () => {
-  //     const movieData = await movieListAPI()
-  //     setMovieList(movieData)
-  //   };
-
-  //   getMovieData();
-  // }, []);
   const handleRefresh = () => {
+    setIsRefreshing(true)
+    //Do whatever you want to do
     console.log('HELLO WORLD');
+    setIsRefreshing(false)
   }
 
   const renderedItem = ({ item }) => {
@@ -63,7 +57,7 @@ export default function HomeScreen() {
         pagingEnabled
         data={movieList}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={ renderedItem }
+        renderItem={renderedItem}
         // horizontal
         showsHorizontalScrollIndicator
         refreshing={isRefreshing}

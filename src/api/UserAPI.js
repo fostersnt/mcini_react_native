@@ -222,17 +222,17 @@ export const allUserData = async (subscriberMsisdn) => {
     var favourites = null;
     var watchList = null;
 
-    console.log('=== USER LOGIN API STARTED ===');
     const subscriberData = await userLoginAPI(subscriberMsisdn);
+    console.log('=== USER LOGIN API STARTED === ', subscriberData['message']);
 
-    console.log('=== MOVIES LIST API STARTED ===');
     const allMovies = await movieListAPI();
+    console.log('=== MOVIES LIST API STARTED === ', allMovies['message']);
 
-    console.log('=== FAVOURITE MOVIES API STARTED ===');
     const favouriteMovies = await userFavouriteMoviesAPI(subscriberMsisdn);
+    console.log('=== FAVOURITE MOVIES API STARTED === ', favouriteMovies['message']);
 
-    console.log('=== WATCH-LIST API STARTED ===');
     const userWatchList = await userWatchListAPI(subscriberMsisdn);
+    console.log('=== WATCH-LIST API STARTED === ', userWatchList['message']);
 
     message = subscriberData['message'];
 

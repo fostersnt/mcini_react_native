@@ -14,6 +14,12 @@ export default function LoginScreen() {
   const [phone, setPhone] = useState('');
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  const [stateSubscriber, setSubscriber] = useState({})
+  const [stateMovies, setMovies] = useState([])
+  const [stateFavourites, setFavourites] = useState([])
+  const [stateWatchList, setWatchList] = useState([])
+
   const [country, setCountry] = useState('option1');
 
   useEffect(() => {
@@ -27,6 +33,7 @@ export default function LoginScreen() {
         const response = await checkAuthAPI(msisdnFromStorage);
 
         const message = response.message.toString().toLowerCase();
+
         console.log('MESSAGE: ', message);
 
 
@@ -78,13 +85,18 @@ export default function LoginScreen() {
         setIsError(false);
         setErrorMessage('');
 
+        setSubscriber(responseData['subscriber'])
+        setMovies(responseData['movies'])
+        setFavourites(responseData['favourites'])
+        setWatchList(responseData['waitchList'])
+
         navigation.navigate('BottomTabNav', {
           screen: 'Home', //This is the name I used in the BottomTabNav for the HomeScreen
           params: { 
-            subscriber: responseData['subscriber'],
-            movies: responseData['movies'],
-            favourites: responseData['favourites'],
-            watchList: responseData['waitchList']
+            subscriber: stateSubscriber,
+            movies: stateMovies,
+            favourites: stateFavourites,
+            watchList: stateWatchList
            } //This is the data I am passing to the HomeScreen
         });
         // navigation.replace('BottomTabNav',
