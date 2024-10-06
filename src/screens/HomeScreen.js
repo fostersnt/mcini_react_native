@@ -1,86 +1,124 @@
-import { View, Text, StyleSheet, ScrollView, StatusBar, FlatList } from 'react-native'
-import React, { useState, useEffect } from 'react'
-import MoviePlayerScreen from './MoviePlayerScreen'
-import MovieBanner from '../components/MovieBanner'
-import { movieListAPI } from '../api/MovieAPI'
-import { AppStyles } from '../utilities/AppStyles'
-import { useRoute } from '@react-navigation/native'
-import SingleMovieCard from '../components/SingleMovieCard'
+import { View, StyleSheet, StatusBar, FlatList, Dimensions, ScrollView, Text, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect, memo } from 'react';
+import MovieBanner from '../components/MovieBanner';
+import { AppStyles } from '../utilities/AppStyles';
+import { useRoute } from '@react-navigation/native';
+
+const MemoizedMovieBanner = memo(MovieBanner);
 
 export default function HomeScreen() {
-  //Retrieving route data
+  const { width: screenWidth } = Dimensions.get('window');
   const route = useRoute();
-
   const { subscriber, movies, favourites, watchList } = route.params;
 
-  // console.log('HOME SCREEN MOVIES === ', movies);
-  console.log('HOME SCREEN MOVIE URL === ', movies[0]['video_url']);
-
-
-  const [subscriberData, setSubsciber] = useState(subscriber)
-
-  const [movieList, setMovieList] = useState(movies);
-
-  const [favouritesData, setFavouritesData] = useState(favourites);
-
-  const [watchListData, setWatchListData] = useState(watchList);
-
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [homeBanner, setHomeBanner] = useState([]);
+
+  useEffect(() => {
+    const newBanner = homeBannerData();
+    setHomeBanner(newBanner);
+  }, [movies]);
+
+  function homeBannerData() {
+    return movies.slice(0, 10); // Limit to 10 items
+  }
 
   const handleRefresh = () => {
-    setIsRefreshing(true)
-    //Do whatever you want to do
-    console.log('HELLO WORLD');
-    setIsRefreshing(false)
-  }
+    setIsRefreshing(true);
+    // Refresh logic here
+    setIsRefreshing(false);
+  };
 
-  const renderedItem = ({ item }) => {
-    return (<SingleMovieCard
-      movie={item}
-    />)
-  }
+  const groupedMovies = movies.reduce((result, item) => {
+    const { collection_name } = item;
+    if (!result[collection_name]) {
+      result[collection_name] = [];
+    }
+    result[collection_name].push(item);
+    return result;
+  }, {});
+
+  const groupedDataArray = Object.keys(groupedMovies).map(collection_name => ({
+    collection_name,
+    items: groupedMovies[collection_name],
+  }));
+
+  const renderedItem = (items) => {
+    const displayItems = items.slice(0, 5);
+    const showViewAll = items.length > 5;
+
+    return (
+      <FlatList
+        data={displayItems}
+        horizontal={true}
+        keyExtractor={(subItem) => subItem.id.toString()}
+        renderItem={({ item }) => (
+          <MemoizedMovieBanner
+            myWidth={screenWidth}
+            movie={item}
+          />
+        )}
+        ListFooterComponent={showViewAll ? (
+          <TouchableOpacity>
+            <Text style={{ marginLeft: 10, color: 'blue', fontWeight: 'bold' }}>
+              VIEW ALL
+            </Text>
+          </TouchableOpacity>
+        ) : null}
+      />
+    );
+  };
 
   return (
-    <View style={[
-      styles.homeView,
-      {
-        backgroundColor: AppStyles.generalColors.dark_one,
-        paddingTop: AppStyles.generalPadding.top,
-        padding: AppStyles.generalPadding.low
-      }
-    ]}>
-      <StatusBar translucent backgroundColor={'transparent'}></StatusBar>
-      <MoviePlayerScreen
-        videoURL={movieList[0]['video_url']}
-      />
-      <FlatList
-        pagingEnabled
-        data={movieList}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={renderedItem}
-        // horizontal
-        showsHorizontalScrollIndicator
-        refreshing={isRefreshing}
-        onRefresh={handleRefresh}
-        style={{
-          // backgroundColor: AppStyles.generalColors.white_one
-        }}
-      />
-    </View>
-  )
+    <ScrollView style={styles.container}>
+      <StatusBar translucent backgroundColor={'transparent'} />
+      {homeBanner.length > 0 && (
+        <FlatList
+          pagingEnabled
+          data={homeBanner}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <MemoizedMovieBanner
+              myWidth={screenWidth}
+              movie={item}
+            />
+          )}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          refreshing={isRefreshing}
+          onRefresh={handleRefresh}
+        />
+      )}
+      {homeBanner.length > 0 && (
+        <View style={{ flex: 1, padding: 0 }}>
+          <FlatList
+            data={groupedDataArray}
+            keyExtractor={(item) => item.collection_name}
+            renderItem={({ item }) => (
+              <View style={{ marginBottom: 20 }}>
+                <Text style={styles.collectionName}>
+                  {item.collection_name}
+                </Text>
+                {renderedItem(item.items)}
+              </View>
+            )}
+          />
+        </View>
+      )}
+    </ScrollView>
+  );
 }
 
 const styles = StyleSheet.create({
-  homeView: {
+  container: {
     flex: 1,
-    // backgroundColor: 'yellow'
-    // width: '100%',
-    // height: '50%'
+    backgroundColor: AppStyles.generalColors.dark_one,
   },
-  scrollView: {
-    // flex: 1,
+  collectionName: {
+    fontWeight: AppStyles.generalFontWeight.weight_one,
+    fontSize: AppStyles.generalFontSize.large,
+    color: AppStyles.generalColors.white_one,
+    marginHorizontal: 10,
+    marginBottom: 10,
   },
-  content: {
-    // padding: 10
-  }
-})
+});

@@ -1,40 +1,52 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Image } from 'react-native'
 import React from 'react'
 import { AppStyles } from '../utilities/AppStyles'
+import WebView from 'react-native-webview';
 
-export default function MovieBanner() {
+export default function MovieBanner({ movie, myWidth }) {
+    // console.log('WIDTH === ', myWidth);
+    const size = myWidth;
+
+    const handleHttpError = (syntheticEvent) => {
+        const { nativeEvent } = syntheticEvent;
+        console.log('HTTP Error:', nativeEvent);
+      };
+      
+      const handleOnRenderProcessGone = (syntheticEvent) => {
+        const { nativeEvent } = syntheticEvent;
+        console.warn('WebView Crashed: ', nativeEvent.didCrash);
+      }
+
     return (
-        <View style={{
-            backgroundColor: AppStyles.generalColors.dark_four,
-            height: AppStyles.generalHeight.height_four,
-            marginBottom: AppStyles.generalMargin.higher,
-            padding: AppStyles.generalPadding.low
-        }}>
-            <Text style={{
-                color: AppStyles.generalColors.white_one,
-                fontWeight: AppStyles.generalFontWeight.weight_one,
-                fontSize: AppStyles.generalFontSize.large
-            }}>MovieBanner</Text>
-            <Text style={{
-                color: AppStyles.generalColors.white_one,
-                fontWeight: AppStyles.generalFontWeight.weight_one,
-                fontSize: AppStyles.generalFontSize.large
-            }}>MovieBanner</Text>
-        </View>
+        <WebView
+            style={{
+                backgroundColor: AppStyles.generalColors.dark_four,
+                // padding: 10,
+                // flex: 1,
+                borderRadius: 10,
+                // marginRight: 10,
+                marginBottom: 10,
+                width: size,
+                height: 400
+            }}
+            source={{ uri: movie['default_thumbnail_filename'] }}
+            javaScriptEnabled={true}
+            domStorageEnabled={true}
+            allowsInlineMediaPlayback={true}
+            onHttpError={handleHttpError}
+            onError={handleOnRenderProcessGone}
+            renderError={() => (
+                <View style={styles.errorContainer}>
+                    <Text style={styles.errorText}>Failed to load page.</Text>
+                </View>
+            )}
+
+            onRenderProcessGone={handleOnRenderProcessGone}
+        >
+        </WebView>
     )
 }
 
 const styles = StyleSheet.create({
-    // viewContainer: {
-    //     height: 500,
-    //     backgroundColor: 'black',
-    //     padding: 20,
-    //     marginBottom: 20,
-    //     // borderRadius: 20,
-    // },
-    // txtContent: {
-    //     color: 'white',
-    //     fontWeight: 'bold',
-    //     fontSize: 20,
-    // }
+
 })

@@ -18,28 +18,28 @@ const handleOnRenderProcessGone = (syntheticEvent) => {
   console.warn('WebView Crashed: ', nativeEvent.didCrash);
 }
 
-function MoviePlayerScreen({videoURL}) {
+function MoviePlayerScreen({ videoURL }) {
   const url = "https://iframe.mediadelivery.net/embed/182548/e941715e-7de1-4875-a42b-c52a982fa72c?autoplay=true";
   return (
-      <WebView
-        style={styles.videoContainer}
-        source={{ uri: videoURL }}
-        javaScriptEnabled={true}
-        domStorageEnabled={true}
-        allowsInlineMediaPlayback={true}
-        onHttpError={handleHttpError}
-        onError={handleOnRenderProcessGone}
-        renderError={() => (
-          <View style={styles.errorContainer}>
-            <Text style={styles.errorText}>Failed to load page.</Text>
-          </View>
-        )}
+    <WebView
+      style={styles.videoContainer}
+      source={{ uri: videoURL }}
+      javaScriptEnabled={true}
+      domStorageEnabled={true}
+      allowsInlineMediaPlayback={true}
+      onHttpError={handleHttpError}
+      onError={handleOnRenderProcessGone}
+      renderError={() => (
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorText}>Failed to load page.</Text>
+        </View>
+      )}
 
-        onRenderProcessGone={handleOnRenderProcessGone}
-      >
+      onRenderProcessGone={handleOnRenderProcessGone}
+    >
       <StatusBar translucent backgroundColor={'transparent'}></StatusBar>
 
-      </WebView>
+    </WebView>
   );
 }
 

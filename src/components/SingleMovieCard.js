@@ -12,7 +12,7 @@ export default function SingleMovieCard({movie}) {
             margin: 10
         }}
     >
-      <Text>{movie['video_url']}</Text>
+      <Text>WELCOME TO SINGLE MOVIVE CARD</Text>
     </View>
   )
 }
