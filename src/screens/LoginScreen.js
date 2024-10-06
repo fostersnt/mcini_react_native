@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, TouchableOpacity, TextInput, StatusBar, Image, 
 import React, { useState, useEffect } from 'react'
 import { checkAuthAPI, allUserData } from '../api/UserAPI';
 import { useNavigation } from '@react-navigation/native';
-import { storeData, getData } from '../utilities/LocalStorage';
+import { storeData, getStorageData } from '../utilities/LocalStorage';
 import { AppStyles } from '../utilities/AppStyles';
 import { replaceFirstDigitWith233 } from '../utilities/Validations';
 
@@ -21,7 +21,7 @@ export default function LoginScreen() {
     const authData = async () => {
 
       try {
-        const msisdnFromStorage = await getData(phone);
+        const msisdnFromStorage = await getStorageData(phone);
         console.log('STORAGE DATA IS: ', msisdnFromStorage);
         // console.log('PHONE NUMBER:', phone);
 
@@ -81,16 +81,14 @@ export default function LoginScreen() {
             subscriber: responseData['subscriber'],
             movies: responseData['movies'],
             favourites: responseData['favourites'],
-            watchList: responseData['waitchList']
+            watchList: responseData['watchList']
            } //This is the data I am passing to the HomeScreen
         });
-        // navigation.replace('BottomTabNav',
-        //   { movies: responseData['data'] }
-        // );
       }
     }
   }
 
+  
   //REGISTER NAVIGATION
   const handleRegister = () => {
     navigation.navigate('Register');

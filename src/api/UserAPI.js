@@ -178,6 +178,8 @@ export const userFavouriteMoviesAPI = async (phone) => {
 
 //--------------------This function fetches user watch-list movies--------------------
 export const userWatchListAPI = async (phone) => {
+    console.log('PHONE PHONE === ', phone);
+    
     const options = {
         method: 'POST',
         headers: {
