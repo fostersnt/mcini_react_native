@@ -3,8 +3,10 @@ import React, { useState, useEffect, memo } from 'react';
 import MovieBanner from '../components/MovieBanner';
 import { AppStyles } from '../utilities/AppStyles';
 import { useRoute } from '@react-navigation/native';
+import SingleMovieCard from '../components/SingleMovieCard';
 
 const MemoizedMovieBanner = memo(MovieBanner);
+const MemoizedSingleMovieCard = memo(SingleMovieCard);
 
 export default function HomeScreen() {
   const { width: screenWidth } = Dimensions.get('window');
@@ -53,7 +55,7 @@ export default function HomeScreen() {
         horizontal={true}
         keyExtractor={(subItem) => subItem.id.toString()}
         renderItem={({ item }) => (
-          <MemoizedMovieBanner
+          <MemoizedSingleMovieCard
             myWidth={screenWidth}
             movie={item}
           />
