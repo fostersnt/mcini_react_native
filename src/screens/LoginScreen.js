@@ -30,7 +30,7 @@ export default function LoginScreen() {
         console.log('MESSAGE: ', message);
 
 
-        if (response.success == 'true' && message == 'user authenticated') {
+        if (response.success == 'true' && message == 'user authenticated!') {
           navigation.navigate('BottomTabNav', {
             Screen: 'HomeScreen',
             params: { movies: response.data }
