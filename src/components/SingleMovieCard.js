@@ -33,36 +33,26 @@ export default function SingleMovieCard({ movie, myWidth, subscriber }) {
                 const subStatus = subscriber != null ? subscriber.subscription_status : 'N/A';
 
                 console.log('CHECK STARTED');
-                
+
                 const statusCheck = await userSubscriptionCheck(msisdn);
+
+                setIsStatusCheck(false)
 
                 console.log('CHECK COMPLETED === ', statusCheck);
 
+                var message_type = statusCheck['success'] == 'true' ? 'success' : 'error';
+
                 if (statusCheck['data'] != null && statusCheck['data']['subscription_status'] == 'active') {
-                    setIsStatusCheck(false)
-                    showToast('Example', 'Invalid phone number', 'success', 3000);
+                    // showToast('Subscription status', statusCheck['message'], message_type, 3000);
 
                     setTimeout(() => {
                         navigator.navigate('MoviePlayer', {
                             singleMovie: movie
-                        }, 3050);
+                        }, 3000);
                     })
                 } else {
-                    setIsLoading(true);
-                    const result = await user_MTN_subscription();
-                    if (result['success'] == 'true') {
-                        setModalVisible(false)
-
-                        showToast('Example', 'Invalid phone number', 'success', 3000);
-
-                        setTimeout(() => {
-                            navigator.navigate('MoviePlayer', {
-                                singleMovie: movie
-                            }, 3050);
-                        })
-                    } else {
-
-                    }
+                    showToast('Subscription status', statusCheck['message'], message_type, 3000);
+                    setModalVisible(true)
                 }
             }}
         >
@@ -79,7 +69,7 @@ export default function SingleMovieCard({ movie, myWidth, subscriber }) {
                         <Text style={styles.modalText}>Checking subscription status...</Text>
                         <View style={styles.modalButtonsContainer}>
                             {
-                                isStatusCheck ? <ActivityIndicator /> : ''
+                                isStatusCheck ? <ActivityIndicator color={'white'} /> : ''
                             }
                         </View>
                     </View>
@@ -94,17 +84,49 @@ export default function SingleMovieCard({ movie, myWidth, subscriber }) {
                 onRequestClose={() => setModalVisible(false)} // For Android back button
             >
                 <View style={styles.modalBackground}>
-                    {
-                        isLoading ? <ActivityIndicator /> : ''
-                    }
                     <View style={styles.modalContainer}>
                         <Text style={styles.modalText}>No active subscription available</Text>
+                        {
+                            isLoading ? <ActivityIndicator color={'white'} /> : ''
+                        }
                         <View style={styles.modalButtonsContainer}>
                             <TouchableOpacity style={styles.modalButtonRed} onPress={() => setModalVisible(false)}>
                                 <Text style={styles.modalBtnText}>Cancel</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.modalButtonBlue} onPress={() => {
-                                console.log('BUTTON CLICKED');
+                            <TouchableOpacity style={styles.modalButtonBlue} onPress={async () => {
+                                setIsLoading(true);
+                                console.log('SUBSCRIPTION REQUEST STARTED');
+
+                                const payload = {
+                                    msisdn: msisdn,
+                                    network: network,
+                                    plan_id: plan_id
+                                }
+
+                                const result = await user_MTN_subscription(payload);
+
+                                console.log('SUBSCRIPTION REQUEST COMPLETED === ', result);
+
+                                var message_type = result['success'] == 'true' ? 'success' : 'error';
+
+                                setModalVisible(false)
+
+                                setIsLoading(false)
+
+                                if (result['success'] == 'true') {
+                                    showToast('Subscription Request', result['message'], message_type, 3000);
+
+                                    //WRITE CODE TO VERIFY SUBSCRIPTION STATUS
+                                    //result['data'] != null && result['data']['subscription_status'] == 'active'
+
+                                    // setTimeout(() => {
+                                    //     navigator.navigate('MoviePlayer', {
+                                    //         singleMovie: movie
+                                    //     }, 3000);
+                                    // })
+                                } else {
+                                    showToast('Subscription Request', result['message'], 'error', 5000);
+                                }
                             }}>
                                 <Text style={styles.modalBtnText}>Subscribe</Text>
                             </TouchableOpacity>
@@ -179,7 +201,7 @@ const styles = StyleSheet.create({
     modalContainer: {
         width: '80%',  // Set width of modal
         height: 200, // Set height of modal
-        backgroundColor: 'white',
+        backgroundColor: AppStyles.generalColors.dark_one,
         borderRadius: 10,
         padding: 20,
         justifyContent: 'center',
@@ -189,6 +211,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         textAlign: 'center',
         fontSize: 16,
+        color: AppStyles.generalColors.white_one
     },
     modalBtnText: {
         // marginBottom: 20,
