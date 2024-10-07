@@ -4,7 +4,8 @@ export const AppStyles = {
         normal: 18,
         small: 16,
         smaller: 14,
-        tiny: 12
+        tiny: 12,
+        page_header: 18
     },
     generalFontWeight: {
         weight_one: 'bold',
@@ -17,6 +18,7 @@ export const AppStyles = {
         dark_four: '#1e1f24',
         red_one: 'red',
         white_one: '#fff',
+        blue: '#00aeef'
     },
     generalMargin: {
         higher: 20,

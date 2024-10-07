@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput } from 'react-native'
+import { View, Text, StyleSheet, TextInput, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { getStorageData } from '../utilities/LocalStorage';
 import { AppStyles } from '../utilities/AppStyles';
@@ -33,7 +33,7 @@ export default function ProfileScreen() {
   }, []);
 
   return (
-    <View
+    <ScrollView
       style={{
         flex: 1,
         backgroundColor: AppStyles.generalColors.dark_four,
@@ -41,48 +41,52 @@ export default function ProfileScreen() {
         paddingHorizontal: 10
       }}
     >
-      <View
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          padding: 10
-        }}
-      >
-        <Text
-          style={{ color: 'blue' }}
-        >User Account Management
-        </Text>
-        <Text
-          style={{ color: 'blue' }}
-        >User Account Management
-        </Text>
-      </View>
       <View>
-        <Text
-          style={[styles.textStyle, {
-            fontWeight: AppStyles.generalFontWeight.weight_one,
-            marginBottom: AppStyles.generalMargin.higher
-          }]}
-        >General
-        </Text>
-        <Text
-          style={[styles.textStyle, {
-            fontWeight: AppStyles.generalFontWeight.weight_one
-          }]}
-        >Phone Number
-        </Text>
-        <TextInput style={styles.textInput} value={subscriber.msisdn} />
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            padding: 10
+          }}
+        >
+          <Text
+            style={{
+              color: AppStyles.generalColors.blue,
+              fontWeight: AppStyles.generalFontWeight.weight_one,
+              fontSize: AppStyles.generalFontSize.page_header
+            }}
+          >User Account Management
+          </Text>
+        </View>
+        <View>
+          <Text
+            style={[styles.textStyle, {
+              // fontWeight: AppStyles.generalFontWeight.weight_one,
+              marginTop: 20,
+              marginBottom: AppStyles.generalMargin.higher,
+              fontSize: AppStyles.generalFontSize.normal
+            }]}
+          >General
+          </Text>
+          <Text
+            style={[styles.textStyle, {
+              fontWeight: AppStyles.generalFontWeight.weight_one
+            }]}
+          >Phone Number
+          </Text>
+          <TextInput style={styles.textInput} value={subscriber.msisdn} />
+        </View>
+        <View>
+          <Text
+            style={[styles.textStyle, {
+              fontWeight: AppStyles.generalFontWeight.weight_one
+            }]}
+          >E-Mail
+          </Text>
+          <TextInput style={styles.textInput} value={subscriber.email} />
+        </View>
       </View>
-      <View>
-        <Text
-          style={[styles.textStyle, {
-            fontWeight: AppStyles.generalFontWeight.weight_one
-          }]}
-        >E-Mail
-        </Text>
-        <TextInput style={styles.textInput} value={subscriber.email} />
-      </View>
-    </View>
+    </ScrollView>
   )
 }
 
