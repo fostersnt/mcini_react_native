@@ -2,6 +2,8 @@
 import { BaseURL } from "./BaseURL";
 
 export const movieListAPI = async () => {
+    var prefix = 'MOVIES MESSAGE: '
+    
     const options = {
         method: 'POST',
         headers: {
@@ -24,7 +26,7 @@ export const movieListAPI = async () => {
         console.log('MOVIE LIST API ERROR: ', error);
         return {
             'success': 'false',
-            'message': error.toString(),
+            'message': prefix + error.toString(),
             'data': null
         };
     }

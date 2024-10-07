@@ -29,7 +29,8 @@ export default function SingleMovieCard({ movie, myWidth }) {
                     width: size,
                     height: 200
                 }}
-                source={{ uri: movie['default_thumbnail_filename'] }}
+                // source={{ uri: movie['video_url'] }}
+                source={{ uri: movie['default_thumbnail_filename'], headers: { Referer: 'https://mcini.tv' } }}
                 javaScriptEnabled={true}
                 domStorageEnabled={true}
                 allowsInlineMediaPlayback={true}

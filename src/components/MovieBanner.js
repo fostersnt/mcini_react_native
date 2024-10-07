@@ -29,7 +29,7 @@ export default function MovieBanner({ movie, myWidth }) {
                 width: size,
                 height: 400
             }}
-            source={{ uri: movie['default_thumbnail_filename'] }}
+            source={{ uri: movie['default_thumbnail_filename'], headers: { Referer: 'https://mcini.tv' } }}
             javaScriptEnabled={true}
             domStorageEnabled={true}
             allowsInlineMediaPlayback={true}

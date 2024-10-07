@@ -4,6 +4,7 @@ import { movieListAPI } from "./MovieAPI";
 
 //This function sends subscriber login request
 export const userLoginAPI = async (phone) => {
+    var prefix = 'SUBSCRIBER MESSAGE: '
     const options = {
         method: 'POST',
         headers: {
@@ -22,39 +23,10 @@ export const userLoginAPI = async (phone) => {
 
         const subscriberData = await response.json()
 
-        // var finalSubscriberData = null;
-
-        // const movieData = await movieListAPI();
-
-        return subscriberData;;
-
-        // var success = 'false';
-        // var message = '';
-
-        // if (!response.ok) {
-        //     message = 'Error occurred during login';
-        //     return {
-        //         'success': success,
-        //         'message': message,
-        //         'status_code': `${response.status}`,
-        //     };
-        // }
-
-        // if (subscriberData['success'] == 'true' && subscriberData['data'] != null) {
-        //     finalSubscriberData = subscriberData['data'];
-        //     success = subscriberData['success'];
-        // }else{
-        //     message = subscriberData['message'];
-        // }
-        // return {
-        //     'success': success,
-        //     'message': message,
-        //     'subscriberData': finalSubscriberData,
-        //     'movieData': movieData
-        // }
+        return subscriberData;
 
     } catch (error) {
-        message = error.toString();
+        message = prefix + error.toString();
         return {
             'success': 'false',
             'message': message,
@@ -140,6 +112,8 @@ export const userLogout = async (phone) => {
 
 //--------------------This function fetches user favourite movies--------------------
 export const userFavouriteMoviesAPI = async (phone) => {
+    var prefix = 'FAVOURITES MESSAGE: '
+    
     const options = {
         method: 'POST',
         headers: {
@@ -164,12 +138,13 @@ export const userFavouriteMoviesAPI = async (phone) => {
         // }
 
         const data = await response.json()
+
         return data;
 
     } catch (error) {
         return {
             'success': 'false',
-            'message': error.toString(),
+            'message': prefix + error.toString(),
             'data': null
         };
     }
@@ -207,6 +182,8 @@ export const addOrRemoveFavourite = async (payload) => {
 export const userWatchListAPI = async (phone) => {
     console.log('PHONE PHONE === ', phone);
     
+    var prefix = 'WATCH-LIST MESSAGE: '
+
     const options = {
         method: 'POST',
         headers: {
@@ -235,7 +212,7 @@ export const userWatchListAPI = async (phone) => {
     } catch (error) {
         return {
             'success': 'false',
-            'message': error.toString(),
+            'message': prefix + error.toString(),
             'data': null
         };
     }

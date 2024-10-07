@@ -25,6 +25,7 @@ export default function FavouriteScreen() {
         if (subscriberFavourites != null && subscriberFavourites.length > 0) {
           console.log('SUBSCRIBER WATCH-LIST FROM STORAGE === ', subWatchList[0]['video_url']);
         }
+        console.log('NO SUBSCRIBER WATCH-LIST FROM STORAGE');
 
         setFavourites(subscriberFavourites);  // Use data.data as per your API response
         // console.log('USER FAVOURITE MOVIES === ', data.data);
