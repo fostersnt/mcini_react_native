@@ -17,6 +17,10 @@ export default function SingleMovieCard({ movie, myWidth, subscriber }) {
     const [isStatusCheck, setIsStatusCheck] = useState(false);
     const [isPaymentCheck, setIsPaymentCheck] = useState(false);
 
+    const [verifySubscription, setVerifySubscription] = useState(null);
+
+    verifySubscription
+
     const size = myWidth / 3;
 
     const myData = userData;
@@ -48,8 +52,8 @@ export default function SingleMovieCard({ movie, myWidth, subscriber }) {
                     setTimeout(() => {
                         navigator.navigate('MoviePlayer', {
                             singleMovie: movie
-                        }, 5000);
-                    })
+                        });
+                    }, 6000)
                 } else {
                     showToast('Subscription status', statusCheck['message'], message_type, 5000);
                     setModalVisible(true)
@@ -86,63 +90,76 @@ export default function SingleMovieCard({ movie, myWidth, subscriber }) {
                 <View style={styles.modalBackground}>
                     <View style={[
                         styles.modalContainer,
-                        isPaymentCheck ? 
-                        {backgroundColor: AppStyles.generalColors.dark_one} : {backgroundColor: AppStyles.generalColors.dark_one}
-                        ]}>
-                        <Text style={styles.modalText}>No active subscription available</Text>
+                        isPaymentCheck ?
+                            { backgroundColor: AppStyles.generalColors.dark_one } : { backgroundColor: AppStyles.generalColors.dark_one }
+                    ]}>
+                        <Text style={styles.modalText}>{isPaymentCheck ? 'Verifying payment...' : 'No active subscription available'}</Text>
                         {
                             isLoading ? <ActivityIndicator color={'white'} /> : ''
                         }
-                        <View style={styles.modalButtonsContainer}>
-                            <TouchableOpacity style={styles.modalButtonRed} onPress={() => setModalVisible(false)}>
-                                <Text style={styles.modalBtnText}>Cancel</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.modalButtonBlue} onPress={async () => {
-                                setIsLoading(true);
-                                console.log('SUBSCRIPTION REQUEST STARTED');
+                        {
+                            isPaymentCheck ? '' :
+                                <View style={styles.modalButtonsContainer}>
+                                    <TouchableOpacity style={styles.modalButtonRed} onPress={() => setModalVisible(false)}>
+                                        <Text style={styles.modalBtnText}>Cancel</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.modalButtonBlue} onPress={async () => {
+                                        setIsLoading(true);
+                                        console.log('SUBSCRIPTION REQUEST STARTED');
 
-                                const payload = {
-                                    msisdn: msisdn,
-                                    network: network,
-                                    plan_id: plan_id
-                                }
-                                //Subscribing to a package
-                                const result = await user_MTN_subscription(payload);
+                                        const payload = {
+                                            msisdn: msisdn,
+                                            network: network,
+                                            plan_id: plan_id
+                                        }
+                                        //Subscribing to a package
+                                        const result = await user_MTN_subscription(payload);
 
-                                console.log('SUBSCRIPTION REQUEST COMPLETED === ', result);
+                                        console.log('SUBSCRIPTION REQUEST COMPLETED === ', result);
 
-                                var message_type = result['success'] == 'true' ? 'success' : 'error';
-                                var alertTitle = isPaymentCheck ? 'Payment confirmation' : 'Subscription Request';
-                                var alertMessage = result['message'];
+                                        var message_type = result['success'] == 'true' ? 'success' : 'error';
+                                        var alertTitle = isPaymentCheck ? 'Payment confirmation' : 'Subscription Request';
+                                        var alertMessage = result['message'];
 
-                                showToast(alertTitle, alertMessage, message_type, 5000);
+                                        showToast(alertTitle, alertMessage, message_type, 5000);
 
-                                //Verifying user subscription / payment
-                                const verifySubscription = await userSubscriptionCheck(msisdn);
+                                        if (result['success'] == 'true') {
+                                            //Verifying user subscription / payment
+                                            setIsPaymentCheck(true)
+                                            setIsLoading(true)
 
-                                setModalVisible(false)
+                                            setTimeout(async () => {
+                                                const verifySubscription = await userSubscriptionCheck(msisdn)
+                                                console.log('PAYMENT VERIFICATION COMPLETED === ', verifySubscription);
 
-                                setIsLoading(false)
+                                                setModalVisible(false)
 
-                                if (result['success'] == 'true') {
+                                                setIsLoading(false)
 
-                                    //WRITE CODE TO VERIFY SUBSCRIPTION STATUS
-                                    //result['data'] != null && result['data']['subscription_status'] == 'active'
+                                                setIsPaymentCheck(false)
 
-                                    // setTimeout(() => {
-                                    //     navigator.navigate('MoviePlayer', {
-                                    //         singleMovie: movie
-                                    //     }, 5000);
-                                    // })
-                                } else {
-                                    showToast('Subscription Request', result['message'], 'error', 5000);
-                                }
-                            }}>
-                                <Text style={styles.modalBtnText}>Subscribe</Text>
-                            </TouchableOpacity>
-                            {/* <Button style={styles.modalButtonRed} title="Cancel" color={'red'} /> */}
-                            {/* <Button style={styles.modalButtonBlue} title="Subscribe" onPress={() => setModalVisible(false)} /> */}
-                        </View>
+
+                                                if (verifySubscription['data'] != null && verifySubscription['data']['subscription_status'] == 'active') {
+                                                    showToast('Verification Completed', verifySubscription['message'], 'error', 5000);
+                                                    setTimeout(() => {
+                                                        navigator.navigate('MoviePlayer', {
+                                                            singleMovie: movie
+                                                        });
+                                                    }, 6000);
+                                                } else if(verifySubscription['data'] != null && verifySubscription['data']['subscription_status'] == 'inactive') {
+                                                    showToast('Verification Error', `Subscription status: ${verifySubscription['data']['subscription_status'].toUpperCase()}`, 'success', 5000);
+                                                }else{
+                                                    showToast('Verification Error', 'Unable to verify subscription', 'error', 5000);
+                                                }
+                                            }, 20000);
+                                        } else {
+                                            showToast('Subscription Request Error', result['message'], 'error', 5000);
+                                        }
+                                    }}>
+                                        <Text style={styles.modalBtnText}>Subscribe</Text>
+                                    </TouchableOpacity>
+                                </View>
+                        }
                     </View>
                 </View>
             </Modal>
