@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Modal, StyleSheet, Button } from 'react-native'
+import { View, Text, TouchableOpacity, Modal, StyleSheet, Button, ActivityIndicator } from 'react-native'
 import React, { useState } from 'react'
 import { AppStyles } from '../utilities/AppStyles'
 import WebView from 'react-native-webview'
@@ -13,6 +13,8 @@ export default function SingleMovieCard({ movie, myWidth, subscriber }) {
     const navigator = useNavigation()
 
     const [modalVisible, setModalVisible] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isStatusCheck, setIsStatusCheck] = useState(false);
 
     const size = myWidth / 3;
 
@@ -25,35 +27,66 @@ export default function SingleMovieCard({ movie, myWidth, subscriber }) {
     return (
         <TouchableOpacity
             onPress={async () => {
+                setIsStatusCheck(true)
+                setIsLoading(false)
+
                 const subStatus = subscriber != null ? subscriber.subscription_status : 'N/A';
-                console.log('CHECKING');
-                showToast('Example', 'Invalid phone number', 'success', 3000);
-                console.log('COMPLETED');
-                // if (subStatus == 'active') {
 
-                //     const statusCheck = await userSubscriptionCheck(msisdn);
+                console.log('CHECK STARTED');
+                
+                const statusCheck = await userSubscriptionCheck(msisdn);
 
-                //     if (statusCheck['data'] != null && statusCheck['data']['subscription_status'] == 'active') {
-                //         navigator.navigate('MoviePlayer', {
-                //             singleMovie: movie
-                //         });
-                //     } else {
-                //         console.log('ERROR OCCURRED');
-                //     }
-                // } else {
-                //     const result = await user_MTN_subscription();
-                //     if (result['success'] == 'true') {
-                //         setModalVisible(false)
-                //         navigator.navigate('MoviePlayer', {
-                //             singleMovie: movie
-                //         });
-                //     } else {
+                console.log('CHECK COMPLETED === ', statusCheck);
 
-                //     }
-                // }
+                if (statusCheck['data'] != null && statusCheck['data']['subscription_status'] == 'active') {
+                    setIsStatusCheck(false)
+                    showToast('Example', 'Invalid phone number', 'success', 3000);
+
+                    setTimeout(() => {
+                        navigator.navigate('MoviePlayer', {
+                            singleMovie: movie
+                        }, 3050);
+                    })
+                } else {
+                    setIsLoading(true);
+                    const result = await user_MTN_subscription();
+                    if (result['success'] == 'true') {
+                        setModalVisible(false)
+
+                        showToast('Example', 'Invalid phone number', 'success', 3000);
+
+                        setTimeout(() => {
+                            navigator.navigate('MoviePlayer', {
+                                singleMovie: movie
+                            }, 3050);
+                        })
+                    } else {
+
+                    }
+                }
             }}
         >
 
+            {/* WAITING MODAL */}
+            <Modal
+                transparent={true}
+                visible={isStatusCheck}
+                animationType="slide" // You can use 'fade' or 'none' for other effects
+                onRequestClose={() => isStatusCheck(false)} // For Android back button
+            >
+                <View style={styles.modalBackground}>
+                    <View style={styles.modalContainer}>
+                        <Text style={styles.modalText}>Checking subscription status...</Text>
+                        <View style={styles.modalButtonsContainer}>
+                            {
+                                isStatusCheck ? <ActivityIndicator /> : ''
+                            }
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+
+            {/* ACTION MODAL */}
             <Modal
                 transparent={true}
                 visible={modalVisible}
@@ -61,6 +94,9 @@ export default function SingleMovieCard({ movie, myWidth, subscriber }) {
                 onRequestClose={() => setModalVisible(false)} // For Android back button
             >
                 <View style={styles.modalBackground}>
+                    {
+                        isLoading ? <ActivityIndicator /> : ''
+                    }
                     <View style={styles.modalContainer}>
                         <Text style={styles.modalText}>No active subscription available</Text>
                         <View style={styles.modalButtonsContainer}>
@@ -106,7 +142,7 @@ export default function SingleMovieCard({ movie, myWidth, subscriber }) {
             // onRenderProcessGone={handleOnRenderProcessGone}
             >
             </WebView>
-            </TouchableOpacity>
+        </TouchableOpacity>
     )
 }
 

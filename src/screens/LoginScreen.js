@@ -167,7 +167,7 @@ export default function LoginScreen() {
                 fontSize: AppStyles.generalFontSize.large,
                 marginBottom: AppStyles.generalMargin.higher,
               }
-            ]}>Sign In</Text>
+            ]}>Login</Text>
             {isError ?
               <View style={{
                 width: '100%', borderColor: 'white', borderWidth: 1, marginBottom: 10,
@@ -197,7 +197,7 @@ export default function LoginScreen() {
             <TouchableOpacity onPress={handleLogin} style={[
               styles.loginButton,
               {
-                backgroundColor: AppStyles.generalColors.red_one,
+                backgroundColor: AppStyles.generalColors.blue,
                 padding: AppStyles.generalPadding.lower,
                 height: AppStyles.generalHeight.height_one,
                 borderRadius: AppStyles.generalBorderRadius.radius_one
@@ -209,9 +209,9 @@ export default function LoginScreen() {
                 fontWeight: AppStyles.generalFontWeight.weight_one
               }}>Login</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.innerContainer} onPress={handleRegister}>
+            {/* <TouchableOpacity style={styles.innerContainer} onPress={handleRegister}>
               <Text style={styles.notRegistered}>Not a subscriber? Register</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
       </KeyboardAvoidingView>
