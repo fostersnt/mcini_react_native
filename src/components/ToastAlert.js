@@ -1,4 +1,4 @@
-// ToastService.js
+import { Text } from 'react-native';
 import Toast from 'react-native-toast-message';
 
 export const showToast = (title, message, type = 'default', duration = 3000) => {
@@ -11,5 +11,6 @@ export const showToast = (title, message, type = 'default', duration = 3000) => 
   });
 };
 
+
 // To set up the Toast reference, include this in your main component file (e.g., App.js):
-// <Toast ref={(ref) => Toast.setRef(ref)} />
+// <Toast />

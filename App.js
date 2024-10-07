@@ -9,15 +9,16 @@ import {
 
 import AppNavigation from './src/navigation/AppNavigation';
 import Toast from 'react-native-toast-message';
+import ToastWithRef from './src/components/ToastAlert';
+import ToastAlertConfig from './src/components/ToastAlertConfig';
 
 function App() {
   return (
-    // <SafeAreaView style={styles.viewContainer}>
-      <View style={styles.viewContainer}>
-        <AppNavigation />
-        <Toast ref={(ref) => Toast.setRef(ref)} />
-        </View>
-    // </SafeAreaView>
+    <View style={styles.viewContainer}>
+      <AppNavigation />
+      {/* <Toast config={ToastAlertConfig} /> */}
+      <Toast />
+    </View>
   );
 }
 

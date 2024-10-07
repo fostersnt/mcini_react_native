@@ -243,7 +243,7 @@ export const allUserData = async (subscriberMsisdn) => {
     message = subscriberData['message'];
 
     //Checking login data or subscriber information
-    if (subscriberData['success'] == 'true') {
+    if (subscriberData['success'] == 'true' && subscriberData['data'] != null) {
         success = subscriberData['success'];
         subscriber = subscriberData['data'];
     }

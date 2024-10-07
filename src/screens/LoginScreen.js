@@ -1,10 +1,12 @@
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, StatusBar, Image, KeyboardAvoidingView, ImageBackground } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, StatusBar, Image, KeyboardAvoidingView, ImageBackground, ActivityIndicator } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { checkAuthAPI, allUserData } from '../api/UserAPI';
 import { useNavigation } from '@react-navigation/native';
 import { storeData, getStorageData } from '../utilities/LocalStorage';
 import { AppStyles } from '../utilities/AppStyles';
 import { replaceFirstDigitWith233 } from '../utilities/Validations';
+import { showToast } from '../components/ToastAlert';
+import Toast from 'react-native-toast-message';
 
 const bannerImage = require('../assets/images/banner.png');
 
@@ -12,8 +14,9 @@ const bannerImage = require('../assets/images/banner.png');
 
 export default function LoginScreen() {
   const [phone, setPhone] = useState('');
-  const [isError, setIsError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  // const [isError, setIsError] = useState(false);
+  // const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const [country, setCountry] = useState('option1');
 
@@ -26,7 +29,7 @@ export default function LoginScreen() {
 
         const response = await checkAuthAPI(storageData.msisdn);
 
-        const message = response.message.toString().toLowerCase();
+        const message = response['message'].toString().toLowerCase();
 
         console.log('MESSAGE: ', message);
 
@@ -51,71 +54,68 @@ export default function LoginScreen() {
   //LOGIN FUNCTION
   const handleLogin = async () => {
     if (phone.length < 1) {
-      setIsError(true);
-      setErrorMessage('Phone number is required');
+      showToast('Login Error', 'Phone number is required', 'error', 5000)
     } else {
-      // const responseData = await userLoginAPI(phone);
-      const responseData = await allUserData(phone);
+      if (!isLoading) {
+        setIsLoading(true)
 
-      console.log('MAIN USER LOGIN API RESPONSE: ', responseData['favourites']);
+        const responseData = await allUserData(phone);
 
-      const formattedPhone = replaceFirstDigitWith233(phone);
+        console.log('MAIN USER LOGIN API RESPONSE: ', responseData['favourites']);
 
-      setPhone(formattedPhone);
+        const formattedPhone = replaceFirstDigitWith233(phone);
 
-      var dataToBeStored = {
-        msisdn: formattedPhone,
-        subscriber: null,
-        movies: null,
-        favourites: null,
-        watchList: null,
-      }
+        setPhone(formattedPhone);
 
-      if (responseData['success'] == 'false') {
-
-        await storeData(dataToBeStored);
-
-        setIsError(true);
-        setErrorMessage(responseData['message']);
-
-      } else if (responseData['success'] == 'true') {
-
-        const watchListArray = [];
-        const myWatchList = responseData['watchList'];
-
-        if (myWatchList != null && myWatchList.length > 0) {
-          myWatchList.forEach(item => {
-            if (item.video) {
-              watchListArray.push(item.video);
-            }
-          });
-        }
 
         var dataToBeStored = {
           msisdn: formattedPhone,
-          subscriber: responseData['subscriber'],
-          movies: responseData['movies'],
-          favourites: responseData['favourites'],
-          watchList: watchListArray,
+          subscriber: null,
+          movies: null,
+          favourites: null,
+          watchList: null,
         }
 
-        await storeData(dataToBeStored);
+        if (responseData['success'] == 'false') {
 
-        // console.log('LOGIN WATCH-LIST === ', responseData['watchList']);
-        
+          showToast('Login Error', responseData['message'], 'error', 5000)
+          setIsLoading(false)
 
-        setIsError(false);
-        setErrorMessage('');
+        } else if (responseData['success'] == 'true') {
 
-        navigation.navigate('BottomTabNav', {
-          screen: 'Home', //This is the name I used in the BottomTabNav for the HomeScreen
-          params: {
+          const watchListArray = [];
+          const myWatchList = responseData['watchList'];
+
+          if (myWatchList != null && myWatchList.length > 0) {
+            myWatchList.forEach(item => {
+              if (item.video) {
+                watchListArray.push(item.video);
+              }
+            });
+          }
+
+          var dataToBeStored = {
+            msisdn: formattedPhone,
             subscriber: responseData['subscriber'],
             movies: responseData['movies'],
             favourites: responseData['favourites'],
-            watchList: watchListArray
-          } //This is the data I am passing to the HomeScreen
-        });
+            watchList: watchListArray,
+          }
+
+          await storeData(dataToBeStored);
+          
+          setIsLoading(false)
+
+          navigation.navigate('BottomTabNav', {
+            screen: 'Home', //This is the name I used in the BottomTabNav for the HomeScreen
+            params: {
+              subscriber: responseData['subscriber'],
+              movies: responseData['movies'],
+              favourites: responseData['favourites'],
+              watchList: watchListArray
+            } //This is the data I am passing to the HomeScreen
+          });
+        }
       }
     }
   }
@@ -131,7 +131,6 @@ export default function LoginScreen() {
       style={[
         styles.container,
         {
-          // backgroundColor: AppStyles.generalColors.dark_four,
           padding: AppStyles.generalPadding.higher
         }
       ]}
@@ -143,23 +142,14 @@ export default function LoginScreen() {
         behavior={Platform.OS === 'android' ? 'padding' : 'height'}
       >
         <StatusBar translucent backgroundColor='transparent'></StatusBar>
-        {/* <View style={styles.logoContainer}>
-          <Image
-            style={styles.logo}
-            source={mciniLogo}
-          >
-          </Image>
-        </View> */}
+        
         <View style={[
-          // styles.innerContainer,
           {
             backgroundColor: AppStyles.generalColors.dark_three,
             paddingVertical: 50,
             padding: AppStyles.generalPadding.higher,
-            // borderRadius: AppStyles.generalBorderRadius.radius_two
           }
         ]}>
-          {/* {isError ? AlertComponent('Login', errorMessage) : ''} */}
           <View>
             <Text style={[
               styles.title,
@@ -168,20 +158,6 @@ export default function LoginScreen() {
                 marginBottom: AppStyles.generalMargin.higher,
               }
             ]}>Login</Text>
-            {isError ?
-              <View style={{
-                width: '100%', borderColor: 'white', borderWidth: 1, marginBottom: 10,
-                display: 'flex', alignItems: 'center',
-                justifyContent: 'center',
-                padding: 10
-              }}>
-                <Text style={{
-                  color: AppStyles.generalColors.red_one,
-                  fontWeight: AppStyles.generalFontWeight.weight_one,
-                  // marginBottom: AppStyles.generalMargin.higher,
-                }}>{errorMessage}</Text>
-              </View>
-              : ''}
             <TextInput
               style={[
                 styles.input,
@@ -207,7 +183,9 @@ export default function LoginScreen() {
                 color: AppStyles.generalColors.white_one,
                 fontSize: AppStyles.generalFontSize.normal,
                 fontWeight: AppStyles.generalFontWeight.weight_one
-              }}>Login</Text>
+              }}>
+                {isLoading ? <ActivityIndicator color={'white'} /> : 'Login'}
+              </Text>
             </TouchableOpacity>
             {/* <TouchableOpacity style={styles.innerContainer} onPress={handleRegister}>
               <Text style={styles.notRegistered}>Not a subscriber? Register</Text>
