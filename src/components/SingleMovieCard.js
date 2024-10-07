@@ -15,6 +15,7 @@ export default function SingleMovieCard({ movie, myWidth, subscriber }) {
     const [modalVisible, setModalVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isStatusCheck, setIsStatusCheck] = useState(false);
+    const [isPaymentCheck, setIsPaymentCheck] = useState(false);
 
     const size = myWidth / 3;
 
@@ -28,7 +29,7 @@ export default function SingleMovieCard({ movie, myWidth, subscriber }) {
         <TouchableOpacity
             onPress={async () => {
                 setIsStatusCheck(true)
-                setIsLoading(false)
+                // setIsLoading(false)
 
                 const subStatus = subscriber != null ? subscriber.subscription_status : 'N/A';
 
@@ -43,15 +44,14 @@ export default function SingleMovieCard({ movie, myWidth, subscriber }) {
                 var message_type = statusCheck['success'] == 'true' ? 'success' : 'error';
 
                 if (statusCheck['data'] != null && statusCheck['data']['subscription_status'] == 'active') {
-                    // showToast('Subscription status', statusCheck['message'], message_type, 3000);
-
+                    // showToast('Subscription status', statusCheck['message'], message_type, 5000);
                     setTimeout(() => {
                         navigator.navigate('MoviePlayer', {
                             singleMovie: movie
-                        }, 3000);
+                        }, 5000);
                     })
                 } else {
-                    showToast('Subscription status', statusCheck['message'], message_type, 3000);
+                    showToast('Subscription status', statusCheck['message'], message_type, 5000);
                     setModalVisible(true)
                 }
             }}
@@ -76,7 +76,7 @@ export default function SingleMovieCard({ movie, myWidth, subscriber }) {
                 </View>
             </Modal>
 
-            {/* ACTION MODAL */}
+            {/* SUBSCRIPTION REQUEST & CONFIRMATION MODAL */}
             <Modal
                 transparent={true}
                 visible={modalVisible}
@@ -84,7 +84,11 @@ export default function SingleMovieCard({ movie, myWidth, subscriber }) {
                 onRequestClose={() => setModalVisible(false)} // For Android back button
             >
                 <View style={styles.modalBackground}>
-                    <View style={styles.modalContainer}>
+                    <View style={[
+                        styles.modalContainer,
+                        isPaymentCheck ? 
+                        {backgroundColor: AppStyles.generalColors.dark_one} : {backgroundColor: AppStyles.generalColors.dark_one}
+                        ]}>
                         <Text style={styles.modalText}>No active subscription available</Text>
                         {
                             isLoading ? <ActivityIndicator color={'white'} /> : ''
@@ -102,19 +106,25 @@ export default function SingleMovieCard({ movie, myWidth, subscriber }) {
                                     network: network,
                                     plan_id: plan_id
                                 }
-
+                                //Subscribing to a package
                                 const result = await user_MTN_subscription(payload);
 
                                 console.log('SUBSCRIPTION REQUEST COMPLETED === ', result);
 
                                 var message_type = result['success'] == 'true' ? 'success' : 'error';
+                                var alertTitle = isPaymentCheck ? 'Payment confirmation' : 'Subscription Request';
+                                var alertMessage = result['message'];
+
+                                showToast(alertTitle, alertMessage, message_type, 5000);
+
+                                //Verifying user subscription / payment
+                                const verifySubscription = await userSubscriptionCheck(msisdn);
 
                                 setModalVisible(false)
 
                                 setIsLoading(false)
 
                                 if (result['success'] == 'true') {
-                                    showToast('Subscription Request', result['message'], message_type, 3000);
 
                                     //WRITE CODE TO VERIFY SUBSCRIPTION STATUS
                                     //result['data'] != null && result['data']['subscription_status'] == 'active'
@@ -122,7 +132,7 @@ export default function SingleMovieCard({ movie, myWidth, subscriber }) {
                                     // setTimeout(() => {
                                     //     navigator.navigate('MoviePlayer', {
                                     //         singleMovie: movie
-                                    //     }, 3000);
+                                    //     }, 5000);
                                     // })
                                 } else {
                                     showToast('Subscription Request', result['message'], 'error', 5000);
@@ -201,7 +211,7 @@ const styles = StyleSheet.create({
     modalContainer: {
         width: '80%',  // Set width of modal
         height: 200, // Set height of modal
-        backgroundColor: AppStyles.generalColors.dark_one,
+        backgroundColor: AppStyles.generalColors.dark_one, //This color changes dynamically for the subscription modal
         borderRadius: 10,
         padding: 20,
         justifyContent: 'center',

@@ -153,7 +153,7 @@ export default function LoginScreen() {
         <View style={[
           // styles.innerContainer,
           {
-            backgroundColor: AppStyles.generalColors.dark_one,
+            backgroundColor: AppStyles.generalColors.dark_three,
             paddingVertical: 50,
             padding: AppStyles.generalPadding.higher,
             // borderRadius: AppStyles.generalBorderRadius.radius_two
