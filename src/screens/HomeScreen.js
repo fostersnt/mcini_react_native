@@ -124,7 +124,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: AppStyles.generalColors.dark_one,
+    backgroundColor: AppStyles.generalColors.dark_four,
   },
   collectionName: {
     fontWeight: AppStyles.generalFontWeight.weight_one,
