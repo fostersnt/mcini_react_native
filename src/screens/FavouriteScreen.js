@@ -18,29 +18,15 @@ export default function FavouriteScreen() {
   useEffect(() => {
     const myFavourites = async () => {
       try {
-        // const msisdn = await getStorageData();
-        // console.log('MY STORAGE DATA === ', msisdn);
-
         const storageData = await getStorageData();
 
-        const subWatchList = storageData.watchList;
-        if (subWatchList != null) {
-          console.log('SUBSCRIBER WATCH-LIST FROM STORAGE === ', subWatchList[0]['video']['video_url']);
+        const subscriberFavourites = storageData.favourites;
+
+        if (subscriberFavourites != null && subscriberFavourites.length > 0) {
+          console.log('SUBSCRIBER WATCH-LIST FROM STORAGE === ', subWatchList[0]['video_url']);
         }
-        // const data = await userFavouriteMoviesAPI(storageData.msisdn);
-        // const data = await userWatchListAPI(msisdn);
-        // setFavourites(data.data);  // Use data.data as per your API response
-        // const videoArray = [];
 
-        // if (subWatchList != null && subWatchList.length > 0) {
-        //   subWatchList.forEach(item => {
-        //     if (item.video) {
-        //       videoArray.push(item.video);
-        //     }
-        //   });
-        // }
-
-        setFavourites(subWatchList);  // Use data.data as per your API response
+        setFavourites(subscriberFavourites);  // Use data.data as per your API response
         // console.log('USER FAVOURITE MOVIES === ', data.data);
       } catch (error) {
         console.error('Error fetching favourites:', error);
