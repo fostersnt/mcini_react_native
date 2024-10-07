@@ -68,6 +68,7 @@ export default function HomeScreen() {
           <MemoizedSingleMovieCard
             myWidth={screenWidth}
             movie={item}
+            subscriber={subscriber}
           />
         )}
         ListFooterComponent={showViewAll ? (

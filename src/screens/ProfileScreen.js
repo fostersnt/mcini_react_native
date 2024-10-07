@@ -2,6 +2,12 @@ import { View, Text, StyleSheet, TextInput, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { getStorageData } from '../utilities/LocalStorage';
 import { AppStyles } from '../utilities/AppStyles';
+import AntIcons from 'react-native-vector-icons/AntDesign'
+import Icon from 'react-native-vector-icons/FontAwesome5'
+import IonIcons from 'react-native-vector-icons/Ionicons'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import OctIcons from 'react-native-vector-icons/Octicons'
+
 
 export default function ProfileScreen() {
 
@@ -74,7 +80,7 @@ export default function ProfileScreen() {
             }]}
           >Phone Number
           </Text>
-          <TextInput style={styles.textInput} value={subscriber.msisdn} />
+          <TextInput style={styles.textInput} value={subscriber != null ? subscriber.msisdn : 'N/A'} />
         </View>
         <View>
           <Text
@@ -83,7 +89,68 @@ export default function ProfileScreen() {
             }]}
           >E-Mail
           </Text>
-          <TextInput style={styles.textInput} value={subscriber.email} />
+          <TextInput style={styles.textInput} value={subscriber != null ? subscriber.email : 'N/A'} />
+        </View>
+        {/* LEGAL INFORMATION */}
+        <View
+          style={{
+            marginTop: 100,
+          }}
+        >
+          <Text
+            style={[styles.textStyle, {
+              fontWeight: AppStyles.generalFontWeight.weight_one,
+            }]}
+          >Legal Information
+          </Text>
+          {/* INFORMATION ONE */}
+          <View
+            style={{
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginTop: 20,
+              marginBottom: AppStyles.generalMargin.higher
+            }}
+          >
+            <View
+              style={{ display: 'flex', flexDirection: 'row' }}
+            >
+              <AntIcons name='lock' size={25} style={styles.iconStyle} />
+              <Text style={[styles.textStyle, {
+                paddingLeft: 10, alignSelf: 'flex-start'
+              }]}>Privacy & Security</Text>
+            </View>
+            <IonIcons name='chevron-forward-outline' size={25} style={[styles.iconStyle, {
+
+            }]} />
+          </View>
+          {/* INFORMATION TWO */}
+          <View
+            style={{
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginTop: 20,
+              marginBottom: AppStyles.generalMargin.higher
+            }}
+          >
+            <View
+              style={{ display: 'flex', flexDirection: 'row' }}
+            >
+              <MaterialIcons name='content-paste' size={25} style={styles.iconStyle} />
+              <Text style={[styles.textStyle, {
+                paddingLeft: 10, alignSelf: 'flex-start'
+              }]}>Terms & Condition</Text>
+            </View>
+            <IonIcons name='chevron-forward-outline' size={25} style={[styles.iconStyle, {
+
+            }]} />
+          </View>
         </View>
       </View>
     </ScrollView>
@@ -102,5 +169,8 @@ const styles = StyleSheet.create({
     marginTop: AppStyles.generalMargin.low,
     marginBottom: AppStyles.generalMargin.higher,
     paddingHorizontal: AppStyles.generalPadding.low
+  },
+  iconStyle: {
+    color: AppStyles.generalColors.white_one,
   }
 })
