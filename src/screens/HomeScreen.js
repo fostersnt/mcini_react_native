@@ -4,13 +4,14 @@ import MovieBanner from '../components/MovieBanner';
 import { AppStyles } from '../utilities/AppStyles';
 import { useRoute } from '@react-navigation/native';
 import SingleMovieCard from '../components/SingleMovieCard';
+import { getStorageData } from '../utilities/LocalStorage';
 
 const MemoizedMovieBanner = memo(MovieBanner);
 const MemoizedSingleMovieCard = memo(SingleMovieCard);
 
 export default function HomeScreen() {
 
-const { width: screenWidth } = Dimensions.get('window');
+  const { width: screenWidth } = Dimensions.get('window');
   const route = useRoute();
   const { subscriber, movies, favourites, watchList } = route.params;
 
@@ -18,8 +19,14 @@ const { width: screenWidth } = Dimensions.get('window');
   const [homeBanner, setHomeBanner] = useState([]);
 
   useEffect(() => {
-    const newBanner = homeBannerData();
-    setHomeBanner(newBanner);
+    const funcCall = async () => {
+      const newBanner = homeBannerData();
+      setHomeBanner(newBanner);
+      const storageData = await getStorageData();
+      const subscriberStorageData = storageData.subscriber;
+      // console.log('SUBSCRIBER DATA FROM STORAGE === ', subscriberStorageData);
+    }
+    funcCall()
   }, [movies]);
 
   function homeBannerData() {
@@ -57,11 +64,11 @@ const { width: screenWidth } = Dimensions.get('window');
         showsHorizontalScrollIndicator={false}
         keyExtractor={(subItem) => subItem.id.toString()}
         renderItem={({ item }) => (
-          
-            <MemoizedSingleMovieCard
-              myWidth={screenWidth}
-              movie={item}
-            />
+
+          <MemoizedSingleMovieCard
+            myWidth={screenWidth}
+            movie={item}
+          />
         )}
         ListFooterComponent={showViewAll ? (
           <TouchableOpacity>

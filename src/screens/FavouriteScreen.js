@@ -18,13 +18,18 @@ export default function FavouriteScreen() {
   useEffect(() => {
     const myFavourites = async () => {
       try {
-        const msisdn = await getStorageData();
-        console.log('MY STORAGE DATA === ', msisdn);
+        // const msisdn = await getStorageData();
+        // console.log('MY STORAGE DATA === ', msisdn);
 
-        const data = await userFavouriteMoviesAPI(msisdn);
+        const storageData = await getStorageData();
+        const subWatchList = storageData.watchList;
+        console.log('SUBSCRIBER WATCH-LIST FROM STORAGE === ', subWatchList);
+
+        // const data = await userFavouriteMoviesAPI(storageData.msisdn);
         // const data = await userWatchListAPI(msisdn);
-        setFavourites(data.data);  // Use data.data as per your API response
-        console.log('USER FAVOURITE MOVIES === ', data.data);
+        // setFavourites(data.data);  // Use data.data as per your API response
+        setFavourites(subWatchList.data);  // Use data.data as per your API response
+        // console.log('USER FAVOURITE MOVIES === ', data.data);
       } catch (error) {
         console.error('Error fetching favourites:', error);
       } finally {
@@ -123,8 +128,8 @@ export default function FavouriteScreen() {
         />
       ) : (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text 
-            style={{color: AppStyles.generalColors.white_one}}
+          <Text
+            style={{ color: AppStyles.generalColors.white_one }}
           >No favourites available</Text>
         </View>
       )}

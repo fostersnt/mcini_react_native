@@ -14,23 +14,24 @@ export default function LoginScreen() {
   const [phone, setPhone] = useState('');
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  
+
   const [country, setCountry] = useState('option1');
 
   useEffect(() => {
     const authData = async () => {
-
       try {
-        const msisdnFromStorage = await getStorageData(phone);
-        console.log('STORAGE DATA IS: ', msisdnFromStorage);
+        const storageData = await getStorageData(phone);
+        // console.log('STORAGE DATA IS: ', storageData['msisdn']);
         // console.log('PHONE NUMBER:', phone);
 
-        const response = await checkAuthAPI(msisdnFromStorage);
+        const response = await checkAuthAPI(storageData.msisdn);
 
         const message = response.message.toString().toLowerCase();
 
         console.log('MESSAGE: ', message);
 
+        console.log('MAMAMAMAMAMA');
+        
 
         if (response.success == 'true' && message == 'user authenticated') {
           navigation.navigate('BottomTabNav', {
@@ -65,30 +66,53 @@ export default function LoginScreen() {
 
       setPhone(formattedPhone);
 
-      await storeData(formattedPhone);
+      var dataToBeStored = {
+        msisdn: formattedPhone,
+        subscriber: null,
+        movies: null,
+        favourites: null,
+        watchList: null,
+      }
 
       if (responseData['success'] == 'false') {
+
+        await storeData(dataToBeStored);
+
         setIsError(true);
         setErrorMessage(responseData['message']);
 
       } else if (responseData['success'] == 'true') {
+
+        var dataToBeStored = {
+          msisdn: formattedPhone,
+          subscriber: responseData['subscriber'],
+          movies: responseData['movies'],
+          favourites: responseData['favourites'],
+          watchList: responseData['watchList'],
+        }
+
+        await storeData(dataToBeStored);
+
+        // console.log('LOGIN WATCH-LIST === ', responseData['watchList']);
+        
+
         setIsError(false);
         setErrorMessage('');
 
         navigation.navigate('BottomTabNav', {
           screen: 'Home', //This is the name I used in the BottomTabNav for the HomeScreen
-          params: { 
+          params: {
             subscriber: responseData['subscriber'],
             movies: responseData['movies'],
             favourites: responseData['favourites'],
             watchList: responseData['watchList']
-           } //This is the data I am passing to the HomeScreen
+          } //This is the data I am passing to the HomeScreen
         });
       }
     }
   }
 
-  
+
   //REGISTER NAVIGATION
   const handleRegister = () => {
     navigation.navigate('Register');
