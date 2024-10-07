@@ -22,13 +22,25 @@ export default function FavouriteScreen() {
         // console.log('MY STORAGE DATA === ', msisdn);
 
         const storageData = await getStorageData();
-        const subWatchList = storageData.watchList;
-        console.log('SUBSCRIBER WATCH-LIST FROM STORAGE === ', subWatchList);
 
+        const subWatchList = storageData.watchList;
+        if (subWatchList != null) {
+          console.log('SUBSCRIBER WATCH-LIST FROM STORAGE === ', subWatchList[0]['video']['video_url']);
+        }
         // const data = await userFavouriteMoviesAPI(storageData.msisdn);
         // const data = await userWatchListAPI(msisdn);
         // setFavourites(data.data);  // Use data.data as per your API response
-        setFavourites(subWatchList.data);  // Use data.data as per your API response
+        // const videoArray = [];
+
+        // if (subWatchList != null && subWatchList.length > 0) {
+        //   subWatchList.forEach(item => {
+        //     if (item.video) {
+        //       videoArray.push(item.video);
+        //     }
+        //   });
+        // }
+
+        setFavourites(subWatchList);  // Use data.data as per your API response
         // console.log('USER FAVOURITE MOVIES === ', data.data);
       } catch (error) {
         console.error('Error fetching favourites:', error);
@@ -52,9 +64,9 @@ export default function FavouriteScreen() {
       {favourites != null && favourites.length > 0 ? (
         <FlatList
           data={favourites}
-          keyExtractor={(item) => item.video.id.toString()}
+          keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
-            // <SingleFavouriteScreen movie={item.video} />
+            // <SingleFavouriteScreen movie={item} />
             <View
               style={{
                 backgroundColor: AppStyles.generalColors.dark_one,

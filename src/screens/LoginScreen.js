@@ -30,9 +30,6 @@ export default function LoginScreen() {
 
         console.log('MESSAGE: ', message);
 
-        console.log('MAMAMAMAMAMA');
-        
-
         if (response.success == 'true' && message == 'user authenticated') {
           navigation.navigate('BottomTabNav', {
             Screen: 'HomeScreen',
@@ -83,12 +80,23 @@ export default function LoginScreen() {
 
       } else if (responseData['success'] == 'true') {
 
+        const watchListArray = [];
+        const myWatchList = responseData['watchList'];
+
+        if (myWatchList != null && myWatchList.length > 0) {
+          myWatchList.forEach(item => {
+            if (item.video) {
+              watchListArray.push(item.video);
+            }
+          });
+        }
+
         var dataToBeStored = {
           msisdn: formattedPhone,
           subscriber: responseData['subscriber'],
           movies: responseData['movies'],
           favourites: responseData['favourites'],
-          watchList: responseData['watchList'],
+          watchList: watchListArray,
         }
 
         await storeData(dataToBeStored);
@@ -105,7 +113,7 @@ export default function LoginScreen() {
             subscriber: responseData['subscriber'],
             movies: responseData['movies'],
             favourites: responseData['favourites'],
-            watchList: responseData['watchList']
+            watchList: watchListArray
           } //This is the data I am passing to the HomeScreen
         });
       }
