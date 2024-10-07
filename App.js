@@ -8,13 +8,15 @@ import {
 } from 'react-native';
 
 import AppNavigation from './src/navigation/AppNavigation';
+import Toast from 'react-native-toast-message';
 
 function App() {
   return (
     // <SafeAreaView style={styles.viewContainer}>
       <View style={styles.viewContainer}>
         <AppNavigation />
-      </View>
+        <Toast ref={(ref) => Toast.setRef(ref)} />
+        </View>
     // </SafeAreaView>
   );
 }

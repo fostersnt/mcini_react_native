@@ -344,3 +344,36 @@ export const user_MTN_unSubscription = async (payload) => {
         };
     }
 }
+
+
+//This function checks for user subscription status
+export const userSubscriptionCheck = async (phone) => {
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        //NOTE: payload is an object in our case
+        body: JSON.stringify({
+            msisdn: phone
+        })
+    };
+
+    const url = `${BaseURL}/movies/subscriptions`;
+
+    try {
+        const response = await fetch(url, options);
+
+        const data = await response.json()
+
+        return data;
+
+    } catch (error) {
+        return {
+            'success': 'false',
+            'message': error.toString(),
+            'data': null
+        };
+    }
+}

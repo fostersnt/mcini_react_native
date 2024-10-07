@@ -4,6 +4,10 @@ import { AppStyles } from '../utilities/AppStyles'
 import WebView from 'react-native-webview'
 import { useNavigation } from '@react-navigation/native'
 import MoviePlayerScreen from '../screens/MoviePlayerScreen'
+import { userData } from '../apiData/UserData'
+import { user_MTN_subscription, userSubscriptionCheck } from '../api/UserAPI'
+import Toast from 'react-native-toast-message'
+import { showToast } from './ToastAlert'
 
 export default function SingleMovieCard({ movie, myWidth, subscriber }) {
     const navigator = useNavigation()
@@ -12,19 +16,44 @@ export default function SingleMovieCard({ movie, myWidth, subscriber }) {
 
     const size = myWidth / 3;
 
+    const myData = userData;
+
+    const msisdn = subscriber != null ? subscriber.msisdn : 'N/A'
+    const plan_id = myData.dailyPlanId;
+    const network = myData.network.mtn;
+
     return (
         <TouchableOpacity
-            onPress={() => {
+            onPress={async () => {
                 const subStatus = subscriber != null ? subscriber.subscription_status : 'N/A';
-                if (subStatus == 'active') {
-                    navigator.navigate('MoviePlayer', {
-                        singleMovie: movie
-                    });
-                } else {
-                    setModalVisible(true)
-                }
+                console.log('CHECKING');
+                showToast('Example', 'Invalid phone number', 'success', 3000);
+                console.log('COMPLETED');
+                // if (subStatus == 'active') {
+
+                //     const statusCheck = await userSubscriptionCheck(msisdn);
+
+                //     if (statusCheck['data'] != null && statusCheck['data']['subscription_status'] == 'active') {
+                //         navigator.navigate('MoviePlayer', {
+                //             singleMovie: movie
+                //         });
+                //     } else {
+                //         console.log('ERROR OCCURRED');
+                //     }
+                // } else {
+                //     const result = await user_MTN_subscription();
+                //     if (result['success'] == 'true') {
+                //         setModalVisible(false)
+                //         navigator.navigate('MoviePlayer', {
+                //             singleMovie: movie
+                //         });
+                //     } else {
+
+                //     }
+                // }
             }}
         >
+
             <Modal
                 transparent={true}
                 visible={modalVisible}
@@ -38,7 +67,9 @@ export default function SingleMovieCard({ movie, myWidth, subscriber }) {
                             <TouchableOpacity style={styles.modalButtonRed} onPress={() => setModalVisible(false)}>
                                 <Text style={styles.modalBtnText}>Cancel</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.modalButtonBlue} onPress={() => setModalVisible(false)}>
+                            <TouchableOpacity style={styles.modalButtonBlue} onPress={() => {
+                                console.log('BUTTON CLICKED');
+                            }}>
                                 <Text style={styles.modalBtnText}>Subscribe</Text>
                             </TouchableOpacity>
                             {/* <Button style={styles.modalButtonRed} title="Cancel" color={'red'} /> */}
@@ -75,7 +106,7 @@ export default function SingleMovieCard({ movie, myWidth, subscriber }) {
             // onRenderProcessGone={handleOnRenderProcessGone}
             >
             </WebView>
-        </TouchableOpacity>
+            </TouchableOpacity>
     )
 }
 
