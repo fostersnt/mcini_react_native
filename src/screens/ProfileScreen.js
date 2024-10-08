@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 30,
     marginTop: AppStyles.generalMargin.low,
-    marginBottom: AppStyles.generalMargin.higher,
+    marginBottom: 40,
     paddingHorizontal: AppStyles.generalPadding.low
   },
   iconStyle: {
