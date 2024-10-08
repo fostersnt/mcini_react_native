@@ -41,7 +41,8 @@ export default function SearchScreen() {
       } else {
         console.log('NO MOVIE FOUND === ', foundMovies[0]);
       }
-    }else{
+    } else {
+      setFoundMovies([])
       showToast('Search Error', 'No text entered', 'error', 3000);
     }
   }
@@ -75,7 +76,11 @@ export default function SearchScreen() {
           renderItem={({ item }) => {
             return (
               <View style={styles.componentContainer}>
+                <Etypto name='cross' size={20} color={'white'} />
                 <SingleSearchCard movie={item} />
+                <View style={{width: 50}}>
+                  <Text>{item['title']}</Text>
+                </View>
                 <TouchableOpacity>
                   <Etypto name='cross' size={20} color={'white'} />
                 </TouchableOpacity>
@@ -112,6 +117,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     borderBottomColor: 'grey',
     borderBottomWidth: 1,
     marginBottom: AppStyles.generalMargin.higher
