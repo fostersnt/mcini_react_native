@@ -45,11 +45,21 @@ export default function SearchScreen() {
       } else {
         console.log('NO MOVIE FOUND === ', foundMovies[0]);
       }
-    } 
-    // else {
-    //   setFoundMovies([])
-    //   showToast('Search Error', 'No text entered', 'error', 3000);
-    // }
+    }
+  }
+
+  const handleCancellation = (movie) => {
+    const initialCount = foundMovies.length;
+
+    const myAvailableMovies = foundMovies.filter((currentMovie) => currentMovie.id != movie.id);
+
+    const countFlag = initialCount - 1;
+
+    setFoundMovies(myAvailableMovies); 
+
+    if (countFlag == 0) {
+      setInputText('')
+    }
   }
 
   return (
@@ -93,7 +103,11 @@ export default function SearchScreen() {
                     <Text style={{ color: 'white', marginLeft: 10 }}>{item['title']}</Text>
                   </View>
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    handleCancellation(item)
+                  }}
+                >
                   <Etypto name='cross' size={20} color={'white'} />
                 </TouchableOpacity>
               </View>
