@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     backgroundColor: AppStyles.generalColors.white_one,
-    borderWidth: 1,
+    // borderWidth: 1,
     borderColor: AppStyles.generalColors.white_one,
     paddingHorizontal: AppStyles.generalPadding.low,
     alignItems: 'center',
