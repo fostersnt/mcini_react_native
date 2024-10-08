@@ -41,17 +41,24 @@ export default function HomeScreen() {
 
   const groupedMovies = movies.reduce((result, item) => {
     const { collection_name } = item;
-    if (!result[collection_name]) {
+    if (!result[collection_name] || collection_name.toLowerCase() == 'free') {
       result[collection_name] = [];
     }
+    // if (collection_name.toLowerCase() != 'free') {
     result[collection_name].push(item);
+    // }
     return result;
   }, {});
+
+  const keys = Object.keys(groupedMovies);
+  console.log('COLLECTION NAMES === ', keys);
+  
 
   const groupedDataArray = Object.keys(groupedMovies).map(collection_name => ({
     collection_name,
     items: groupedMovies[collection_name],
-  }));
+  })
+  );
 
   const renderedItem = (items) => {
     const displayItems = items.slice(0, 5);
