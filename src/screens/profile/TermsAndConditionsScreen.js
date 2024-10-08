@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, ScrollView } from 'react-native'
 import React from 'react'
 import { TermsAndConditions } from '../../utilities/TermsAndConditions'
 import { AppStyles } from '../../utilities/AppStyles'
@@ -9,19 +9,25 @@ export default function TermsAndConditionsScreen() {
     const { width: screenWidth } = Dimensions.get('window');
 
     return (
-        <View style={styles.container}>
-            <View style={styles.mainHeaderContainer}>
-                <Text style={styles.mainHeader}>TERMS & CONDITIONS</Text>
+        <ScrollView>
+            <View style={styles.container}>
+                <View style={styles.mainHeaderContainer}>
+                    <Text style={styles.mainHeader}>TERMS & CONDITIONS</Text>
+                </View>
+                <View style={styles.itemContainer}>
+                    <Text style={styles.textHeaderStyle}>Introduction</Text>
+                    <Text style={styles.textStyle}>{TermsAndConditions.introduction}</Text>
+                </View>
+                <View style={styles.itemContainer}>
+                    <Text style={styles.textHeaderStyle}>1. Membership / Account</Text>
+                    <Text style={styles.textStyle}>{TermsAndConditions.membershipAccount}</Text>
+                </View>
+                <View style={styles.itemContainer}>
+                    <Text style={styles.textHeaderStyle}>2. Billing and Cancellation</Text>
+                    <Text style={styles.textStyle}>{TermsAndConditions.billingAndCancellation}</Text>
+                </View>
             </View>
-            <View style={styles.itemContainer}>
-                <Text style={styles.textHeaderStyle}>Introduction</Text>
-                <Text style={styles.textStyle}>{TermsAndConditions.introduction}</Text>
-            </View>
-            <View style={styles.itemContainer}>
-                <Text style={styles.textHeaderStyle}>1. Membership / Account</Text>
-                <Text style={styles.textStyle}>{TermsAndConditions.membershipAccount}</Text>
-            </View>
-        </View>
+        </ScrollView>
     )
 }
 
