@@ -6,15 +6,19 @@ import { Dimensions } from 'react-native'
 
 export default function TermsAndConditionsScreen() {
 
-    const {width: screenWidth} = Dimensions.get('window');
+    const { width: screenWidth } = Dimensions.get('window');
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.mainHeaderContainer}><Text style={styles.mainHeader}>TERMS & CONDITIONS</Text></View>
-      <Text style={styles.textHeaderStyle}>Introduction</Text>
-      <Text style={styles.textStyle}>{TermsAndConditions.introduction}</Text>
-    </View>
-  )
+    return (
+        <View style={styles.container}>
+            <View style={styles.mainHeaderContainer}>
+                <Text style={styles.mainHeader}>TERMS & CONDITIONS</Text>
+            </View>
+            <View style={styles.itemContainer}>
+                <Text style={styles.textHeaderStyle}>Introduction</Text>
+                <Text style={styles.textStyle}>{TermsAndConditions.introduction}</Text>
+            </View>
+        </View>
+    )
 }
 
 const styles = StyleSheet.create({
@@ -22,6 +26,12 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: AppStyles.generalColors.dark_four,
         paddingTop: 40,
+        padding: 10
+    },
+    itemContainer: {
+        borderColor: AppStyles.generalColors.dark_one,
+        borderColor: 'grey',
+        borderWidth: 1,
         padding: 10
     },
     mainHeaderContainer: {
@@ -43,6 +53,6 @@ const styles = StyleSheet.create({
     textStyle: {
         color: AppStyles.generalColors.white_one,
         marginBottom: AppStyles.generalMargin.higher,
-        fontSize: AppStyles.generalFontSize.small
+        fontSize: AppStyles.generalFontSize.small,
     }
 })
