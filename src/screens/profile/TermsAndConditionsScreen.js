@@ -38,6 +38,10 @@ export default function TermsAndConditionsScreen() {
                     <Text style={styles.textHeaderStyle}>5. Prohibited Conduct</Text>
                     <Text style={styles.textStyle}>{TermsAndConditions.prohibitedConduct}</Text>
                 </View>
+                <View style={styles.itemContainer}>
+                    <Text style={styles.textHeaderStyle}>6. Modification of the Terms</Text>
+                    <Text style={styles.textStyle}>{TermsAndConditions.modificationOfTerms}</Text>
+                </View>
             </View>
         </ScrollView>
     )
