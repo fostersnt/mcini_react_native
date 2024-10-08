@@ -7,7 +7,6 @@ import { AppStyles } from '../utilities/AppStyles';
 import { replaceFirstDigitWith233 } from '../utilities/Validations';
 import { showToast } from '../components/ToastAlert';
 import Toast from 'react-native-toast-message';
-import LinearGradient from 'react-native-linear-gradient';
 
 const bannerImage = require('../assets/images/banner.png');
 
