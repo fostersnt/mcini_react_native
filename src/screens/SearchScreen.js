@@ -5,13 +5,17 @@ import { AppStyles } from '../utilities/AppStyles';
 import SingleSearchCard from './search/SingleSearchCard';
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import Etypto from 'react-native-vector-icons/Entypo'
+import Octicons from 'react-native-vector-icons/Octicons'
 import { showToast } from '../components/ToastAlert';
+import { useNavigation } from '@react-navigation/native';
 
 export default function SearchScreen() {
   const [movies, setMovies] = useState(null);
   const [history, setHistory] = useState([]);
   const [foundMovies, setFoundMovies] = useState([]);
   const [inputText, setInputText] = useState([]);
+
+  const navigator = useNavigation();
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -41,10 +45,11 @@ export default function SearchScreen() {
       } else {
         console.log('NO MOVIE FOUND === ', foundMovies[0]);
       }
-    } else {
-      setFoundMovies([])
-      showToast('Search Error', 'No text entered', 'error', 3000);
-    }
+    } 
+    // else {
+    //   setFoundMovies([])
+    //   showToast('Search Error', 'No text entered', 'error', 3000);
+    // }
   }
 
   return (
@@ -56,14 +61,16 @@ export default function SearchScreen() {
           value={inputText}
           onChangeText={(userInput) => {
             setInputText(userInput)
-            // handleUserInput(userInput)
+            setTimeout(() => {
+              handleUserInput(userInput)
+            }, 1000);
           }}
         ></TextInput>
         <TouchableOpacity onPress={() => {
-          console.log('SEARCH BUTTON CLICKED');
-          handleUserInput(inputText)
+          setInputText('')
+          setFoundMovies([])
         }}>
-          <Icon name='search' color={'grey'} size={20} />
+          <Etypto name='cross' size={20} color={'grey'} />
         </TouchableOpacity>
       </View>
       {foundMovies == null || foundMovies.length === 0 ? (
@@ -76,11 +83,16 @@ export default function SearchScreen() {
           renderItem={({ item }) => {
             return (
               <View style={styles.componentContainer}>
-                <Etypto name='cross' size={20} color={'white'} />
-                <SingleSearchCard movie={item} />
-                <View style={{width: 50}}>
-                  <Text>{item['title']}</Text>
-                </View>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigator.navigate('MoviePlayer', { singleMovie: item })
+                  }}
+                >
+                  <View style={{ display: 'flex', flexDirection: 'row' }}>
+                    <Octicons name='history' size={20} color={'white'} />
+                    <Text style={{ color: 'white', marginLeft: 10 }}>{item['title']}</Text>
+                  </View>
+                </TouchableOpacity>
                 <TouchableOpacity>
                   <Etypto name='cross' size={20} color={'white'} />
                 </TouchableOpacity>
@@ -120,7 +132,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomColor: 'grey',
     borderBottomWidth: 1,
-    marginBottom: AppStyles.generalMargin.higher
+    marginBottom: 40
   },
   inputStyle: {
     // color: AppStyles.generalColors.white_one,

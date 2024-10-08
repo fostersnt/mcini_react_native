@@ -7,16 +7,11 @@ export default function SingleSearchCard({ movie }) {
     // console.log('DATA DATA === ', movie['video_url']);
 
     return (
-        // <View style={styles.viewContainer}>
-        //     <View style={styles.innerContainer}>
-                <WebView
-                style={styles.webView}
-                    source={{ uri: movie['default_thumbnail_filename'], headers: { Referer: 'https://mcini.tv' } }}
-                >
-                </WebView>
-        //         <Text style={styles.textStyle}>SingleSearchCard</Text>
-        //     </View>
-        // </View>
+        <View style={styles.viewContainer}>
+            <View style={styles.innerContainer}>
+                <Text style={styles.textStyle}>SingleSearchCard</Text>
+            </View>
+        </View>
     )
 }
 
