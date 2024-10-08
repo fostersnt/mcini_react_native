@@ -26,6 +26,10 @@ export default function TermsAndConditionsScreen() {
                     <Text style={styles.textHeaderStyle}>2. Billing and Cancellation</Text>
                     <Text style={styles.textStyle}>{TermsAndConditions.billingAndCancellation}</Text>
                 </View>
+                <View style={styles.itemContainer}>
+                    <Text style={styles.textHeaderStyle}>3. Proprietary Materials & Licenses</Text>
+                    <Text style={styles.textStyle}>{TermsAndConditions.proprietaryMaterialsAndLicenses}</Text>
+                </View>
             </View>
         </ScrollView>
     )
