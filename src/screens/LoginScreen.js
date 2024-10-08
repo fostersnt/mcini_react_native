@@ -7,6 +7,7 @@ import { AppStyles } from '../utilities/AppStyles';
 import { replaceFirstDigitWith233 } from '../utilities/Validations';
 import { showToast } from '../components/ToastAlert';
 import Toast from 'react-native-toast-message';
+import LinearGradient from 'react-native-linear-gradient';
 
 const bannerImage = require('../assets/images/banner.png');
 
@@ -103,7 +104,7 @@ export default function LoginScreen() {
           }
 
           await storeData(dataToBeStored);
-          
+
           setIsLoading(false)
 
           navigation.navigate('BottomTabNav', {
@@ -131,7 +132,7 @@ export default function LoginScreen() {
       style={[
         styles.container,
         {
-          padding: AppStyles.generalPadding.higher
+          padding: AppStyles.generalPadding.higher,
         }
       ]}
       source={bannerImage}
@@ -139,60 +140,61 @@ export default function LoginScreen() {
     >
       <KeyboardAvoidingView
 
-        behavior={Platform.OS === 'android' ? 'padding' : 'height'}
-      >
-        <StatusBar translucent backgroundColor='transparent'></StatusBar>
-        
-        <View style={[
-          {
-            backgroundColor: AppStyles.generalColors.dark_three,
-            paddingVertical: 50,
-            padding: AppStyles.generalPadding.higher,
-          }
-        ]}>
-          <View>
-            <Text style={[
-              styles.title,
-              {
-                fontSize: AppStyles.generalFontSize.large,
-                marginBottom: AppStyles.generalMargin.higher,
-              }
-            ]}>Login</Text>
-            <TextInput
-              style={[
-                styles.input,
+          behavior={Platform.OS === 'android' ? 'padding' : 'height'}
+        >
+          <StatusBar translucent backgroundColor='transparent'></StatusBar>
+
+          <View style={[
+            {
+              backgroundColor: AppStyles.generalColors.dark_three,
+              paddingVertical: 50,
+              padding: AppStyles.generalPadding.higher,
+              opacity: 1,
+            }
+          ]}>
+            <View>
+              <Text style={[
+                styles.title,
                 {
-                  height: AppStyles.generalHeight.height_one,
+                  fontSize: AppStyles.generalFontSize.large,
                   marginBottom: AppStyles.generalMargin.higher,
+                }
+              ]}>Login</Text>
+              <TextInput
+                style={[
+                  styles.input,
+                  {
+                    height: AppStyles.generalHeight.height_one,
+                    marginBottom: AppStyles.generalMargin.higher,
+                    borderRadius: AppStyles.generalBorderRadius.radius_one
+                  }
+                ]}
+                placeholder='phone number'
+                onChangeText={(text) => setPhone(text)}
+              />
+              <TouchableOpacity onPress={handleLogin} style={[
+                styles.loginButton,
+                {
+                  backgroundColor: AppStyles.generalColors.blue,
+                  padding: AppStyles.generalPadding.lower,
+                  height: AppStyles.generalHeight.height_one,
                   borderRadius: AppStyles.generalBorderRadius.radius_one
                 }
-              ]}
-              placeholder='phone number'
-              onChangeText={(text) => setPhone(text)}
-            />
-            <TouchableOpacity onPress={handleLogin} style={[
-              styles.loginButton,
-              {
-                backgroundColor: AppStyles.generalColors.blue,
-                padding: AppStyles.generalPadding.lower,
-                height: AppStyles.generalHeight.height_one,
-                borderRadius: AppStyles.generalBorderRadius.radius_one
-              }
-            ]}>
-              <Text style={{
-                color: AppStyles.generalColors.white_one,
-                fontSize: AppStyles.generalFontSize.normal,
-                fontWeight: AppStyles.generalFontWeight.weight_one
-              }}>
-                {isLoading ? <ActivityIndicator color={'white'} /> : 'Login'}
-              </Text>
-            </TouchableOpacity>
-            {/* <TouchableOpacity style={styles.innerContainer} onPress={handleRegister}>
+              ]}>
+                <Text style={{
+                  color: AppStyles.generalColors.white_one,
+                  fontSize: AppStyles.generalFontSize.normal,
+                  fontWeight: AppStyles.generalFontWeight.weight_one
+                }}>
+                  {isLoading ? <ActivityIndicator color={'white'} /> : 'Login'}
+                </Text>
+              </TouchableOpacity>
+              {/* <TouchableOpacity style={styles.innerContainer} onPress={handleRegister}>
               <Text style={styles.notRegistered}>Not a subscriber? Register</Text>
             </TouchableOpacity> */}
+            </View>
           </View>
-        </View>
-      </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
     </ImageBackground>
   )
 }
