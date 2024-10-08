@@ -54,6 +54,8 @@ export default function ProfileScreen() {
           style={{
             display: 'flex',
             flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
             padding: 10
           }}
         >
