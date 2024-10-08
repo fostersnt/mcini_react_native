@@ -50,15 +50,12 @@ export default function HomeScreen() {
     return result;
   }, {});
 
-  const keys = Object.keys(groupedMovies);
-  console.log('COLLECTION NAMES === ', keys);
-  
-
-  const groupedDataArray = Object.keys(groupedMovies).map(collection_name => ({
-    collection_name,
-    items: groupedMovies[collection_name],
-  })
-  );
+  const groupedDataArray = Object.keys(groupedMovies)
+    .filter(collection_name => collection_name.toLowerCase() !== 'free') // Filter out "free"
+    .map(collection_name => ({
+      collection_name,
+      items: groupedMovies[collection_name],
+    }));
 
   const renderedItem = (items) => {
     const displayItems = items.slice(0, 5);

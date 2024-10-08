@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, TextInput, ScrollView, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { getStorageData } from '../utilities/LocalStorage';
 import { AppStyles } from '../utilities/AppStyles';
@@ -7,11 +7,13 @@ import Icon from 'react-native-vector-icons/FontAwesome5'
 import IonIcons from 'react-native-vector-icons/Ionicons'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import OctIcons from 'react-native-vector-icons/Octicons'
+import { useNavigation } from '@react-navigation/native';
 
 
 export default function ProfileScreen() {
 
   const [subscriber, setSubscriber] = useState(null);
+  const navigator = useNavigation();
 
   useEffect(() => {
     const mySubscriber = async () => {
@@ -104,52 +106,29 @@ export default function ProfileScreen() {
           >Legal Information
           </Text>
           {/* INFORMATION ONE */}
-          <View
-            style={{
-              flex: 1,
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginTop: 20,
-              marginBottom: AppStyles.generalMargin.higher
-            }}
-          >
-            <View
-              style={{ display: 'flex', flexDirection: 'row' }}
-            >
+          <TouchableOpacity onPress={() => {
+            navigator.navigate('TermsAndConditions')
+            console.log('TERMS AND CONDITIONS');
+          }}>
+          <View style={styles.legalInfoContainer}>
+            <View style={{ display: 'flex', flexDirection: 'row' }}>
               <AntIcons name='lock' size={25} style={styles.iconStyle} />
               <Text style={[styles.textStyle, {
                 paddingLeft: 10, alignSelf: 'flex-start'
               }]}>Privacy & Security</Text>
             </View>
-            <IonIcons name='chevron-forward-outline' size={25} style={[styles.iconStyle, {
-
-            }]} />
+            <IonIcons name='chevron-forward-outline' size={25} style={styles.iconStyle} />
           </View>
+          </TouchableOpacity>
           {/* INFORMATION TWO */}
-          <View
-            style={{
-              flex: 1,
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginTop: 20,
-              marginBottom: AppStyles.generalMargin.higher
-            }}
-          >
-            <View
-              style={{ display: 'flex', flexDirection: 'row' }}
-            >
+          <View style={styles.legalInfoContainer}>
+            <View style={{ display: 'flex', flexDirection: 'row' }}>
               <MaterialIcons name='content-paste' size={25} style={styles.iconStyle} />
               <Text style={[styles.textStyle, {
                 paddingLeft: 10, alignSelf: 'flex-start'
               }]}>Terms & Condition</Text>
             </View>
-            <IonIcons name='chevron-forward-outline' size={25} style={[styles.iconStyle, {
-
-            }]} />
+            <IonIcons name='chevron-forward-outline' size={25} style={styles.iconStyle} />
           </View>
         </View>
       </View>
@@ -172,5 +151,14 @@ const styles = StyleSheet.create({
   },
   iconStyle: {
     color: AppStyles.generalColors.white_one,
+  },
+  legalInfoContainer: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 20,
+    marginBottom: AppStyles.generalMargin.higher
   }
 })
