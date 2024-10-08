@@ -96,12 +96,13 @@ export default function ProfileScreen() {
         {/* LEGAL INFORMATION */}
         <View
           style={{
-            marginTop: 100,
+            marginTop: 50,
           }}
         >
           <Text
             style={[styles.textStyle, {
-              fontWeight: AppStyles.generalFontWeight.weight_one,
+              // fontWeight: AppStyles.generalFontWeight.weight_one,
+              fontSize: AppStyles.generalFontSize.normal
             }]}
           >Legal Information
           </Text>
