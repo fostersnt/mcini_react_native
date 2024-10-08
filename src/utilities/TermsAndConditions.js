@@ -16,7 +16,7 @@ The information you provide to mCini, whether at registration/signup or at any o
     termination: `4.1 Termination by MCini: mCini may, at its sole discretion, terminate any account for any reason. mCini may also discontinue providing access to its service with or without notice.
 
 4.2 Termination by You: If dissatisfied, you can terminate your account at any time by canceling the service and discontinuing its use.`,
-    prohibitedContacts: `You Agree Not to:
+    prohibitedConduct: `You Agree Not to:
 
 5.1 Use the mCini service for any commercial use or purpose unless expressly permitted by mCini in writing, it being understood that the mCini service and related services are intended for personal, non-commercial use only;
 

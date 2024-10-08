@@ -30,6 +30,14 @@ export default function TermsAndConditionsScreen() {
                     <Text style={styles.textHeaderStyle}>3. Proprietary Materials & Licenses</Text>
                     <Text style={styles.textStyle}>{TermsAndConditions.proprietaryMaterialsAndLicenses}</Text>
                 </View>
+                <View style={styles.itemContainer}>
+                    <Text style={styles.textHeaderStyle}>4. Termination</Text>
+                    <Text style={styles.textStyle}>{TermsAndConditions.termination}</Text>
+                </View>
+                <View style={styles.itemContainer}>
+                    <Text style={styles.textHeaderStyle}>5. Prohibited Conduct</Text>
+                    <Text style={styles.textStyle}>{TermsAndConditions.prohibitedConduct}</Text>
+                </View>
             </View>
         </ScrollView>
     )
