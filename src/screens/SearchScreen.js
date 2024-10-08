@@ -5,6 +5,7 @@ import { AppStyles } from '../utilities/AppStyles';
 import SingleSearchCard from './search/SingleSearchCard';
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import Etypto from 'react-native-vector-icons/Entypo'
+import { showToast } from '../components/ToastAlert';
 
 export default function SearchScreen() {
   const [movies, setMovies] = useState(null);
@@ -29,15 +30,19 @@ export default function SearchScreen() {
 
   const handleUserInput = (text) => {
     const searchText = text.toLowerCase();
-    availableMovies = (movies == null || movies.length < 1) ? [] :
-      movies.filter((item) => item.title.toLowerCase().includes(searchText))
+    if (searchText != '') {
+      availableMovies = (movies == null || movies.length < 1) ? [] :
+        movies.filter((item) => item.title.toLowerCase().includes(searchText))
 
-    setFoundMovies(availableMovies);
+      setFoundMovies(availableMovies);
 
-    if (foundMovies.length > 0) {
-      console.log('TOTAL FOUND MOVIES === ', foundMovies.length);
-    } else {
-      console.log('NO MOVIE FOUND === ', foundMovies[0]);
+      if (foundMovies.length > 0) {
+        console.log('TOTAL FOUND MOVIES === ', foundMovies.length);
+      } else {
+        console.log('NO MOVIE FOUND === ', foundMovies[0]);
+      }
+    }else{
+      showToast('Search Error', 'No text entered', 'error', 3000);
     }
   }
 
@@ -50,6 +55,7 @@ export default function SearchScreen() {
           value={inputText}
           onChangeText={(userInput) => {
             setInputText(userInput)
+            // handleUserInput(userInput)
           }}
         ></TextInput>
         <TouchableOpacity onPress={() => {
