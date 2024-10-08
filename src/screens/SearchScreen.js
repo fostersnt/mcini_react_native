@@ -1,11 +1,16 @@
-import { View, Text, ScrollView, StyleSheet, StatusBar } from 'react-native'
+import { View, Text, ScrollView, StyleSheet, StatusBar, FlatList, TextInput, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { movieListAPI } from '../api/MovieAPI';
 import { AppStyles } from '../utilities/AppStyles';
+import SingleSearchCard from './search/SingleSearchCard';
+import Icon from 'react-native-vector-icons/FontAwesome5'
+
 
 export default function SearchScreen() {
   const [movies, setMovies] = useState(null);
   const [history, setHistory] = useState([]);
+  const [foundMovies, setFoundMovies] = useState([]);
+  const [inputText, setInputText] = useState([]);
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -22,18 +27,80 @@ export default function SearchScreen() {
     fetchMovies();
   }, []);
 
+  const handleUserInput = (text) => {
+    const searchText = text.toLowerCase();
+    availableMovies = (movies == null || movies.length < 1) ? [] :
+      movies.filter((item) => item.title.toLowerCase().includes(searchText))
+
+    setFoundMovies(availableMovies);
+
+    if (foundMovies.length > 0) {
+      console.log('TOTAL FOUND MOVIES === ', foundMovies.length);
+    } else {
+      console.log('NO MOVIE FOUND === ', foundMovies[0]);
+    }
+  }
+
   return (
-    <ScrollView style={styles.mainContainer}>
-      <View>
-        <Text>SearchScreen</Text>
+    <View style={styles.mainContainer}>
+      <View style={styles.searchContainer}>
+        <TextInput
+          style={styles.inputStyle}
+          placeholder="Type something..."
+          value={inputText}
+          onChangeText={(userInput) => {
+            setInputText(userInput)
+          }}
+        ></TextInput>
+        <TouchableOpacity onPress={() => {
+          console.log('SEARCH BUTTON CLICKED');
+          handleUserInput(inputText)
+        }}>
+          <Icon name='search' color={'grey'} size={20} />
+        </TouchableOpacity>
       </View>
-    </ScrollView>
+      {foundMovies == null || foundMovies.length === 0 ? (
+        <View style={styles.noMoviesContainer}>
+          <Text style={{ color: 'white' }}>No movies found</Text>
+        </View>
+      ) : (
+        <FlatList
+          data={foundMovies}
+          renderItem={({ item }) => <SingleSearchCard movies={foundMovies} movie_id={item.id} />}
+          keyExtractor={(item) => item.id.toString()}
+        />
+      )}
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: AppStyles.generalColors.red_one
+    backgroundColor: AppStyles.generalColors.dark_four,
+    paddingTop: 40,
+  },
+  searchContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: AppStyles.generalColors.white_one,
+    borderWidth: 1,
+    borderColor: AppStyles.generalColors.white_one,
+    paddingHorizontal: AppStyles.generalPadding.low,
+    alignItems: 'center',
+    marginHorizontal: AppStyles.generalMargin.low,
+    marginBottom: AppStyles.generalMargin.higher,
+    borderRadius: 20
+  },
+  inputStyle: {
+    // color: AppStyles.generalColors.white_one,
+    width: '90%'
+  },
+  noMoviesContainer: {
+    flex: 1,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 })
