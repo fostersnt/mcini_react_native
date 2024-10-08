@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
     },
     textStyle: {
         color: AppStyles.generalColors.white_one,
-        marginBottom: AppStyles.generalMargin.higher
+        marginBottom: AppStyles.generalMargin.higher,
+        fontSize: AppStyles.generalFontSize.small
     }
 })
