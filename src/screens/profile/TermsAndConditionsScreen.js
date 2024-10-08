@@ -17,6 +17,10 @@ export default function TermsAndConditionsScreen() {
                 <Text style={styles.textHeaderStyle}>Introduction</Text>
                 <Text style={styles.textStyle}>{TermsAndConditions.introduction}</Text>
             </View>
+            <View style={styles.itemContainer}>
+                <Text style={styles.textHeaderStyle}>1. Membership / Account</Text>
+                <Text style={styles.textStyle}>{TermsAndConditions.membershipAccount}</Text>
+            </View>
         </View>
     )
 }
@@ -32,7 +36,8 @@ const styles = StyleSheet.create({
         borderColor: AppStyles.generalColors.dark_one,
         borderColor: 'grey',
         borderWidth: 1,
-        padding: 10
+        padding: 10,
+        marginBottom: AppStyles.generalMargin.higher,
     },
     mainHeaderContainer: {
         display: 'flex',
@@ -52,7 +57,6 @@ const styles = StyleSheet.create({
     },
     textStyle: {
         color: AppStyles.generalColors.white_one,
-        marginBottom: AppStyles.generalMargin.higher,
         fontSize: AppStyles.generalFontSize.small,
     }
 })
