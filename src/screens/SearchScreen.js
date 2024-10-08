@@ -4,7 +4,7 @@ import { movieListAPI } from '../api/MovieAPI';
 import { AppStyles } from '../utilities/AppStyles';
 import SingleSearchCard from './search/SingleSearchCard';
 import Icon from 'react-native-vector-icons/FontAwesome5'
-
+import Etypto from 'react-native-vector-icons/Entypo'
 
 export default function SearchScreen() {
   const [movies, setMovies] = useState(null);
@@ -66,7 +66,16 @@ export default function SearchScreen() {
       ) : (
         <FlatList
           data={foundMovies}
-          renderItem={({ item }) => <SingleSearchCard movies={foundMovies} movie_id={item.id} />}
+          renderItem={({ item }) => {
+            return (
+              <View style={styles.componentContainer}>
+                <SingleSearchCard movie={item} />
+                <TouchableOpacity>
+                  <Etypto name='cross' size={20} color={'white'} />
+                </TouchableOpacity>
+              </View>
+            )
+          }}
           keyExtractor={(item) => item.id.toString()}
         />
       )}
@@ -92,6 +101,14 @@ const styles = StyleSheet.create({
     marginHorizontal: AppStyles.generalMargin.low,
     marginBottom: AppStyles.generalMargin.higher,
     borderRadius: 20
+  },
+  componentContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderBottomColor: 'grey',
+    borderBottomWidth: 1,
+    marginBottom: AppStyles.generalMargin.higher
   },
   inputStyle: {
     // color: AppStyles.generalColors.white_one,

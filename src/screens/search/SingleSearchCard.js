@@ -5,24 +5,20 @@ import WebView from 'react-native-webview'
 
 export default function SingleSearchCard({ movies, movie_id }) {
     return (
-        <ScrollView>
-            <View style={styles.viewContainer}>
-                {/* <View style={styles.innerContainer}>
-                    <WebView>
+        <View style={styles.viewContainer}>
+            <View style={styles.innerContainer}>
+                <WebView>
 
-                    </WebView>
-                </View> */}
-                <Text style={styles.textStyle}>SingleSearchCard</Text>
+                </WebView>
             </View>
-        </ScrollView>
+            <Text style={styles.textStyle}>SingleSearchCard</Text>
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
     viewContainer: {
         padding: AppStyles.generalPadding.low,
-        borderColor: 'grey',
-        borderBottomWidth: 1,
         display: 'flex',
         justifyContent: 'space-between'
     },
