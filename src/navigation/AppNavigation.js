@@ -8,6 +8,7 @@ import RegisterScreen from '../screens/RegisterScreen'
 import BottomTabNav from './BottomTabNav'
 import MoviePlayerScreen from '../screens/MoviePlayerScreen'
 import TermsAndConditionsScreen from '../screens/profile/TermsAndConditionsScreen'
+import PrivacyPolicyScreen from '../screens/profile/PrivacyPolicyScreen'
 
 const Stack = createNativeStackNavigator();
 
@@ -19,8 +20,9 @@ export default function AppNavigation() {
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="MoviePlayer" component={MoviePlayerScreen} />
-        <Stack.Screen name="BottomTabNav" component={BottomTabNav} />
         <Stack.Screen name="TermsAndConditions" component={TermsAndConditionsScreen} />
+        <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicyScreen} />
+        <Stack.Screen name="BottomTabNav" component={BottomTabNav} />
       </Stack.Navigator>
     </NavigationContainer>
   )

@@ -110,8 +110,8 @@ export default function ProfileScreen() {
           </Text>
           {/* INFORMATION ONE */}
           <TouchableOpacity onPress={() => {
-            navigator.navigate('TermsAndConditions')
-            console.log('TERMS AND CONDITIONS');
+            navigator.navigate('PrivacyPolicy')
+            console.log('PRIVACY POLICY');
           }}>
             <View style={styles.legalInfoContainer}>
               <View style={{ display: 'flex', flexDirection: 'row' }}>
@@ -124,7 +124,10 @@ export default function ProfileScreen() {
             </View>
           </TouchableOpacity>
           {/* INFORMATION TWO */}
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => {
+            navigator.navigate('TermsAndConditions')
+            console.log('TERMS AND CONDITIONS');
+          }}>
             <View style={styles.legalInfoContainer}>
               <View style={{ display: 'flex', flexDirection: 'row' }}>
                 <MaterialIcons name='content-paste' size={20} style={styles.iconStyle} />

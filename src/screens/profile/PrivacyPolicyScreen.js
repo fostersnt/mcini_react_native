@@ -1,50 +1,50 @@
 import { View, Text, StyleSheet, ScrollView } from 'react-native'
 import React from 'react'
-import { TermsAndConditions } from '../../utilities/TermsAndConditions'
 import { AppStyles } from '../../utilities/AppStyles'
-import { Dimensions } from 'react-native'
+import { PrivacyPolicy } from '../../utilities/PrivacyPolicy'
 
-export default function TermsAndConditionsScreen() {
-
-    const { width: screenWidth } = Dimensions.get('window');
-
-    return (
-        <ScrollView>
+export default function PrivacyPolicyScreen() {
+  return (
+    <ScrollView>
             <View style={styles.container}>
                 <View style={styles.mainHeaderContainer}>
-                    <Text style={styles.mainHeader}>TERMS & CONDITIONS</Text>
+                    <Text style={styles.mainHeader}>PRIVACY POLICY</Text>
                 </View>
                 <View style={styles.itemContainer}>
-                    <Text style={styles.textHeaderStyle}>Introduction</Text>
-                    <Text style={styles.textStyle}>{TermsAndConditions.introduction}</Text>
+                    <Text style={styles.textHeaderStyle}>Privacy Policy for mCini Video on Demand (VOD) in Ghana and African Market</Text>
+                    <Text style={styles.textStyle}>{PrivacyPolicy.introduction}</Text>
                 </View>
                 <View style={styles.itemContainer}>
-                    <Text style={styles.textHeaderStyle}>1. Membership / Account</Text>
-                    <Text style={styles.textStyle}>{TermsAndConditions.membershipAccount}</Text>
+                    <Text style={styles.textHeaderStyle}>1. Information Collection and Use</Text>
+                    <Text style={styles.textStyle}>{PrivacyPolicy.informationCollection}</Text>
                 </View>
                 <View style={styles.itemContainer}>
-                    <Text style={styles.textHeaderStyle}>2. Billing and Cancellation</Text>
-                    <Text style={styles.textStyle}>{TermsAndConditions.billingAndCancellation}</Text>
+                    <Text style={styles.textHeaderStyle}>2. Information Sharing and Disclosure</Text>
+                    <Text style={styles.textStyle}>{PrivacyPolicy.informationSharing}</Text>
                 </View>
                 <View style={styles.itemContainer}>
-                    <Text style={styles.textHeaderStyle}>3. Proprietary Materials & Licenses</Text>
-                    <Text style={styles.textStyle}>{TermsAndConditions.proprietaryMaterialsAndLicenses}</Text>
+                    <Text style={styles.textHeaderStyle}>3. Data Security</Text>
+                    <Text style={styles.textStyle}>{PrivacyPolicy.dataSecurity}</Text>
                 </View>
                 <View style={styles.itemContainer}>
-                    <Text style={styles.textHeaderStyle}>4. Termination</Text>
-                    <Text style={styles.textStyle}>{TermsAndConditions.termination}</Text>
+                    <Text style={styles.textHeaderStyle}>4. Data Retention</Text>
+                    <Text style={styles.textStyle}>{PrivacyPolicy.dataRetention}</Text>
                 </View>
                 <View style={styles.itemContainer}>
-                    <Text style={styles.textHeaderStyle}>5. Prohibited Conduct</Text>
-                    <Text style={styles.textStyle}>{TermsAndConditions.prohibitedConduct}</Text>
+                    <Text style={styles.textHeaderStyle}>5. User Rights and Choices</Text>
+                    <Text style={styles.textStyle}>{PrivacyPolicy.userRights}</Text>
                 </View>
                 <View style={styles.itemContainer}>
-                    <Text style={styles.textHeaderStyle}>6. Modification of the Terms</Text>
-                    <Text style={styles.textStyle}>{TermsAndConditions.modificationOfTerms}</Text>
+                    <Text style={styles.textHeaderStyle}>6. Changes To This Privacy Policy</Text>
+                    <Text style={styles.textStyle}>{PrivacyPolicy.changesToPolicy}</Text>
+                </View>
+                <View style={styles.itemContainer}>
+                    <Text style={styles.textHeaderStyle}>7. Contact Us</Text>
+                    <Text style={styles.textStyle}>{PrivacyPolicy.contactUs}</Text>
                 </View>
             </View>
         </ScrollView>
-    )
+  )
 }
 
 const styles = StyleSheet.create({

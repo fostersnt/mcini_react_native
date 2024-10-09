@@ -1,0 +1,16 @@
+export const PrivacyPolicy = {
+    introduction: `At mCini, we are committed to protecting the privacy and personal information of our users in Ghana and the African market. This Privacy Policy outlines how we collect, use, disclose, and safeguard your data when you access and use our video-on-demand (VOD) platform. By using mCini, you consent to the practices described in this policy.`,
+    informationCollection: `1.1. Personal Information: We may collect personal information, including but not limited to your name, email address, billing information, and other relevant details when you create an account and use our services. This information is necessary to provide a personalized and seamless experience on our platform.
+
+1.2. Usage Data: We collect usage data, including your IP address, device information, browser type, and operating system, to analyze user behavior and improve our services. This data helps us understand how you interact with our platform and tailor it to your preferences.`,
+    informationSharing: `2.1. Third-Party Providers: We may share your personal information with trusted third-party service providers who assist us in operating our platform, processing payments, analyzing data, and delivering personalized content. These providers are bound by strict confidentiality agreements and are only permitted to use your information for the designated purposes.
+
+2.2. Legal Compliance: We may disclose your personal information if required by law or in response to a valid legal request. This may include sharing information with law enforcement agencies, government authorities, or other parties involved in legal proceedings.`,
+    dataSecurity: `3.1. We employ industry-standard security measures to protect your personal information from unauthorized access, disclosure, alteration, or destruction. However, please note that no method of transmission or storage is 100% secure, and we cannot guarantee absolute security.`,
+    dataRetention: `4.1. We will retain your personal information for as long as necessary to fulfill the purposes outlined in this Privacy Policy, unless a longer retention period is required or permitted by law. We will also retain and use your information as necessary to comply with our legal obligations, resolve disputes, and enforce our agreements.`,
+    userRights: `5.1. You have the right to access, update, correct, or delete your personal information. You can manage your account settings or contact our support team for assistance.
+
+5.2. You may choose to opt-out of receiving promotional communications from us by following the unsubscribe instructions provided in those communications.`,
+    changesToPolicy: `6.1. We may update this Privacy Policy periodically to reflect changes in our practices or legal requirements. We encourage you to review this policy regularly for any updates.`,
+    contactUs: `7.1. If you have any questions, concerns, or requests regarding this Privacy Policy or the privacy practices of mCini, please contact us through the provided channels.`
+}
