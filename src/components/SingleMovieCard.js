@@ -7,7 +7,7 @@ import { userData } from '../apiData/UserData'
 import { user_MTN_subscription, userSubscriptionCheck } from '../api/UserAPI'
 import { showToast } from './ToastAlert'
 
-export default function SingleMovieCard({ similar_movies, movie, collection_name, myWidth, subscriber }) {
+export default function SingleMovieCard({ similar_movies, movie, myWidth, subscriber }) {
     const navigator = useNavigation()
     // console.log('MOVIES === ', similar_movies);
 
@@ -53,7 +53,6 @@ export default function SingleMovieCard({ similar_movies, movie, collection_name
                     navigator.navigate('ViewAllMovies', {
                         similar_movies: similar_movies,
                         single_movie: movie,
-                        collection_name: collection_name
                     });
                 // } else {
                 //     showToast('Subscription status', statusCheck['message'], message_type, 5000);

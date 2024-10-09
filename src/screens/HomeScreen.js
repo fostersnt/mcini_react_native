@@ -5,18 +5,21 @@ import { AppStyles } from '../utilities/AppStyles';
 import { useRoute } from '@react-navigation/native';
 import SingleMovieCard from '../components/SingleMovieCard';
 import { getStorageData } from '../utilities/LocalStorage';
+import { useNavigation } from '@react-navigation/native';
 
 const MemoizedMovieBanner = memo(MovieBanner);
 const MemoizedSingleMovieCard = memo(SingleMovieCard);
 
 export default function HomeScreen() {
-
+  const navigator = useNavigation();
   const { width: screenWidth } = Dimensions.get('window');
+  const mySize = screenWidth / 3;
   const route = useRoute();
   const { subscriber, movies, favourites, watchList } = route.params;
 
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [homeBanner, setHomeBanner] = useState([]);
+  const [currentMovie, setCurrentMovie] = useState([]);
 
   useEffect(() => {
     const funcCall = async () => {
@@ -67,21 +70,30 @@ export default function HomeScreen() {
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         keyExtractor={(subItem) => subItem.id.toString()}
-        renderItem={({ item }) => (
-
-          <MemoizedSingleMovieCard
-            similar_movies={displayItems}
-            myWidth={screenWidth}
-            movie={item}
-            collection_name={item.collection_name}
-            subscriber={subscriber}
-          />
-        )}
+        renderItem={({ item }) => {
+          setCurrentMovie(item)
+          return (
+            <MemoizedSingleMovieCard
+              similar_movies={displayItems}
+              myWidth={screenWidth}
+              movie={item}
+              // collection_name={item.collection_name}
+              subscriber={subscriber}
+            />
+          )
+        }}
         ListFooterComponent={showViewAll ? (
-          <TouchableOpacity>
-            <Text style={{ marginLeft: 10, color: 'blue', fontWeight: 'bold' }}>
-              VIEW ALL
-            </Text>
+          <TouchableOpacity
+            onPress={() => {
+              navigator.navigate('ViewAllMovies', {
+                similar_movies: {displayItems},
+                single_movie: {currentMovie}
+              })
+            }}
+          >
+            <View style={[styles.viewAllContainer, { width: mySize }]}>
+              <Text style={styles.viewAllText}>VIEW ALL</Text>
+            </View>
           </TouchableOpacity>
         ) : null}
       />
@@ -140,4 +152,17 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginBottom: 10,
   },
+  viewAllContainer: {
+    flex: 1,
+    height: 200,
+    backgroundColor: AppStyles.generalColors.dark_one,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  viewAllText: {
+    color: AppStyles.generalColors.blue,
+    fontWeight: AppStyles.generalFontWeight.weight_one,
+    fontSize: AppStyles.generalFontSize.large
+  }
 });
