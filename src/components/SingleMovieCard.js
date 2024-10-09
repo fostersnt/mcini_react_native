@@ -22,7 +22,7 @@ export default function SingleMovieCard({ similar_movies, movie, subscriber }) {
 
     verifySubscription
 
-    const size = screenWidth / 3;
+    const size = (screenWidth / 3) - 10;
 
     const myData = userData;
 
@@ -31,6 +31,7 @@ export default function SingleMovieCard({ similar_movies, movie, subscriber }) {
     const network = myData.network.mtn;
 
     return (
+        <View style={{borderRadius: 25, overflow: 'hidden'}}>
         <TouchableOpacity
             onPress={async () => {
                 setIsStatusCheck(true)
@@ -177,7 +178,6 @@ export default function SingleMovieCard({ similar_movies, movie, subscriber }) {
                     backgroundColor: AppStyles.generalColors.dark_four,
                     // padding: 10,
                     // flex: 1,
-                    borderRadius: 10,
                     marginHorizontal: 5,
                     // marginBottom: 10,
                     width: size,
@@ -200,6 +200,7 @@ export default function SingleMovieCard({ similar_movies, movie, subscriber }) {
             >
             </WebView>
         </TouchableOpacity>
+        </View>
     )
 }
 

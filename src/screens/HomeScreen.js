@@ -60,19 +60,23 @@ export default function HomeScreen() {
       items: groupedMovies[collection_name],
     }));
 
+    // console.log('TESTING FOR DATA === ', groupedDataArray[0]);
+  
   const renderedItem = (items) => {
     const displayItems = items.slice(0, 5);
     const showViewAll = items.length > 5;
 
+    const currentCollectionName = showViewAll ? items[0].collection_name : '';
+    
     return (
       <FlatList
         data={displayItems}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
-        keyExtractor={(subItem) => subItem.id.toString()}
+        keyExtractor={(subItem) => {
+          return subItem.id.toString();
+        }}
         renderItem={({ item }) => {
-          setCurrentMovie(item)
-
           return (
             <MemoizedSingleMovieCard
               similar_movies={displayItems}
@@ -86,11 +90,15 @@ export default function HomeScreen() {
         ListFooterComponent={showViewAll ? (
           <TouchableOpacity
             onPress={() => {
-              navigator.navigate('ViewAllMovies', {
-                similar_movies: displayItems,
-                single_movie: currentMovie,
+          // setCurrentMovie(item)      
+          navigator.navigate('ViewAllMovies', {
+                similar_movies: items,
+                // single_movie: null,
                 subscriber: subscriber
               })
+          console.log('CURRENT COLLECTION NAME === ', currentCollectionName);
+          console.log('CURRENT COLLECTION DATA === ', items[0]);
+          
             }}
           >
             <View style={[styles.viewAllContainer, { width: mySize }]}>

@@ -9,6 +9,7 @@ import {
 import WebView from 'react-native-webview';
 import { Dimensions } from 'react-native';
 import { AppStyles } from '../utilities/AppStyles';
+import SingleMovieCard from './SingleMovieCard';
 
 const handleHttpError = (syntheticEvent) => {
     const { nativeEvent } = syntheticEvent;
@@ -22,9 +23,9 @@ const handleOnRenderProcessGone = (syntheticEvent) => {
 
 function ViewAllMoviesPlayer({ singleMovie, similar_movies, subscriber }) {
     const { width: screenWidth, height: screenHeight } = Dimensions.get('screen')
-    
+
     console.log('SUBSCRIBER DATA === ', subscriber);
-    
+
     console.log('NEW SINGLE MOVIE PLAYER === ', singleMovie['video_url']);
 
     return (
@@ -57,16 +58,24 @@ function ViewAllMoviesPlayer({ singleMovie, similar_movies, subscriber }) {
             </View>
             <View style={styles.contentContainer}>
                 <FlatList
+                    numColumns={3}
                     data={similar_movies}
                     keyExtractor={(item) => item.id}
-                    renderItem={({ item }) => (
-                        <View style={{ marginBottom: 20 }}>
-                            <Text style={{color: 'white'}}>
-                                {item.collection_name}
-                            </Text>
-                            {/* {renderedItem(item.items)} */}
-                        </View>
-                    )}
+                    renderItem={({ item }) => {
+                        return (
+                            <View>
+                                <SingleMovieCard similar_movies={similar_movies} movie={singleMovie} subscriber={subscriber} />
+                            </View>
+                        )
+                        // return (
+                        //     <View style={{ marginBottom: 20 }}>
+                        //         <Text style={{ color: 'white' }}>
+                        //             {item.title}
+                        //         </Text>
+                        //         {/* {renderedItem(item.items)} */}
+                        //     </View>
+                        // )
+                    }}
                 />
             </View>
         </ScrollView>
