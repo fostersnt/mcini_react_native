@@ -27,11 +27,8 @@ function ViewAllMoviesPlayer({ singleMovie }) {
     return (
         <ScrollView style={styles.scrollView}>
             <View style={{
-                    // width: screenWidth,
-                    // height: screenHeight / 2,
-                    borderRadius: 30,
+                    borderRadius: 20,
                     overflow: 'hidden',
-                    // backgroundColor: 'transparent'
                     marginBottom: AppStyles.generalMargin.higher
                 }}>
             <WebView
@@ -65,7 +62,7 @@ function ViewAllMoviesPlayer({ singleMovie }) {
 const styles = StyleSheet.create({
     scrollView: {
         flex: 1,
-        padding: 10,
+        padding: 5,
         // backgroundColor: AppStyles.generalColors.dark_four
     },
     contentContainer: {

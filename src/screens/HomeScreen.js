@@ -73,8 +73,6 @@ export default function HomeScreen() {
         renderItem={({ item }) => {
           setCurrentMovie(item)
 
-          // console.log('HELLO WORLD WORLD === ', item);
-          
           return (
             <MemoizedSingleMovieCard
               similar_movies={displayItems}
@@ -146,6 +144,8 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     // flex: 1,
+    paddingTop: 25,
+    // paddingHorizontal: 5,
     backgroundColor: AppStyles.generalColors.dark_four,
   },
   collectionName: {
