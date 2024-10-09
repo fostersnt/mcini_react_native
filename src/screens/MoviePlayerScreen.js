@@ -23,26 +23,29 @@ function MoviePlayerScreen() {
 const route = useRoute();
 const {singleMovie} = route.params;
   const url = "https://iframe.mediadelivery.net/embed/182548/e941715e-7de1-4875-a42b-c52a982fa72c?autoplay=true";
+  console.log('SINGLE MOVIE TEST === ', singleMovie);
+  
   return (
-    <WebView
-      style={styles.videoContainer}
-      source={{ uri: singleMovie['video_url'] }}
-      javaScriptEnabled={true}
-      domStorageEnabled={true}
-      allowsInlineMediaPlayback={true}
-      onHttpError={handleHttpError}
-      onError={handleOnRenderProcessGone}
-      renderError={() => (
-        <View style={styles.errorContainer}>
-          <Text style={styles.errorText}>Failed to load page.</Text>
-        </View>
-      )}
+    // <WebView
+    //   style={styles.videoContainer}
+    //   source={{ uri: singleMovie['video_url'] }}
+    //   javaScriptEnabled={true}
+    //   domStorageEnabled={true}
+    //   allowsInlineMediaPlayback={true}
+    //   onHttpError={handleHttpError}
+    //   onError={handleOnRenderProcessGone}
+    //   renderError={() => (
+    //     <View style={styles.errorContainer}>
+    //       <Text style={styles.errorText}>Failed to load page.</Text>
+    //     </View>
+    //   )}
 
-      onRenderProcessGone={handleOnRenderProcessGone}
-    >
-      <StatusBar translucent backgroundColor={'transparent'}></StatusBar>
+    //   onRenderProcessGone={handleOnRenderProcessGone}
+    // >
+    //   <StatusBar translucent backgroundColor={'transparent'}></StatusBar>
 
-    </WebView>
+    // </WebView>
+    <View></View>
   );
 }
 
