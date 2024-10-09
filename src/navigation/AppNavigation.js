@@ -11,6 +11,7 @@ import TermsAndConditionsScreen from '../screens/profile/TermsAndConditionsScree
 import PrivacyPolicyScreen from '../screens/profile/PrivacyPolicyScreen'
 import WelcomeSliderScreen from '../screens/WelcomeSliderScreen'
 import ViewAllMoviesComponent from '../components/ViewAllMoviesComponent'
+import ViewAllMoviesPlayer from '../components/ViewAllMoviesPlayer'
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +27,7 @@ export default function AppNavigation() {
         <Stack.Screen name="TermsAndConditions" component={TermsAndConditionsScreen} />
         <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicyScreen} />
         <Stack.Screen name="ViewAllMovies" component={ViewAllMoviesComponent} />
+        <Stack.Screen name="ViewAllMoviesPlayer" component={ViewAllMoviesPlayer} />
         <Stack.Screen name="BottomTabNav" component={BottomTabNav} />
       </Stack.Navigator>
     </NavigationContainer>

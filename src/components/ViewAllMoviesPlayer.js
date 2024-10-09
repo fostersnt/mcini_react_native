@@ -10,6 +10,7 @@ import WebView from 'react-native-webview';
 import { Dimensions } from 'react-native';
 import { AppStyles } from '../utilities/AppStyles';
 import SingleMovieCard from './SingleMovieCard';
+import { useRoute } from '@react-navigation/native';
 
 const handleHttpError = (syntheticEvent) => {
     const { nativeEvent } = syntheticEvent;
@@ -21,8 +22,11 @@ const handleOnRenderProcessGone = (syntheticEvent) => {
     console.warn('WebView Crashed: ', nativeEvent.didCrash);
 }
 
-function ViewAllMoviesPlayer({ singleMovie, similar_movies, subscriber }) {
+function ViewAllMoviesPlayer() {
     const { width: screenWidth, height: screenHeight } = Dimensions.get('screen')
+    const route = useRoute();
+
+    const { singleMovie, similar_movies, subscriber } = route.params;
 
     console.log('SUBSCRIBER DATA === ', subscriber);
 
@@ -64,7 +68,7 @@ function ViewAllMoviesPlayer({ singleMovie, similar_movies, subscriber }) {
                     renderItem={({ item }) => {
                         return (
                             <View>
-                                <SingleMovieCard similar_movies={similar_movies} movie={singleMovie} subscriber={subscriber} />
+                                <SingleMovieCard similar_movies={similar_movies} movie={item} subscriber={subscriber} />
                             </View>
                         )
                         // return (
