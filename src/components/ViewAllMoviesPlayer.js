@@ -28,16 +28,16 @@ function ViewAllMoviesPlayer({ singleMovie }) {
         <ScrollView style={styles.scrollView}>
             <View style={{
                     // width: screenWidth,
-                    height: screenHeight / 2,
+                    // height: screenHeight / 2,
                     borderRadius: 30,
                     overflow: 'hidden',
-                    backgroundColor: 'transparent'
+                    // backgroundColor: 'transparent'
+                    marginBottom: AppStyles.generalMargin.higher
                 }}>
             <WebView
                 style={{
                     width: screenWidth,
                     height: screenHeight / 2,
-                    marginBottom: AppStyles.generalMargin.higher
                 }}
                 source={{ uri: singleMovie['video_url'], headers: { Referer: 'https://mcini.tv' } }}
                 javaScriptEnabled={true}
