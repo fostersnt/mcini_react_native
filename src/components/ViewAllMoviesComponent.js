@@ -36,6 +36,7 @@ export default function ViewAllMoviesComponent() {
     // </View>
     <ViewAllMoviesPlayer 
       singleMovie={single_movie}
+      similar_movies={similar_movies}
     />
   )
 }
