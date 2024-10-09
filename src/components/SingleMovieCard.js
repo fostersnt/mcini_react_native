@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Modal, StyleSheet, Button, ActivityIndicator } from 'react-native'
+import { View, Text, TouchableOpacity, Modal, StyleSheet, Button, ActivityIndicator, Dimensions } from 'react-native'
 import React, { useState } from 'react'
 import { AppStyles } from '../utilities/AppStyles'
 import WebView from 'react-native-webview'
@@ -7,9 +7,11 @@ import { userData } from '../apiData/UserData'
 import { user_MTN_subscription, userSubscriptionCheck } from '../api/UserAPI'
 import { showToast } from './ToastAlert'
 
-export default function SingleMovieCard({ similar_movies, movie, myWidth, subscriber }) {
+export default function SingleMovieCard({ similar_movies, movie, subscriber }) {
     const navigator = useNavigation()
     // console.log('MOVIES === ', similar_movies);
+
+    const {width: screenWidth, height: screenHeight} = Dimensions.get('screen');
 
     const [modalVisible, setModalVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -20,7 +22,7 @@ export default function SingleMovieCard({ similar_movies, movie, myWidth, subscr
 
     verifySubscription
 
-    const size = myWidth / 3;
+    const size = screenWidth / 3;
 
     const myData = userData;
 
@@ -47,14 +49,15 @@ export default function SingleMovieCard({ similar_movies, movie, myWidth, subscr
                 var message_type = statusCheck['success'] == 'true' ? 'success' : 'error';
 
                 if (statusCheck['data'] != null && statusCheck['data']['subscription_status'] == 'active') {
-                    navigator.navigate('MoviePlayer', {
-                        singleMovie: movie
-                    });
+                    // navigator.navigate('MoviePlayer', {
+                    //     singleMovie: movie
+                    // });
+                    setModalVisible(false)
                     navigator.navigate('ViewAllMovies', {
                         similar_movies: similar_movies,
                         single_movie: movie,
+                        subscriber: subscriber
                     });
-                    setModalVisible(false)
                 }else if(statusCheck['data'] != null && statusCheck['data']['subscription_status'] == 'inactive'){
                     showToast('Subscription status', 'You have no active subscription', message_type, 5000);
                     setModalVisible(true)

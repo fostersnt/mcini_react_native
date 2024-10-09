@@ -20,9 +20,11 @@ const handleOnRenderProcessGone = (syntheticEvent) => {
     console.warn('WebView Crashed: ', nativeEvent.didCrash);
 }
 
-function ViewAllMoviesPlayer({ singleMovie, similar_movies }) {
+function ViewAllMoviesPlayer({ singleMovie, similar_movies, subscriber }) {
     const { width: screenWidth, height: screenHeight } = Dimensions.get('screen')
-
+    
+    console.log('SUBSCRIBER DATA === ', subscriber);
+    
     console.log('NEW SINGLE MOVIE PLAYER === ', singleMovie['video_url']);
 
     return (

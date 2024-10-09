@@ -76,7 +76,7 @@ export default function HomeScreen() {
           return (
             <MemoizedSingleMovieCard
               similar_movies={displayItems}
-              myWidth={screenWidth}
+              // myWidth={screenWidth}
               movie={item}
               // collection_name={item.collection_name}
               subscriber={subscriber}
@@ -88,7 +88,8 @@ export default function HomeScreen() {
             onPress={() => {
               navigator.navigate('ViewAllMovies', {
                 similar_movies: displayItems,
-                single_movie: currentMovie
+                single_movie: currentMovie,
+                subscriber: subscriber
               })
             }}
           >
@@ -111,7 +112,7 @@ export default function HomeScreen() {
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <MemoizedMovieBanner
-              myWidth={screenWidth}
+              // myWidth={screenWidth}
               movie={item}
             />
           )}

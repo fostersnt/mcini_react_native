@@ -3,7 +3,7 @@ import React from 'react'
 import { AppStyles } from '../utilities/AppStyles'
 import WebView from 'react-native-webview';
 
-export default function MovieBanner({ movie, myWidth }) {
+export default function MovieBanner({ movie }) {
     // console.log('WIDTH === ', myWidth);
     /*
         The value 10 is based on the padding given to the parent container of this component. This component is used

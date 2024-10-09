@@ -8,7 +8,7 @@ import ViewAllMoviesPlayer from './ViewAllMoviesPlayer';
 export default function ViewAllMoviesComponent() {
   const route = useRoute()
 
-  const { similar_movies, single_movie } = route.params;
+  const { similar_movies, single_movie, subscriber } = route.params;
 
   // console.log('COLLECTION NAME === ',  collection_name);
   // console.log('SINGLE MOVIE === ',  single_movie);
@@ -37,6 +37,7 @@ export default function ViewAllMoviesComponent() {
     <ViewAllMoviesPlayer 
       singleMovie={single_movie}
       similar_movies={similar_movies}
+      subscriber = {subscriber}
     />
   )
 }
