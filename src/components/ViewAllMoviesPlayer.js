@@ -11,6 +11,9 @@ import { Dimensions } from 'react-native';
 import { AppStyles } from '../utilities/AppStyles';
 import SingleMovieCard from './SingleMovieCard';
 import { useRoute } from '@react-navigation/native';
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import Entypo from 'react-native-vector-icons/Entypo'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
 const handleHttpError = (syntheticEvent) => {
     const { nativeEvent } = syntheticEvent;
@@ -59,6 +62,11 @@ function ViewAllMoviesPlayer() {
             <View style={styles.descriptionContainer}>
                 <Text style={styles.descriptionText}>{singleMovie['description']}</Text>
             </View>
+            <View style={styles.iconsContainer}>
+            <View style={{marginLeft: 10}}><FontAwesome name='thumbs-o-up' size={25} color={'#00aeef'} /></View>
+            <View style={{marginLeft: 20}}><Entypo name='share' size={25} color={'#00aeef'} /></View>
+            <View style={{marginLeft: 20}}><MaterialIcons name='favorite' size={25} color={'#00aeef'} /></View>
+            </View>
             <View style={styles.contentContainer}>
                 <FlatList
                     numColumns={3}
@@ -70,14 +78,6 @@ function ViewAllMoviesPlayer() {
                                 <SingleMovieCard similar_movies={similar_movies} movie={item} subscriber={subscriber} />
                             </View>
                         )
-                        // return (
-                        //     <View style={{ marginBottom: 20 }}>
-                        //         <Text style={{ color: 'white' }}>
-                        //             {item.title}
-                        //         </Text>
-                        //         {/* {renderedItem(item.items)} */}
-                        //     </View>
-                        // )
                     }}
                 />
             </View>
@@ -105,9 +105,10 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 16
     },
-    contentContainer: {
-        // height: 700,
-        // backgroundColor: AppStyles.generalColors.dark_one
+    iconsContainer: {
+        marginBottom: 20,
+        display: 'flex',
+        flexDirection: 'row'
     },
 });
 
