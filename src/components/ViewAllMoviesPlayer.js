@@ -34,11 +34,7 @@ function ViewAllMoviesPlayer() {
 
     return (
         <ScrollView style={styles.scrollView}>
-            <View style={{
-                borderRadius: 20,
-                overflow: 'hidden',
-                marginBottom: AppStyles.generalMargin.higher
-            }}>
+            <View style={styles.mainVideo}>
                 <WebView
                     style={{
                         width: screenWidth,
@@ -59,6 +55,9 @@ function ViewAllMoviesPlayer() {
                     onRenderProcessGone={handleOnRenderProcessGone}
                 >
                 </WebView>
+            </View>
+            <View style={styles.descriptionContainer}>
+                <Text style={styles.descriptionText}>{singleMovie['description']}</Text>
             </View>
             <View style={styles.contentContainer}>
                 <FlatList
@@ -91,6 +90,20 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 5,
         backgroundColor: AppStyles.generalColors.dark_one
+    },
+    mainVideo: {
+        borderRadius: 20,
+        overflow: 'hidden',
+        marginBottom: AppStyles.generalMargin.higher
+    },
+    descriptionContainer: {
+        marginBottom: 20,
+        color: 'white',
+        height: 100
+    },
+    descriptionText: {
+        color: 'white',
+        fontSize: 16
     },
     contentContainer: {
         // height: 700,
