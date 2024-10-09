@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput, ScrollView, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TextInput, ScrollView, TouchableOpacity, Modal, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { getStorageData } from '../utilities/LocalStorage';
 import { AppStyles } from '../utilities/AppStyles';
@@ -15,6 +15,8 @@ import { showToast } from '../components/ToastAlert';
 export default function ProfileScreen() {
 
   const [subscriber, setSubscriber] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
   const navigator = useNavigation();
 
   useEffect(() => {
@@ -152,12 +154,15 @@ export default function ProfileScreen() {
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={ async () => {
+            onPress={async () => {
               const msisdn = subscriber['msisdn'];
+              setIsLoading(true)
               const response = await userLogout(subscriber['msisdn']);
               if (response['success'] == 'true' && response['data']['login_status'].toLowerCase() == 'inactive') {
+                setIsLoading(false)
                 navigator.navigate('Login');
               } else {
+                setIsLoading(false)
                 showToast('Logout Error:', 'Unable to logout', 'error', 5000);
               }
               console.log('LOGOUT ACTION TRIGGERED === ', response['data']['login_status'].toLowerCase());
@@ -174,6 +179,25 @@ export default function ProfileScreen() {
           </TouchableOpacity>
         </View>
       </View>
+
+      {/* LOGOUT MODAL */}
+      <Modal
+        transparent={true}
+        visible={isLoading}
+        animationType="slide" // You can use 'fade' or 'none' for other effects
+        onRequestClose={() => setIsLoading(false)} // For Android back button
+      >
+        <View style={styles.modalBackground}>
+          <View style={styles.modalContainer}>
+            <Text style={styles.modalText}>Logout in progress...</Text>
+            <View style={styles.activityIndicatorContainer}>
+              {
+                isLoading ? <ActivityIndicator color={'white'} /> : ''
+              }
+            </View>
+          </View>
+        </View>
+      </Modal>
     </ScrollView>
   )
 }
@@ -211,5 +235,49 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 40,
     marginBottom: AppStyles.generalMargin.higher
-  }
+  },
+  activityIndicatorContainer: {
+    marginTop: 30,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center'
+  },
+  modalButtonRed: {
+    width: 100,
+    marginRight: 20,
+    backgroundColor: 'red',
+    paddingVertical: 10
+  },
+  modalButtonBlue: {
+    width: 100,
+    marginRight: 20,
+    backgroundColor: AppStyles.generalColors.blue,
+    paddingVertical: 10
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalBackground: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+  },
+  modalContainer: {
+    width: '80%',  // Set width of modal
+    height: 200, // Set height of modal
+    backgroundColor: AppStyles.generalColors.dark_one, //This color changes dynamically for the subscription modal
+    borderRadius: 10,
+    padding: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalText: {
+    marginBottom: 20,
+    textAlign: 'center',
+    fontSize: 16,
+    color: AppStyles.generalColors.white_one
+  },
 })
