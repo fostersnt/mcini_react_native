@@ -44,7 +44,8 @@ export default function ViewAllMoviesComponent() {
 const styles = StyleSheet.create({
   mainContainer: {
     backgroundColor: AppStyles.generalColors.dark_one,
-    paddingTop: 30
+    paddingTop: 30,
+    paddingBottom: 40
   },
   titleContainer: {
     // flex: 1,
@@ -59,7 +60,8 @@ const styles = StyleSheet.create({
   },
   viewAllContainer: {
     flex: 1,
-    paddingTop: 10
+    paddingTop: 10,
     // height: '50%'
+    // marginBottom: 20
   }
 })
