@@ -50,7 +50,6 @@ const {singleMovie} = route.params;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'plum',
     flex: 1,
   },
   videoContainer: {

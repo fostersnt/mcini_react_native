@@ -3,9 +3,11 @@ import {
     StyleSheet,
     Text,
     View,
-    StatusBar
+    ScrollView
 } from 'react-native';
 import WebView from 'react-native-webview';
+import { Dimensions } from 'react-native';
+import { AppStyles } from '../utilities/AppStyles';
 
 const handleHttpError = (syntheticEvent) => {
     const { nativeEvent } = syntheticEvent;
@@ -18,13 +20,25 @@ const handleOnRenderProcessGone = (syntheticEvent) => {
 }
 
 function ViewAllMoviesPlayer({ singleMovie }) {
+    const { width: screenWidth, height: screenHeight } = Dimensions.get('screen')
 
-    // console.log('NEW SINGLE MOVIE PLAYER === ', singleMovie);
+    console.log('NEW SINGLE MOVIE PLAYER === ', singleMovie['video_url']);
 
     return (
-        <View style={styles.videoContainer}>
+        <ScrollView style={styles.scrollView}>
+            <View style={{
+                    // width: screenWidth,
+                    height: screenHeight / 2,
+                    borderRadius: 30,
+                    overflow: 'hidden',
+                    backgroundColor: 'transparent'
+                }}>
             <WebView
-                style={styles.videoContainer}
+                style={{
+                    width: screenWidth,
+                    height: screenHeight / 2,
+                    marginBottom: AppStyles.generalMargin.higher
+                }}
                 source={{ uri: singleMovie['video_url'], headers: { Referer: 'https://mcini.tv' } }}
                 javaScriptEnabled={true}
                 domStorageEnabled={true}
@@ -39,29 +53,24 @@ function ViewAllMoviesPlayer({ singleMovie }) {
 
                 onRenderProcessGone={handleOnRenderProcessGone}
             >
-                {/* <StatusBar translucent backgroundColor={'transparent'}></StatusBar> */}
-
             </WebView>
-        </View>
+            </View>
+            <View style={styles.contentContainer}>
+
+            </View>
+        </ScrollView>
     );
 }
 
 const styles = StyleSheet.create({
-    videoContainer: {
-        // flex: 1,
-        width: '100%',  // Use '100%' instead of '100'
-        height: '50%',    // Set a specific height
-        // marginBottom: 20
-    },
-    errorContainer: {
+    scrollView: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#f8d7da',
+        padding: 10,
+        // backgroundColor: AppStyles.generalColors.dark_four
     },
-    errorText: {
-        color: '#721c24',
-        fontSize: 18,
+    contentContainer: {
+        height: 700,
+        backgroundColor: AppStyles.generalColors.dark_one
     },
 });
 
