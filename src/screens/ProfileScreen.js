@@ -8,6 +8,8 @@ import IonIcons from 'react-native-vector-icons/Ionicons'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import OctIcons from 'react-native-vector-icons/Octicons'
 import { useNavigation } from '@react-navigation/native';
+import { userLogout } from '../api/UserAPI';
+import { showToast } from '../components/ToastAlert';
 
 
 export default function ProfileScreen() {
@@ -150,8 +152,15 @@ export default function ProfileScreen() {
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => {
-              console.log('LOGOUT ACTION TRIGGERED');
+            onPress={ async () => {
+              const msisdn = subscriber['msisdn'];
+              const response = await userLogout(subscriber['msisdn']);
+              if (response['success'] == 'true' && response['data']['login_status'].toLowerCase() == 'inactive') {
+                navigator.navigate('Login');
+              } else {
+                showToast('Logout Error:', 'Unable to logout', 'error', 5000);
+              }
+              console.log('LOGOUT ACTION TRIGGERED === ', response['data']['login_status'].toLowerCase());
             }}
           >
             <View style={[styles.logout]}>
