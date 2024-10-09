@@ -21,3 +21,23 @@ export const getStorageData = async () => {
     console.error('Error retrieving data', e);
   }
 };
+
+// Function to clear specific storage data
+export const clearStorageData = async () => {
+  try {
+    await AsyncStorage.removeItem(STORAGE_KEY);
+    console.log('Storage data cleared successfully');
+  } catch (e) {
+    console.error('Error clearing storage data', e);
+  }
+};
+
+// OR Function to clear all storage data
+export const clearAllStorageData = async () => {
+  try {
+    await AsyncStorage.clear();
+    console.log('All storage data cleared successfully');
+  } catch (e) {
+    console.error('Error clearing all storage data', e);
+  }
+};

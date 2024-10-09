@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, TextInput, ScrollView, TouchableOpacity, Modal, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { getStorageData } from '../utilities/LocalStorage';
+import { clearAllStorageData, getStorageData } from '../utilities/LocalStorage';
 import { AppStyles } from '../utilities/AppStyles';
 import AntIcons from 'react-native-vector-icons/AntDesign'
 import Icon from 'react-native-vector-icons/FontAwesome5'
@@ -159,6 +159,7 @@ export default function ProfileScreen() {
               setIsLoading(true)
               const response = await userLogout(subscriber['msisdn']);
               if (response['success'] == 'true' && response['data']['login_status'].toLowerCase() == 'inactive') {
+                await clearAllStorageData();
                 setIsLoading(false)
                 navigator.navigate('Login');
               } else {

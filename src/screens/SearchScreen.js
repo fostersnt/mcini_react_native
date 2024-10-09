@@ -55,7 +55,7 @@ export default function SearchScreen() {
 
     const countFlag = initialCount - 1;
 
-    setFoundMovies(myAvailableMovies); 
+    setFoundMovies(myAvailableMovies);
 
     if (countFlag == 0) {
       setInputText('')
@@ -71,9 +71,14 @@ export default function SearchScreen() {
           value={inputText}
           onChangeText={(userInput) => {
             setInputText(userInput)
-            setTimeout(() => {
-              handleUserInput(userInput)
-            }, 1000);
+            if (userInput == '') {
+              setFoundMovies([]);
+            }
+            else {
+              setTimeout(() => {
+                handleUserInput(userInput)
+              }, 1000);
+            }
           }}
         ></TextInput>
         <TouchableOpacity onPress={() => {
