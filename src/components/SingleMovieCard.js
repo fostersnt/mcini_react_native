@@ -49,20 +49,20 @@ export default function SingleMovieCard({ similar_movies, movie, subscriber }) {
 
                 var message_type = statusCheck['success'] == 'true' ? 'success' : 'error';
 
-                // if (statusCheck['data'] != null && statusCheck['data']['subscription_status'] == 'active') {
+                if (statusCheck['data'] != null && statusCheck['data']['subscription_status'] == 'active') {
                     setModalVisible(false)
                     navigator.navigate('ViewAllMoviesPlayer', {
                         similar_movies: similar_movies,
                         singleMovie: movie,
                         subscriber: subscriber
                     });
-                // }else if(statusCheck['data'] != null && statusCheck['data']['subscription_status'] == 'inactive'){
-                //     showToast('Subscription status', 'You have no active subscription', message_type, 5000);
-                //     setModalVisible(true)
-                // } else {
-                //     showToast('Subscription status', statusCheck['message'], message_type, 5000);
-                //     setModalVisible(true)
-                // }
+                }else if(statusCheck['data'] != null && statusCheck['data']['subscription_status'] == 'inactive'){
+                    showToast('Subscription status', 'You have no active subscription', message_type, 5000);
+                    setModalVisible(true)
+                } else {
+                    showToast('Subscription status', statusCheck['message'], message_type, 5000);
+                    setModalVisible(true)
+                }
             }}
         >
 
