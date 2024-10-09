@@ -19,7 +19,7 @@ export default function HomeScreen() {
 
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [homeBanner, setHomeBanner] = useState([]);
-  const [currentMovie, setCurrentMovie] = useState([]);
+  const [currentMovie, setCurrentMovie] = useState(null);
 
   useEffect(() => {
     const funcCall = async () => {
@@ -72,6 +72,9 @@ export default function HomeScreen() {
         keyExtractor={(subItem) => subItem.id.toString()}
         renderItem={({ item }) => {
           setCurrentMovie(item)
+
+          // console.log('HELLO WORLD WORLD === ', item);
+          
           return (
             <MemoizedSingleMovieCard
               similar_movies={displayItems}
@@ -86,8 +89,8 @@ export default function HomeScreen() {
           <TouchableOpacity
             onPress={() => {
               navigator.navigate('ViewAllMovies', {
-                similar_movies: {displayItems},
-                single_movie: {currentMovie}
+                similar_movies: displayItems,
+                single_movie: currentMovie
               })
             }}
           >

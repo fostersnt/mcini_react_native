@@ -26,26 +26,25 @@ const {singleMovie} = route.params;
   console.log('SINGLE MOVIE TEST === ', singleMovie);
   
   return (
-    // <WebView
-    //   style={styles.videoContainer}
-    //   source={{ uri: singleMovie['video_url'] }}
-    //   javaScriptEnabled={true}
-    //   domStorageEnabled={true}
-    //   allowsInlineMediaPlayback={true}
-    //   onHttpError={handleHttpError}
-    //   onError={handleOnRenderProcessGone}
-    //   renderError={() => (
-    //     <View style={styles.errorContainer}>
-    //       <Text style={styles.errorText}>Failed to load page.</Text>
-    //     </View>
-    //   )}
+    <WebView
+      style={styles.videoContainer}
+      source={{ uri: singleMovie['video_url'] }}
+      javaScriptEnabled={true}
+      domStorageEnabled={true}
+      allowsInlineMediaPlayback={true}
+      onHttpError={handleHttpError}
+      onError={handleOnRenderProcessGone}
+      renderError={() => (
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorText}>Failed to load page.</Text>
+        </View>
+      )}
 
-    //   onRenderProcessGone={handleOnRenderProcessGone}
-    // >
-    //   <StatusBar translucent backgroundColor={'transparent'}></StatusBar>
+      onRenderProcessGone={handleOnRenderProcessGone}
+    >
+      <StatusBar translucent backgroundColor={'transparent'}></StatusBar>
 
-    // </WebView>
-    <View></View>
+    </WebView>
   );
 }
 

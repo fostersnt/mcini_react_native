@@ -54,12 +54,14 @@ export default function SingleMovieCard({ similar_movies, movie, myWidth, subscr
                         similar_movies: similar_movies,
                         single_movie: movie,
                     });
+                    setModalVisible(false)
                 }else if(statusCheck['data'] != null && statusCheck['data']['subscription_status'] == 'inactive'){
                     showToast('Subscription status', 'You have no active subscription', message_type, 5000);
+                    setModalVisible(true)
                 } else {
                     showToast('Subscription status', statusCheck['message'], message_type, 5000);
+                    setModalVisible(true)
                 }
-                setModalVisible(false)
             }}
         >
 
