@@ -70,8 +70,10 @@ export default function HomeScreen() {
         renderItem={({ item }) => (
 
           <MemoizedSingleMovieCard
+            similar_movies={displayItems}
             myWidth={screenWidth}
             movie={item}
+            collection_name={item.collection_name}
             subscriber={subscriber}
           />
         )}

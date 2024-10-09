@@ -3,14 +3,13 @@ import React, { useState } from 'react'
 import { AppStyles } from '../utilities/AppStyles'
 import WebView from 'react-native-webview'
 import { useNavigation } from '@react-navigation/native'
-import MoviePlayerScreen from '../screens/MoviePlayerScreen'
 import { userData } from '../apiData/UserData'
 import { user_MTN_subscription, userSubscriptionCheck } from '../api/UserAPI'
-import Toast from 'react-native-toast-message'
 import { showToast } from './ToastAlert'
 
-export default function SingleMovieCard({ movie, myWidth, subscriber }) {
+export default function SingleMovieCard({ similar_movies, movie, collection_name, myWidth, subscriber }) {
     const navigator = useNavigation()
+    // console.log('MOVIES === ', similar_movies);
 
     const [modalVisible, setModalVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -47,17 +46,19 @@ export default function SingleMovieCard({ movie, myWidth, subscriber }) {
 
                 var message_type = statusCheck['success'] == 'true' ? 'success' : 'error';
 
-                if (statusCheck['data'] != null && statusCheck['data']['subscription_status'] == 'active') {
-                    // showToast('Subscription status', statusCheck['message'], message_type, 5000);
-                    // setTimeout(() => {
-                        navigator.navigate('MoviePlayer', {
-                            singleMovie: movie
-                        });
-                    // }, 6000)
-                } else {
-                    showToast('Subscription status', statusCheck['message'], message_type, 5000);
-                    setModalVisible(false)
-                }
+                // if (statusCheck['data'] != null && statusCheck['data']['subscription_status'] == 'active') {
+                    // navigator.navigate('MoviePlayer', {
+                    //     singleMovie: movie
+                    // });
+                    navigator.navigate('ViewAllMovies', {
+                        similar_movies: similar_movies,
+                        single_movie: movie,
+                        collection_name: collection_name
+                    });
+                // } else {
+                //     showToast('Subscription status', statusCheck['message'], message_type, 5000);
+                //     setModalVisible(false)
+                // }
             }}
         >
 
@@ -103,7 +104,7 @@ export default function SingleMovieCard({ movie, myWidth, subscriber }) {
                                     <TouchableOpacity style={styles.modalButtonRed} onPress={() => setModalVisible(false)}>
                                         <Text style={styles.modalBtnText}>Cancel</Text>
                                     </TouchableOpacity>
-                                    
+
                                     <TouchableOpacity style={styles.modalButtonBlue} onPress={async () => {
                                         setIsLoading(true);
                                         console.log('SUBSCRIPTION REQUEST STARTED');
@@ -143,16 +144,16 @@ export default function SingleMovieCard({ movie, myWidth, subscriber }) {
                                                 if (verifySubscription['data'] != null && verifySubscription['data']['subscription_status'] == 'active') {
                                                     showToast('Verification Completed', verifySubscription['message'], 'error', 5000);
                                                     // setTimeout(() => {
-                                                        navigator.navigate('MoviePlayer', {
-                                                            singleMovie: movie
-                                                        });
+                                                    navigator.navigate('MoviePlayer', {
+                                                        singleMovie: movie
+                                                    });
                                                     // }, 6000);
-                                                } else if(verifySubscription['data'] != null && verifySubscription['data']['subscription_status'] == 'inactive') {
+                                                } else if (verifySubscription['data'] != null && verifySubscription['data']['subscription_status'] == 'inactive') {
                                                     showToast('Verification Completed', `Subscription status: ${verifySubscription['data']['subscription_status'].toUpperCase()}`, 'success', 5000);
-                                                }else{
+                                                } else {
                                                     showToast('Verification Error', 'Unable to verify subscription', 'error', 5000);
                                                 }
-                                            },30000);
+                                            }, 30000);
                                         } else {
                                             showToast('Subscription Request Error', result['message'], 'error', 5000);
                                         }
