@@ -1,10 +1,9 @@
-import { View, Text, FlatList, ActivityIndicator, StatusBar, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { addOrRemoveFavourite, userFavouriteMoviesAPI, userWatchListAPI } from '../api/UserAPI';
+import { addOrRemoveFavourite} from '../api/UserAPI';
 import { getStorageData } from '../utilities/LocalStorage';
-import SingleFavouriteScreen from '../components/SingleFavouriteScreen';
 import WebView from 'react-native-webview';
-import AntIcons from 'react-native-vector-icons/AntDesign'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 import { AppStyles } from '../utilities/AppStyles';
 
 export default function FavouriteScreen() {
@@ -53,7 +52,6 @@ export default function FavouriteScreen() {
           data={favourites}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
-            // <SingleFavouriteScreen movie={item} />
             <View
               style={{
                 backgroundColor: AppStyles.generalColors.dark_one,
@@ -114,7 +112,7 @@ export default function FavouriteScreen() {
                     setFavourites(updatedMovies)
                   }
                 }}>
-                  <AntIcons name='delete' size={20}
+                  <Ionicons name='remove-circle-outline' size={20}
                     style={{
                       color: AppStyles.generalColors.white_one,
                     }}

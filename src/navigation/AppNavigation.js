@@ -9,6 +9,7 @@ import BottomTabNav from './BottomTabNav'
 import MoviePlayerScreen from '../screens/MoviePlayerScreen'
 import TermsAndConditionsScreen from '../screens/profile/TermsAndConditionsScreen'
 import PrivacyPolicyScreen from '../screens/profile/PrivacyPolicyScreen'
+import WelcomeSliderScreen from '../screens/WelcomeSliderScreen'
 
 const Stack = createNativeStackNavigator();
 
@@ -17,6 +18,7 @@ export default function AppNavigation() {
     <NavigationContainer>
         <Stack.Navigator initialRouteName='Login' screenOptions={{headerShown: false}}>
         {/* <Stack.Screen name="MoviePlayer" component={MoviePlayerScreen} /> */}
+        {/* <Stack.Screen name="WelcomeSlider" component={WelcomeSliderScreen} /> */}
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="MoviePlayer" component={MoviePlayerScreen} />
