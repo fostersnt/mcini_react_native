@@ -67,7 +67,8 @@ export default function SearchScreen() {
       <View style={styles.searchContainer}>
         <TextInput
           style={styles.inputStyle}
-          placeholder="Type something..."
+          placeholder="Type movie title here..."
+          placeholderTextColor={'white'}
           value={inputText}
           onChangeText={(userInput) => {
             setInputText(userInput)
@@ -75,9 +76,9 @@ export default function SearchScreen() {
               setFoundMovies([]);
             }
             else {
-              setTimeout(() => {
+              // setTimeout(() => {
                 handleUserInput(userInput)
-              }, 1000);
+              // }, 50);
             }
           }}
         ></TextInput>
@@ -85,7 +86,7 @@ export default function SearchScreen() {
           setInputText('')
           setFoundMovies([])
         }}>
-          <Etypto name='cross' size={20} color={'grey'} />
+          <Etypto name='cross' size={20} color={'white'} />
         </TouchableOpacity>
       </View>
       {foundMovies == null || foundMovies.length === 0 ? (
@@ -135,7 +136,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: AppStyles.generalColors.white_one,
+    // backgroundColor: AppStyles.generalColors.white_one,
+    backgroundColor: '#282d33',
     // borderWidth: 1,
     borderColor: AppStyles.generalColors.white_one,
     paddingHorizontal: AppStyles.generalPadding.low,
@@ -155,7 +157,10 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     // color: AppStyles.generalColors.white_one,
-    width: '90%'
+    // backgroundColor: '#282d33',
+    color: 'white',
+    width: '90%',
+    fontSize: AppStyles.generalFontSize.normal
   },
   noMoviesContainer: {
     flex: 1,

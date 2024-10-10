@@ -114,7 +114,7 @@ export default function FavouriteScreen() {
         <TouchableOpacity onPress={fetchFavourites} style={{
           marginTop: 20,
           padding: 10,
-          backgroundColor: AppStyles.generalColors.primary, // Adjust your button styles here
+          backgroundColor: AppStyles.generalColors.dark_one, // Adjust your button styles here
           borderRadius: 5
         }}>
           <Text style={{ color: '#fff' }}>Refresh</Text>
