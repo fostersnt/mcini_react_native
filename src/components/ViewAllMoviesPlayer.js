@@ -15,7 +15,8 @@ import { useRoute } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Entypo from 'react-native-vector-icons/Entypo'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import { getStorageData } from '../utilities/LocalStorage';
+import { getStorageData, storeData } from '../utilities/LocalStorage';
+import { addOrRemoveFavourite } from '../api/UserAPI';
 
 const handleHttpError = (syntheticEvent) => {
     const { nativeEvent } = syntheticEvent;
@@ -32,6 +33,7 @@ function ViewAllMoviesPlayer() {
     const [madeFavourite, setMadeFavourite] = useState();
     const [favourites, setFavourites] = useState([]);
     const [isFavourite, setIsFavourite] = useState(0);
+    const [dataFromStorage, setDataFromStorage] = useState(null);
 
     const route = useRoute();
 
@@ -46,22 +48,57 @@ function ViewAllMoviesPlayer() {
     useEffect(() => {
         const fetchStorageData = async () => {
             const storageData = await getStorageData();
+
+            setDataFromStorage(storageData);
+            setFavourites(dataFromStorage.favourites);
+
+            console.log('STORAGE FAVOURITE MOVIES === ', dataFromStorage['favourites']);
+            
             const subscriberFavourites = storageData.favourites || [];
             setFavourites(subscriberFavourites);
             if (favourites != null && favourites.length > 0) {
                 const checkExistence = favourites.find((item) => item.id == singleMovie.id);
-                setIsFavourite(checkExistence.length > 0 ? true : false);
+                setIsFavourite(checkExistence.length > 0 ? 1 : 0);
             }
         }
         fetchStorageData();
     }, []);
 
     const handleAndOrRemoveFavourites = async () => {
-        setIsFavourite(isFavourite == 0 ? 1 : 0);
-        const payload = {
-            msisdn: subscriber.msisdn,
-            movieId: singleMovie.id,
-            isFavourite: isFavourite
+
+        setIsFavourite(isFavourite == 1 ? 0 : 1);
+
+        const apiFavourite = isFavourite;
+
+        let newFavourites = null;
+
+        try {
+            const payload = {
+                msisdn: subscriber.msisdn,
+                movieId: `${singleMovie.id}`,
+                isFavorite: `${apiFavourite}`
+            }
+
+            if (isFavourite == 1) {
+                // newFavourites = favourites != null ? favourites.push(singleMovie) : null;
+                // dataFromStorage.favourites = newFavourites
+            } else {
+                // newFavourites = favourites != null ? favourites.filter((item) => item.id != singleMovie.id) : null;
+                // dataFromStorage.favourites = newFavourites
+            }
+
+            // setIsFavourite(0);
+
+            console.log('FAVOURITES === ', favourites);
+            console.log('PAYLOAD === ', payload);
+            
+            await storeData(dataFromStorage)
+
+            const result = await addOrRemoveFavourite(payload);
+
+            console.log('ADD / REMOVE FROM FAVOURITE RESPONSE === ', result);
+        } catch (error) {
+            console.log('ERROR OCCURED === ', error.toString());
         }
     }
 
