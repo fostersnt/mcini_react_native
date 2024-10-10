@@ -43,7 +43,7 @@ export default function SearchScreen() {
       if (foundMovies.length > 0) {
         console.log('TOTAL FOUND MOVIES === ', foundMovies.length);
       } else {
-        console.log('NO MOVIE FOUND === ', foundMovies[0]);
+        console.log('=== NO MOVIE FOUND === ');
       }
     }
   }

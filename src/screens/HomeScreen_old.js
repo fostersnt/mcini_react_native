@@ -25,9 +25,6 @@ export default function HomeScreen() {
     const funcCall = async () => {
       const newBanner = homeBannerData();
       setHomeBanner(newBanner);
-      const storageData = await getStorageData();
-      const subscriberStorageData = storageData.subscriber;
-      // console.log('SUBSCRIBER DATA FROM STORAGE === ', subscriberStorageData);
     }
     funcCall()
   }, [movies]);
@@ -45,6 +42,7 @@ export default function HomeScreen() {
     // Refresh logic here
     setIsRefreshing(false);
   };
+
 
   const groupedMovies = movies.reduce((result, item) => {
     const { collection_name } = item;
