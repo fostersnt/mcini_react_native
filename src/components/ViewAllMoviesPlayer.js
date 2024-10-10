@@ -93,7 +93,8 @@ function ViewAllMoviesPlayer() {
 const styles = StyleSheet.create({
     scrollView: {
         flex: 1,
-        padding: 5,
+        paddingHorizontal: 5,
+        paddingTop: 30,
         backgroundColor: AppStyles.generalColors.dark_one
     },
     mainVideo: {
