@@ -31,6 +31,8 @@ function ViewAllMoviesPlayer() {
 
     const { singleMovie, similar_movies, subscriber } = route.params;
 
+    const isDescription = (singleMovie != null && singleMovie['description'] != null);
+
     console.log('SUBSCRIBER DATA === ', subscriber);
 
     console.log('NEW SINGLE MOVIE PLAYER === ', singleMovie['video_url']);
@@ -59,9 +61,12 @@ function ViewAllMoviesPlayer() {
                 >
                 </WebView>
             </View>
-            <View style={styles.descriptionContainer}>
+            {
+            isDescription ? 
+            (<View style={styles.descriptionContainer}>
                 <Text style={styles.descriptionText}>{singleMovie['description']}</Text>
-            </View>
+            </View>) : ''
+            }
             <View style={styles.iconsContainer}>
                 <View style={{ marginLeft: 10 }}><FontAwesome name='thumbs-o-up' size={25} color={'#00aeef'} /></View>
                 <View style={{ marginLeft: 20 }}><Entypo name='share' size={25} color={'#00aeef'} /></View>
@@ -99,7 +104,6 @@ const styles = StyleSheet.create({
     descriptionContainer: {
         marginBottom: 20,
         color: 'white',
-        height: 100
     },
     descriptionText: {
         color: 'white',
