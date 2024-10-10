@@ -81,6 +81,7 @@ function ViewAllMoviesPlayer() {
         // setIsFavourite(isFavourite == 1 ? 0 : 1);
 
         let newFavourites = null;
+
         console.log('API FAVOURITE === ', apiFavourite);
         
         try {
@@ -90,13 +91,13 @@ function ViewAllMoviesPlayer() {
                 isFavorite: `${apiFavourite}`
             }
 
-            if (isFavourite == 1) {
-                // newFavourites = favourites != null ? favourites.push(singleMovie) : null;
+            if (apiFavourite == 1) {
+                newFavourites = favourites != null ? favourites.push(singleMovie) : null;
                 dataFromStorage.favourites = newFavourites;
                 console.log('CURRENT FAVOURITES === ', dataFromStorage.favourites);
             } else {
-                // newFavourites = favourites != null ? favourites.filter((item) => item.id != singleMovie.id) : null;
-                // dataFromStorage.favourites = newFavourites
+                newFavourites = favourites != null ? favourites.filter((item) => item.id != singleMovie.id) : null;
+                dataFromStorage.favourites = newFavourites
             }
 
             // setIsFavourite(0);
