@@ -50,7 +50,8 @@ function ViewAllMoviesPlayer() {
             const storageData = await getStorageData();
 
             setDataFromStorage(storageData);
-            setFavourites(dataFromStorage.favourites);
+
+            setFavourites(dataFromStorage != null ? dataFromStorage.favourites : []);
 
             console.log('STORAGE FAVOURITE MOVIES === ', dataFromStorage['favourites']);
             
