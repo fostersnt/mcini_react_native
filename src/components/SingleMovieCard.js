@@ -22,8 +22,8 @@ export default function SingleMovieCard({ similar_movies, movie, subscriber }) {
 
     verifySubscription
 
-    const size = (screenWidth / 3) + 10;
-    // const size = (screenWidth / 3) - 10;
+    // const size = (screenWidth / 3) + 10;
+    const size = (screenWidth / 3) - 10;
 
     const myData = userData;
 
