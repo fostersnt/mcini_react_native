@@ -39,12 +39,6 @@ export default function SearchScreen() {
         movies.filter((item) => item.title.toLowerCase().includes(searchText))
 
       setFoundMovies(availableMovies);
-
-      if (foundMovies.length > 0) {
-        console.log('TOTAL FOUND MOVIES === ', foundMovies.length);
-      } else {
-        console.log('=== NO MOVIE FOUND === ');
-      }
     }
   }
 

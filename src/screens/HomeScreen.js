@@ -169,13 +169,14 @@ const styles = StyleSheet.create({
   viewAllContainer: {
     flex: 1,
     height: 200,
+    borderRadius: 20,
     backgroundColor: AppStyles.generalColors.dark_one,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
   },
   viewAllText: {
-    color: AppStyles.generalColors.blue,
+    color: AppStyles.generalColors.white_one,
     fontWeight: AppStyles.generalFontWeight.weight_one,
     fontSize: AppStyles.generalFontSize.large
   }
