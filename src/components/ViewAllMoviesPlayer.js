@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     StyleSheet,
     Text,
@@ -27,6 +27,8 @@ const handleOnRenderProcessGone = (syntheticEvent) => {
 
 function ViewAllMoviesPlayer() {
     const { width: screenWidth, height: screenHeight } = Dimensions.get('screen')
+    const [madeFavourite, setMadeFavourite] = useState();
+
     const route = useRoute();
 
     const { singleMovie, similar_movies, subscriber } = route.params;
@@ -37,41 +39,43 @@ function ViewAllMoviesPlayer() {
 
     console.log('NEW SINGLE MOVIE PLAYER === ', singleMovie['id']);
 
-    const renderMainMovie = () => (
-        <View style={styles.mainVideo}>
-            <WebView
-                style={{
-                    width: screenWidth,
-                    height: screenHeight / 2,
-                }}
-                source={{ uri: singleMovie['video_url'], headers: { Referer: 'https://mcini.tv' } }}
-                javaScriptEnabled={true}
-                domStorageEnabled={true}
-                allowsInlineMediaPlayback={true}
-                onHttpError={handleHttpError}
-                onError={handleOnRenderProcessGone}
-                renderError={() => (
-                    <View style={styles.errorContainer}>
-                        <Text style={styles.errorText}>Failed to load page.</Text>
-                    </View>
-                )}
+    const renderMainMovie = () => {
+        return (
+            <View style={styles.mainVideo}>
+                <WebView
+                    style={{
+                        width: screenWidth,
+                        height: screenHeight / 2,
+                    }}
+                    source={{ uri: singleMovie['video_url'], headers: { Referer: 'https://mcini.tv' } }}
+                    javaScriptEnabled={true}
+                    domStorageEnabled={true}
+                    allowsInlineMediaPlayback={true}
+                    onHttpError={handleHttpError}
+                    onError={handleOnRenderProcessGone}
+                    renderError={() => (
+                        <View style={styles.errorContainer}>
+                            <Text style={styles.errorText}>Failed to load page.</Text>
+                        </View>
+                    )}
 
-                onRenderProcessGone={handleOnRenderProcessGone}
-            >
-            </WebView>
-            {
-                isDescription ?
-                    (<View style={styles.descriptionContainer}>
-                        <Text style={styles.descriptionText}>{singleMovie['description']}</Text>
-                    </View>) : ''
-            }
-            <View style={styles.iconsContainer}>
-                <View style={{ marginLeft: 10 }}><FontAwesome name='thumbs-o-up' size={25} color={'#00aeef'} /></View>
-                <View style={{ marginLeft: 20 }}><Entypo name='share' size={25} color={'#00aeef'} /></View>
-                <View style={{ marginLeft: 20 }}><MaterialIcons name='favorite' size={25} color={'#00aeef'} /></View>
+                    onRenderProcessGone={handleOnRenderProcessGone}
+                >
+                </WebView>
+                {
+                    isDescription ?
+                        (<View style={styles.descriptionContainer}>
+                            <Text style={styles.descriptionText}>{singleMovie['description']}</Text>
+                        </View>) : ''
+                }
+                <View style={styles.iconsContainer}>
+                    <View style={{ marginLeft: 10 }}><FontAwesome name='thumbs-o-up' size={25} color={'#00aeef'} /></View>
+                    <View style={{ marginLeft: 20 }}><Entypo name='share' size={25} color={'#00aeef'} /></View>
+                    <View style={{ marginLeft: 20 }}><MaterialIcons name='favorite' size={25} color={'#00aeef'} /></View>
+                </View>
             </View>
-        </View>
-    )
+        )
+    }
 
     return (
         <View style={styles.contentContainer}>
@@ -103,7 +107,7 @@ const styles = StyleSheet.create({
     contentContainer: {
         flex: 1,
         paddingTop: 30,
-        backgroundColor: AppStyles.generalColors.dark_one
+        backgroundColor: AppStyles.generalColors.dark_four
     },
     mainVideo: {
         borderRadius: 30,

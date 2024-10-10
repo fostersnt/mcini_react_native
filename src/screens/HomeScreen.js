@@ -33,7 +33,11 @@ export default function HomeScreen() {
   }, [movies]);
 
   function homeBannerData() {
-    return movies.slice(0, 10); // Limit to 10 items
+    let result = [];
+    if (movies && movies.length > 0) {
+      result = movies.slice(0, 10);
+    }
+    return result;
   }
 
   const handleRefresh = () => {
@@ -60,14 +64,14 @@ export default function HomeScreen() {
       items: groupedMovies[collection_name],
     }));
 
-    // console.log('TESTING FOR DATA === ', groupedDataArray[0]);
-  
+  // console.log('TESTING FOR DATA === ', groupedDataArray[0]);
+
   const renderedItem = (items) => {
     const displayItems = items.slice(0, 5);
     const showViewAll = items.length > 5;
 
     const currentCollectionName = showViewAll ? items[0].collection_name : '';
-    
+
     return (
       <FlatList
         data={displayItems}
@@ -88,15 +92,15 @@ export default function HomeScreen() {
         ListFooterComponent={showViewAll ? (
           <TouchableOpacity
             onPress={() => {
-          // setCurrentMovie(item)      
-          navigator.navigate('ViewAllMovies', {
+              // setCurrentMovie(item)      
+              navigator.navigate('ViewAllMovies', {
                 similar_movies: items,
                 // single_movie: null,
                 subscriber: subscriber
               })
-          console.log('CURRENT COLLECTION NAME === ', currentCollectionName);
-          console.log('CURRENT COLLECTION DATA === ', items[0]);
-          
+              console.log('CURRENT COLLECTION NAME === ', currentCollectionName);
+              console.log('CURRENT COLLECTION DATA === ', items[0]);
+
             }}
           >
             <View style={[styles.viewAllContainer, { width: mySize }]}>
@@ -109,50 +113,50 @@ export default function HomeScreen() {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <StatusBar translucent backgroundColor={'transparent'} />
-      {homeBanner.length > 0 && (
-        <FlatList
-          pagingEnabled
-          data={homeBanner}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <MemoizedMovieBanner
-              // myWidth={screenWidth}
-              movie={item}
-            />
-          )}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          refreshing={isRefreshing}
-          onRefresh={handleRefresh}
-        />
-      )}
-      {homeBanner.length > 0 && (
-        <View style={{ flex: 1, padding: 0 }}>
-          <FlatList
-            data={groupedDataArray}
-            keyExtractor={(item) => item.collection_name}
-            renderItem={({ item }) => (
+    <View style={styles.mainContainer}>
+      <FlatList
+        data={[{ collection_name: 'bannerCollection' }, ...groupedDataArray]}
+        keyExtractor={(item) => item.collection_name}
+        renderItem={({ item }) => {
+          if (item.collection_name == 'bannerCollection') {
+            return (
+              <FlatList
+                pagingEnabled
+                data={homeBanner}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => (
+                  <MemoizedMovieBanner
+                    // myWidth={screenWidth}
+                    movie={item}
+                  />
+                )}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                refreshing={isRefreshing}
+                onRefresh={handleRefresh}
+              />
+            )
+          } else {
+            return (
               <View style={{ marginBottom: 20 }}>
                 <Text style={styles.collectionName}>
                   {item.collection_name}
                 </Text>
                 {renderedItem(item.items)}
               </View>
-            )}
-          />
-        </View>
-      )}
-    </ScrollView>
+            )
+          }
+        }}
+      />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    // flex: 1,
+  mainContainer: {
+    padding: 0,
+    flex: 1,
     paddingTop: 25,
-    // paddingHorizontal: 5,
     backgroundColor: AppStyles.generalColors.dark_four,
   },
   collectionName: {
