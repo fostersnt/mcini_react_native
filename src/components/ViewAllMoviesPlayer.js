@@ -4,7 +4,8 @@ import {
     Text,
     View,
     ScrollView,
-    FlatList
+    FlatList,
+    TouchableOpacity
 } from 'react-native';
 import WebView from 'react-native-webview';
 import { Dimensions } from 'react-native';
@@ -29,7 +30,8 @@ const handleOnRenderProcessGone = (syntheticEvent) => {
 function ViewAllMoviesPlayer() {
     const { width: screenWidth, height: screenHeight } = Dimensions.get('screen')
     const [madeFavourite, setMadeFavourite] = useState();
-    const [favourites, setFavourites] = useState();
+    const [favourites, setFavourites] = useState([]);
+    const [isFavourite, setIsFavourite] = useState(false);
 
     const route = useRoute();
 
@@ -46,12 +48,15 @@ function ViewAllMoviesPlayer() {
             const storageData = await getStorageData();
             const subscriberFavourites = storageData.favourites || [];
             setFavourites(subscriberFavourites);
+            if (favourites != null && favourites.length > 0) {
+                const checkExistence = favourites.find((item) => item.id == singleMovie.id);
+                setIsFavourite(checkExistence.length > 0 ? true : false);
+            }
         }
         fetchStorageData();
     }, []);
 
-    const handleAndOrRemoveFavourites = () =>
-    {
+    const handleAndOrRemoveFavourites = () => {
 
     }
 
@@ -85,10 +90,16 @@ function ViewAllMoviesPlayer() {
                             <Text style={styles.descriptionText}>{singleMovie['description']}</Text>
                         </View>) : ''
                 }
-                <View style={[styles.iconsContainer, {marginTop: isDescription ? 0 : 20}]}>
-                    <View style={{ marginLeft: 10 }}><FontAwesome name='thumbs-o-up' size={25} color={'#00aeef'} /></View>
-                    <View style={{ marginLeft: 20 }}><Entypo name='share' size={25} color={'#00aeef'} /></View>
-                    <View style={{ marginLeft: 20 }}><MaterialIcons name='favorite' size={25} color={madeFavourite ? '#00aeef' : '#fff'} /></View>
+                <View style={[styles.iconsContainer, { marginTop: isDescription ? 0 : 20 }]}>
+                    <View style={{ marginLeft: 10 }}><FontAwesome name='thumbs-o-up' size={25} color={'#fff'} /></View>
+                    <View style={{ marginLeft: 20 }}><Entypo name='share' size={25} color={'#fff'} /></View>
+                    <View style={{ marginLeft: 20 }}>
+                        <TouchableOpacity onPress={() => {
+                            setMadeFavourite(false);
+                        }}>
+                            <MaterialIcons name='favorite' size={25} color={isFavourite ? '#00aeef' : '#fff'} />
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
         )
