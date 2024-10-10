@@ -35,19 +35,18 @@ export default function SingleMovieCard({ similar_movies, movie, subscriber }) {
         <TouchableOpacity
             onPress={async () => {
                 setIsStatusCheck(true)
-                // setIsLoading(false)
 
                 const subStatus = subscriber != null ? subscriber.subscription_status : 'N/A';
 
                 console.log('CHECK STARTED');
 
-                const statusCheck = await userSubscriptionCheck(msisdn);
+                // const statusCheck = await userSubscriptionCheck(msisdn);
 
                 setIsStatusCheck(false)
 
-                console.log('CHECK COMPLETED === ', statusCheck);
+                // console.log('CHECK COMPLETED === ', statusCheck);
 
-                var message_type = statusCheck['success'] == 'true' ? 'success' : 'error';
+                // var message_type = statusCheck['success'] == 'true' ? 'success' : 'error';
 
                 // if (statusCheck['data'] != null && statusCheck['data']['subscription_status'] == 'active') {
                     setModalVisible(false)

@@ -35,72 +35,80 @@ function ViewAllMoviesPlayer() {
 
     console.log('SUBSCRIBER DATA === ', subscriber);
 
-    console.log('NEW SINGLE MOVIE PLAYER === ', singleMovie['video_url']);
+    console.log('NEW SINGLE MOVIE PLAYER === ', singleMovie['id']);
 
-    return (
-        <ScrollView style={styles.scrollView}>
-            <View style={styles.mainVideo}>
-                <WebView
-                    style={{
-                        width: screenWidth,
-                        height: screenHeight / 2,
-                    }}
-                    source={{ uri: singleMovie['video_url'], headers: { Referer: 'https://mcini.tv' } }}
-                    javaScriptEnabled={true}
-                    domStorageEnabled={true}
-                    allowsInlineMediaPlayback={true}
-                    onHttpError={handleHttpError}
-                    onError={handleOnRenderProcessGone}
-                    renderError={() => (
-                        <View style={styles.errorContainer}>
-                            <Text style={styles.errorText}>Failed to load page.</Text>
-                        </View>
-                    )}
+    const renderMainMovie = () => (
+        <View style={styles.mainVideo}>
+            <WebView
+                style={{
+                    width: screenWidth,
+                    height: screenHeight / 2,
+                }}
+                source={{ uri: singleMovie['video_url'], headers: { Referer: 'https://mcini.tv' } }}
+                javaScriptEnabled={true}
+                domStorageEnabled={true}
+                allowsInlineMediaPlayback={true}
+                onHttpError={handleHttpError}
+                onError={handleOnRenderProcessGone}
+                renderError={() => (
+                    <View style={styles.errorContainer}>
+                        <Text style={styles.errorText}>Failed to load page.</Text>
+                    </View>
+                )}
 
-                    onRenderProcessGone={handleOnRenderProcessGone}
-                >
-                </WebView>
-            </View>
+                onRenderProcessGone={handleOnRenderProcessGone}
+            >
+            </WebView>
             {
-            isDescription ? 
-            (<View style={styles.descriptionContainer}>
-                <Text style={styles.descriptionText}>{singleMovie['description']}</Text>
-            </View>) : ''
+                isDescription ?
+                    (<View style={styles.descriptionContainer}>
+                        <Text style={styles.descriptionText}>{singleMovie['description']}</Text>
+                    </View>) : ''
             }
             <View style={styles.iconsContainer}>
                 <View style={{ marginLeft: 10 }}><FontAwesome name='thumbs-o-up' size={25} color={'#00aeef'} /></View>
                 <View style={{ marginLeft: 20 }}><Entypo name='share' size={25} color={'#00aeef'} /></View>
                 <View style={{ marginLeft: 20 }}><MaterialIcons name='favorite' size={25} color={'#00aeef'} /></View>
             </View>
-            <View style={styles.contentContainer}>
-                <FlatList
-                    numColumns={3}
-                    data={similar_movies}
-                    keyExtractor={(item) => item.id}
-                    renderItem={({ item }) => {
+        </View>
+    )
+
+    return (
+        <View style={styles.contentContainer}>
+            <FlatList
+                numColumns={3}
+                data={[{ id: 0, title: 'my video' }, ...similar_movies]}
+                /*
+                    { id: 0, title: 'my video' } is intentionally added to control rendering
+                */
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) => {
+                    if (item.id == 0) {
+                        return renderMainMovie()
+                    } else {
+                        // console.log('ID OF CLICKED ITEM === ', singleMovie['id']);
                         return (
                             <View style={{ marginBottom: 10 }}>
                                 <SingleMovieCard similar_movies={similar_movies} movie={item} subscriber={subscriber} />
                             </View>
                         )
-                    }}
-                />
-            </View>
-        </ScrollView>
-    );
+                    }
+                }}
+            />
+        </View>
+    )
 }
 
 const styles = StyleSheet.create({
-    scrollView: {
+    contentContainer: {
         flex: 1,
-        paddingHorizontal: 5,
         paddingTop: 30,
         backgroundColor: AppStyles.generalColors.dark_one
     },
     mainVideo: {
-        borderRadius: 20,
+        borderRadius: 30,
+        // paddingHorizontal: 10,
         overflow: 'hidden',
-        marginBottom: AppStyles.generalMargin.higher
     },
     descriptionContainer: {
         marginBottom: 20,
@@ -108,7 +116,8 @@ const styles = StyleSheet.create({
     },
     descriptionText: {
         color: 'white',
-        fontSize: 16
+        fontSize: 16,
+        marginTop: AppStyles.generalMargin.higher
     },
     iconsContainer: {
         marginBottom: 20,
