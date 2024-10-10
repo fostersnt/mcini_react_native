@@ -18,15 +18,11 @@ export default function FavouriteScreen() {
   const fetchFavourites = async () => {
     setLoading(true);
     setRefreshing(true);
+    console.log('HELLO WORLD');
+    
     try {
       const storageData = await getStorageData();
       const subscriberFavourites = storageData.favourites || []; // Default to an empty array
-
-      if (subscriberFavourites.length > 0) {
-        console.log('SUBSCRIBER WATCH-LIST FROM STORAGE === ', subscriberFavourites[0]['video_url']);
-      } else {
-        console.log('NO SUBSCRIBER WATCH-LIST FROM STORAGE');
-      }
 
       setFavourites(subscriberFavourites);
     } catch (error) {

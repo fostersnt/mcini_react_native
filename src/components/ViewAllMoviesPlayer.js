@@ -46,6 +46,7 @@ function ViewAllMoviesPlayer() {
                     style={{
                         width: screenWidth,
                         height: screenHeight / 2,
+                        // marginBottom: 30
                     }}
                     source={{ uri: singleMovie['video_url'], headers: { Referer: 'https://mcini.tv' } }}
                     javaScriptEnabled={true}
@@ -107,7 +108,7 @@ const styles = StyleSheet.create({
     contentContainer: {
         flex: 1,
         paddingTop: 30,
-        backgroundColor: AppStyles.generalColors.dark_four
+        backgroundColor: AppStyles.generalColors.dark_four,
     },
     mainVideo: {
         borderRadius: 30,
