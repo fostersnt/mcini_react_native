@@ -31,7 +31,7 @@ function ViewAllMoviesPlayer() {
     const { width: screenWidth, height: screenHeight } = Dimensions.get('screen')
     const [madeFavourite, setMadeFavourite] = useState();
     const [favourites, setFavourites] = useState([]);
-    const [isFavourite, setIsFavourite] = useState(false);
+    const [isFavourite, setIsFavourite] = useState(0);
 
     const route = useRoute();
 
@@ -39,9 +39,9 @@ function ViewAllMoviesPlayer() {
 
     const isDescription = (singleMovie != null && singleMovie['description'] != null);
 
-    console.log('SUBSCRIBER DATA === ', subscriber);
+    // console.log('SUBSCRIBER DATA === ', subscriber);
 
-    console.log('NEW SINGLE MOVIE PLAYER === ', singleMovie['id']);
+    // console.log('NEW SINGLE MOVIE PLAYER === ', singleMovie['id']);
 
     useEffect(() => {
         const fetchStorageData = async () => {
@@ -56,8 +56,13 @@ function ViewAllMoviesPlayer() {
         fetchStorageData();
     }, []);
 
-    const handleAndOrRemoveFavourites = () => {
-
+    const handleAndOrRemoveFavourites = async () => {
+        setIsFavourite(isFavourite == 0 ? 1 : 0);
+        const payload = {
+            msisdn: subscriber.msisdn,
+            movieId: singleMovie.id,
+            isFavourite: isFavourite
+        }
     }
 
     const renderMainMovie = () => {
@@ -95,9 +100,9 @@ function ViewAllMoviesPlayer() {
                     <View style={{ marginLeft: 20 }}><Entypo name='share' size={25} color={'#fff'} /></View>
                     <View style={{ marginLeft: 20 }}>
                         <TouchableOpacity onPress={() => {
-                            setMadeFavourite(false);
+                            handleAndOrRemoveFavourites();
                         }}>
-                            <MaterialIcons name='favorite' size={25} color={isFavourite ? '#00aeef' : '#fff'} />
+                            <MaterialIcons name='favorite' size={25} color={isFavourite == 1 ? '#00aeef' : '#fff'} />
                         </TouchableOpacity>
                     </View>
                 </View>
