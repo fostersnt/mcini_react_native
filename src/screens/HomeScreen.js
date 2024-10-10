@@ -139,9 +139,7 @@ export default function HomeScreen() {
           } else {
             return (
               <View style={{ marginBottom: 20 }}>
-                <Text style={styles.collectionName}>
-                  {item.collection_name}
-                </Text>
+                <Text style={styles.collectionName}>{item.collection_name}</Text>
                 {renderedItem(item.items)}
               </View>
             )

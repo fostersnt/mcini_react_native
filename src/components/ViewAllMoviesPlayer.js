@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     StyleSheet,
     Text,
@@ -28,6 +28,7 @@ const handleOnRenderProcessGone = (syntheticEvent) => {
 function ViewAllMoviesPlayer() {
     const { width: screenWidth, height: screenHeight } = Dimensions.get('screen')
     const [madeFavourite, setMadeFavourite] = useState();
+    const [favourites, setFavourites] = useState();
 
     const route = useRoute();
 
@@ -38,6 +39,15 @@ function ViewAllMoviesPlayer() {
     console.log('SUBSCRIBER DATA === ', subscriber);
 
     console.log('NEW SINGLE MOVIE PLAYER === ', singleMovie['id']);
+
+    useEffect(() => {
+        const fetchStorageData = async () => {
+            const storageData = await getStorageData();
+            const subscriberFavourites = storageData.favourites || [];
+            setFavourites(subscriberFavourites);
+        }
+        fetchStorageData();
+    }, []);
 
     const renderMainMovie = () => {
         return (
@@ -72,7 +82,7 @@ function ViewAllMoviesPlayer() {
                 <View style={styles.iconsContainer}>
                     <View style={{ marginLeft: 10 }}><FontAwesome name='thumbs-o-up' size={25} color={'#00aeef'} /></View>
                     <View style={{ marginLeft: 20 }}><Entypo name='share' size={25} color={'#00aeef'} /></View>
-                    <View style={{ marginLeft: 20 }}><MaterialIcons name='favorite' size={25} color={'#00aeef'} /></View>
+                    <View style={{ marginLeft: 20 }}><MaterialIcons name='favorite' size={25} color={madeFavourite ? '#00aeef' : '#fff'} /></View>
                 </View>
             </View>
         )
