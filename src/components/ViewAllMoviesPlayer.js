@@ -69,12 +69,20 @@ function ViewAllMoviesPlayer() {
 
     const handleAndOrRemoveFavourites = async () => {
 
-        setIsFavourite(isFavourite == 1 ? 0 : 1);
+        let apiFavourite = isFavourite;
 
-        const apiFavourite = isFavourite;
+        if (isFavourite == 1) {
+            apiFavourite = 0;
+        } else {
+            apiFavourite = 1;
+        }
+
+        setIsFavourite(apiFavourite)
+        // setIsFavourite(isFavourite == 1 ? 0 : 1);
 
         let newFavourites = null;
-
+        console.log('API FAVOURITE === ', apiFavourite);
+        
         try {
             const payload = {
                 msisdn: subscriber.msisdn,
@@ -84,7 +92,8 @@ function ViewAllMoviesPlayer() {
 
             if (isFavourite == 1) {
                 // newFavourites = favourites != null ? favourites.push(singleMovie) : null;
-                // dataFromStorage.favourites = newFavourites
+                dataFromStorage.favourites = newFavourites;
+                console.log('CURRENT FAVOURITES === ', dataFromStorage.favourites);
             } else {
                 // newFavourites = favourites != null ? favourites.filter((item) => item.id != singleMovie.id) : null;
                 // dataFromStorage.favourites = newFavourites
