@@ -63,9 +63,9 @@ function ViewAllMoviesPlayer() {
                 <Text style={styles.descriptionText}>{singleMovie['description']}</Text>
             </View>
             <View style={styles.iconsContainer}>
-            <View style={{marginLeft: 10}}><FontAwesome name='thumbs-o-up' size={25} color={'#00aeef'} /></View>
-            <View style={{marginLeft: 20}}><Entypo name='share' size={25} color={'#00aeef'} /></View>
-            <View style={{marginLeft: 20}}><MaterialIcons name='favorite' size={25} color={'#00aeef'} /></View>
+                <View style={{ marginLeft: 10 }}><FontAwesome name='thumbs-o-up' size={25} color={'#00aeef'} /></View>
+                <View style={{ marginLeft: 20 }}><Entypo name='share' size={25} color={'#00aeef'} /></View>
+                <View style={{ marginLeft: 20 }}><MaterialIcons name='favorite' size={25} color={'#00aeef'} /></View>
             </View>
             <View style={styles.contentContainer}>
                 <FlatList
@@ -74,7 +74,7 @@ function ViewAllMoviesPlayer() {
                     keyExtractor={(item) => item.id}
                     renderItem={({ item }) => {
                         return (
-                            <View>
+                            <View style={{ marginBottom: 10 }}>
                                 <SingleMovieCard similar_movies={similar_movies} movie={item} subscriber={subscriber} />
                             </View>
                         )
