@@ -91,7 +91,7 @@ export default function SearchScreen() {
       </View>
       {foundMovies == null || foundMovies.length === 0 ? (
         <View style={styles.noMoviesContainer}>
-          <Text style={{ color: 'white' }}>No movies found</Text>
+          <Text style={{ color: 'white', fontSize: AppStyles.generalFontSize.small }}>No movies found</Text>
         </View>
       ) : (
         <FlatList
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     // backgroundColor: '#282d33',
     color: 'white',
     width: '90%',
-    fontSize: AppStyles.generalFontSize.normal
+    fontSize: AppStyles.generalFontSize.small
   },
   noMoviesContainer: {
     flex: 1,
