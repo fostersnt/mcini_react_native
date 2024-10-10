@@ -14,6 +14,7 @@ import { useRoute } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Entypo from 'react-native-vector-icons/Entypo'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import { getStorageData } from '../utilities/LocalStorage';
 
 const handleHttpError = (syntheticEvent) => {
     const { nativeEvent } = syntheticEvent;
@@ -49,6 +50,11 @@ function ViewAllMoviesPlayer() {
         fetchStorageData();
     }, []);
 
+    const handleAndOrRemoveFavourites = () =>
+    {
+
+    }
+
     const renderMainMovie = () => {
         return (
             <View style={styles.mainVideo}>
@@ -79,7 +85,7 @@ function ViewAllMoviesPlayer() {
                             <Text style={styles.descriptionText}>{singleMovie['description']}</Text>
                         </View>) : ''
                 }
-                <View style={styles.iconsContainer}>
+                <View style={[styles.iconsContainer, {marginTop: isDescription ? 0 : 20}]}>
                     <View style={{ marginLeft: 10 }}><FontAwesome name='thumbs-o-up' size={25} color={'#00aeef'} /></View>
                     <View style={{ marginLeft: 20 }}><Entypo name='share' size={25} color={'#00aeef'} /></View>
                     <View style={{ marginLeft: 20 }}><MaterialIcons name='favorite' size={25} color={madeFavourite ? '#00aeef' : '#fff'} /></View>
