@@ -1,32 +1,35 @@
 import { View, Text, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { addOrRemoveFavourite } from '../api/UserAPI';
-import { getStorageData } from '../utilities/LocalStorage';
+import { getStorageData, storeData } from '../utilities/LocalStorage';
 import WebView from 'react-native-webview';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { AppStyles } from '../utilities/AppStyles';
 import { showToast } from '../components/ToastAlert';
 
 export default function FavouriteScreen() {
-  const [favourites, setFavourites] = useState([]);
+  const [favourites, setFavourites] = useState(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [dataFromStorage, setDataFromStorage] = useState(null);
+  const [subscriberData, setSubscriberData] = useState(null);
 
   const truncateTitle = (title) => {
     return title != null && title.length > 20 ? `${title.substring(0, 20)}...` : title;
   };
 
   const fetchFavourites = async () => {
+
     setLoading(true);
     setRefreshing(true);
-    console.log('HELLO WORLD');
-    
+
     try {
       const storageData = await getStorageData();
-      const subscriberFavourites = storageData.favourites || []; // Default to an empty array
-      console.log('MY FAVOURITES === ', subscriberFavourites);
-      
-      setFavourites(subscriberFavourites);
+      if (storageData != null) {
+        setDataFromStorage(storageData);
+        setFavourites(storageData.favourites);
+        setSubscriberData(storageData.subscriber);
+      }
     } catch (error) {
       console.error('Error fetching favourites:', error);
     } finally {
@@ -78,26 +81,45 @@ export default function FavouriteScreen() {
               </View>
               <View>
                 <TouchableOpacity onPress={async () => {
-                  const updatedMovies = favourites.filter(currentMovie => currentMovie.id !== item.id);
-                  setFavourites(updatedMovies);
-                  console.log('FAVOURITE MOVIE DELETED');
-                  const storageData = await getStorageData();
-                  const msisdn = storageData.msisdn;
+                  // const favourites = dataFromStorage != null ? dataFromStorage.favourites : [];
+
+                  if (favourites != null && favourites.length > 0) {
+                    const updatedMovies = favourites.filter(currentMovie => currentMovie.id !== item.id);
+                    console.log('UPDATED FAVOURITES === ', updatedMovies);
+                    
+                    setFavourites(updatedMovies);
+                    dataFromStorage.favourites = favourites;
+                    await storeData(dataFromStorage)
+                    console.log('STORAGE STORAGE');
+
+                  }
+                  console.log('EXISTING FAVOURITES === ', favourites);
                   
+                  if (favourites != null && favourites.length == 0) {
+                    console.log('ggggggggg');
+                    
+                    setFavourites([]);
+                  }
+
+                  console.log('FAVOURITE MOVIE DELETED');
+
+                  const data = dataFromStorage;
+                  const msisdn = data.msisdn;
+
                   const movieId = item.id;
                   const payload = {
                     msisdn: msisdn,
                     movieId: `${movieId}`,
-                    isFavourite: 0
+                    isFavorite: `${0}`
                   };
-                                    
+
                   const result = await addOrRemoveFavourite(payload);
 
                   console.log('FAVOURITES RESPONSE === ', result);
 
                   if (result['success'] === 'true') {
                     showToast('Favourites', result['message'], 'success', 3000)
-                  }else{
+                  } else {
                     showToast('Favourites', result['message'], 'error', 5000)
                   }
                 }}>

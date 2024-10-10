@@ -62,10 +62,10 @@ export default function LoginScreen() {
         const formattedPhone = replaceFirstDigitWith233(phone);
 
         setPhone(formattedPhone);
-        
+
         const responseData = await allUserData(phone);
 
-        console.log('MAIN USER LOGIN API RESPONSE: ', responseData['favourites']);
+        // console.log('MAIN USER LOGIN API RESPONSE: ', responseData['favourites']);
 
         var dataToBeStored = {
           msisdn: formattedPhone,
@@ -100,7 +100,7 @@ export default function LoginScreen() {
             favourites: responseData['favourites'],
             watchList: watchListArray,
           }
-          console.log('LOGIN FAVOURITE MOVIES === ', dataToBeStored.favourites);
+          // console.log('LOGIN FAVOURITE MOVIES === ', dataToBeStored.favourites);
           
           await storeData(dataToBeStored);
 

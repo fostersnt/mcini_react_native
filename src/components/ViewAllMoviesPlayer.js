@@ -48,12 +48,14 @@ function ViewAllMoviesPlayer() {
     useEffect(() => {
         const fetchStorageData = async () => {
             const storageData = await getStorageData();
-
+            
+            // console.log('STORAGE DATA DATA === ', storageData);
+            
             setDataFromStorage(storageData);
 
-            setFavourites(dataFromStorage != null ? dataFromStorage.favourites : []);
+            setFavourites(storageData != null ? storageData.favourites : []);
 
-            console.log('STORAGE FAVOURITE MOVIES === ', dataFromStorage['favourites']);
+            console.log('STORAGE FAVOURITE MOVIES NOW === ', storageData['favourites']);
             
             const subscriberFavourites = storageData.favourites || [];
             setFavourites(subscriberFavourites);
