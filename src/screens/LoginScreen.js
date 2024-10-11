@@ -8,7 +8,7 @@ import { replaceFirstDigitWith233 } from '../utilities/Validations';
 import { showToast } from '../components/ToastAlert';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSubscriber } from '../redux/slice/SubscriberSlice';
-import { setFavoriteMovies, setMovies } from '../redux/slice/MovieSlice';
+import { setFavoriteMovies, setMovies, setWatchList } from '../redux/slice/MovieSlice';
 
 const bannerImage = require('../assets/images/banner.png');
 
@@ -108,6 +108,7 @@ export default function LoginScreen() {
           dispatch(setSubscriber(responseData['subscriber']));
           dispatch(setMovies(responseData['movies']));
           dispatch(setFavoriteMovies(responseData['favourites']));
+          dispatch(setWatchList(watchListArray))
 
           await storeData(dataToBeStored);
 

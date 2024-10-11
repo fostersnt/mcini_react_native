@@ -31,6 +31,13 @@ const MovieSlice = createSlice({
     }
 });
 
-export const {setCurrentMovie, setMovies, setFavoriteMovies, addMovieToFavorites} = MovieSlice.actions
+export const {
+    setCurrentMovie,
+    setMovies,
+    setFavoriteMovies,
+    addMovieToFavorites,
+    setWatchList,
+    addToWatchList
+} = MovieSlice.actions
 
 export default MovieSlice.reducer;
