@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Modal, StyleSheet, Button, ActivityIndicator, Dimensions } from 'react-native'
+import { View, Text, TouchableOpacity, Modal, StyleSheet, ActivityIndicator, Dimensions } from 'react-native'
 import React, { useState } from 'react'
 import { AppStyles } from '../utilities/AppStyles'
 import WebView from 'react-native-webview'
@@ -11,7 +11,6 @@ import { useSelector } from 'react-redux'
 export default function SingleMovieCard({ movie }) {
     const navigator = useNavigation()
 
-    // console.log('MOVIES === ', similar_movies);
     const similar_movies = useSelector((state) => state.movie.movies);
     const subscriber = useSelector((state) => state.subscriber.subscriberDetails);
 
@@ -26,7 +25,6 @@ export default function SingleMovieCard({ movie }) {
 
     verifySubscription
 
-    // const size = (screenWidth / 3) + 10;
     const size = (screenWidth / 3) - 10;
 
     const myData = userData;
@@ -56,9 +54,7 @@ export default function SingleMovieCard({ movie }) {
                     // if (statusCheck['data'] != null && statusCheck['data']['subscription_status'] == 'active') {
                         setModalVisible(false)
                         navigator.navigate('ViewAllMoviesPlayer', {
-                            similar_movies: similar_movies,
                             singleMovie: movie,
-                            subscriber: subscriber
                         });
                     // } else if (statusCheck['data'] != null && statusCheck['data']['subscription_status'] == 'inactive') {
                     //     showToast('Subscription status', 'You have no active subscription', message_type, 5000);
