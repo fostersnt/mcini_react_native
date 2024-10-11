@@ -84,9 +84,7 @@ export default function HomeScreen() {
         renderItem={({ item }) => {
           return (
             <MemoizedSingleMovieCard
-              similar_movies={items}
               movie={item}
-              subscriber={subscriber}
             />
           )
         }}

@@ -15,42 +15,40 @@ const bannerImage = require('../assets/images/banner.png');
 // const mciniLogo = require('../assets/images/logo/mcini.jpg')
 
 export default function LoginScreen() {
-  const [phone, setPhone] = useState('');
-  // const [isError, setIsError] = useState(false);
-  // const [errorMessage, setErrorMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-
-  const [country, setCountry] = useState('option1');
   const dispatch = useDispatch();
+  const [phone, setPhone] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [subscriber, setSubscriber] = useState(null);
 
   useEffect(() => {
     const authData = async () => {
       try {
-        const storageData = await getStorageData(phone);
-        // console.log('STORAGE DATA IS: ', storageData['msisdn']);
-        // console.log('PHONE NUMBER:', phone);
+        // const storageData = await getStorageData(phone);
+        const subscriberData = useSelector((state) => state.subscriber.subscriberDetails);
 
-        const response = await checkAuthAPI(storageData.msisdn);
+        setSubscriber(subscriberData);
 
-        const message = response['message'].toString().toLowerCase();
+        if (subscriber != null && subscriber.msisdn != '') {
+          const response = await checkAuthAPI(subscriber.msisdn);
 
-        console.log('MESSAGE: ', message);
+          const message = response['message'].toString().toLowerCase();
 
-        if (response.success == 'true' && message == 'user authenticated!') {
-          navigation.navigate('BottomTabNav', {
-            Screen: 'HomeScreen',
-            params: { movies: response.data }
-          });
+          console.log('MESSAGE: ', message);
+
+          if (response.success == 'true' && message == 'user authenticated!') {
+            navigation.navigate('BottomTabNav', {
+              Screen: 'HomeScreen',
+              params: { movies: response.data }
+            });
+          }
         }
+        console.log('SUBSCRIBER MSISDN === ', subscriber ? subscriber.msisdn : 'N/A');
       } catch (error) {
         console.log('USE EFFECT ERROR AT LOGIN SCREEN: ', error.toString());
       }
     }
-
-
     //Calling the authCheck function
     authData();
-
   }, []);
 
   const navigation = useNavigation();
@@ -61,6 +59,7 @@ export default function LoginScreen() {
       showToast('Login Error', 'Phone number is required', 'error', 5000)
     } else {
       if (!isLoading) {
+
         setIsLoading(true)
 
         const formattedPhone = replaceFirstDigitWith233(phone);
@@ -69,24 +68,16 @@ export default function LoginScreen() {
 
         const responseData = await allUserData(phone);
 
-        // console.log('MAIN USER LOGIN API RESPONSE: ', responseData['favorites']);
-
-        var dataToBeStored = {
-          msisdn: formattedPhone,
-          subscriber: null,
-          movies: null,
-          favorites: null,
-          watchList: null,
-        }
-
         if (responseData['success'] == 'false') {
 
           showToast('Login Error', responseData['message'], 'error', 5000)
+
           setIsLoading(false)
 
         } else if (responseData['success'] == 'true') {
 
           const watchListArray = [];
+
           const myWatchList = responseData['watchList'];
 
           if (myWatchList != null && myWatchList.length > 0) {
@@ -97,27 +88,18 @@ export default function LoginScreen() {
             });
           }
 
-          var dataToBeStored = {
-            msisdn: formattedPhone,
-            subscriber: responseData['subscriber'],
-            movies: responseData['movies'],
-            favorites: responseData['favorites'],
-            watchList: watchListArray,
-          }
-
-          // console.log('LOGIN FAVOURITE MOVIES === ', dataToBeStored.favorites);
           dispatch(setSubscriber(responseData['subscriber']));
           dispatch(setMovies(responseData['movies']));
           dispatch(setFavoriteMovies(responseData['favorites']));
           dispatch(setWatchList(watchListArray))
 
-          await storeData(dataToBeStored);
-
           setIsLoading(false)
 
-          navigation.navigate('BottomTabNav', {
-            screen: 'Home',
-          });
+          navigation.navigate('Home');
+
+          // navigation.navigate('BottomTabNav', {
+          //   screen: 'Home',
+          // });
         }
       }
     }
