@@ -39,7 +39,7 @@ export default function LoginScreen() {
             });
           }
         }
-        console.log('SUBSCRIBER MSISDN === ', subscriber ? subscriber.msisdn : 'N/A');
+        console.log('SUBSCRIBER MSISDN === ', currentSubscriber ? currentSubscriber.msisdn : 'N/A');
       } catch (error) {
         console.log('USE EFFECT ERROR AT LOGIN SCREEN: ', error.toString());
       }
