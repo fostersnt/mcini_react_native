@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { SubscriberSlice } from "../slice/SubscriberSlice";
-import { MovieSlice } from "../slice/MovieSlice";
+import  SubscriberReduce from "../slice/SubscriberSlice"; //Use any custom variable
+import MovieReducer from "../slice/MovieSlice"; //Use any custom variable
 
 
 export const appStore = configureStore({
     reducer: {
-        subscriber: SubscriberSlice,
-        movie: MovieSlice
-    }
+        subscriber: SubscriberReduce,
+        movie: MovieReducer
+    },
+
+    devTools: process.env.NODE_ENV !== 'production',
 })

@@ -6,6 +6,7 @@ import WebView from 'react-native-webview';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { AppStyles } from '../utilities/AppStyles';
 import { showToast } from '../components/ToastAlert';
+import { useSelector } from 'react-redux';
 
 export default function FavouriteScreen() {
   const [favourites, setFavourites] = useState(null);
@@ -14,12 +15,14 @@ export default function FavouriteScreen() {
   const [dataFromStorage, setDataFromStorage] = useState(null);
   const [subscriberData, setSubscriberData] = useState(null);
 
+  const subData = useSelector((state) => state.subscriber.subscriberDetails);
+
   const truncateTitle = (title) => {
     return title != null && title.length > 20 ? `${title.substring(0, 20)}...` : title;
   };
 
   const fetchFavourites = async () => {
-
+    console.log('SUBSCRIBER DETAILS FROM REDUX STORE === ', subData);
     setLoading(true);
     setRefreshing(true);
 

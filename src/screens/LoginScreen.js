@@ -6,7 +6,9 @@ import { storeData, getStorageData } from '../utilities/LocalStorage';
 import { AppStyles } from '../utilities/AppStyles';
 import { replaceFirstDigitWith233 } from '../utilities/Validations';
 import { showToast } from '../components/ToastAlert';
-import Toast from 'react-native-toast-message';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSubscriber } from '../redux/slice/SubscriberSlice';
+import { setFavoriteMovies, setMovies } from '../redux/slice/MovieSlice';
 
 const bannerImage = require('../assets/images/banner.png');
 
@@ -19,6 +21,7 @@ export default function LoginScreen() {
   const [isLoading, setIsLoading] = useState(false);
 
   const [country, setCountry] = useState('option1');
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const authData = async () => {
@@ -100,8 +103,12 @@ export default function LoginScreen() {
             favourites: responseData['favourites'],
             watchList: watchListArray,
           }
+
           // console.log('LOGIN FAVOURITE MOVIES === ', dataToBeStored.favourites);
-          
+          dispatch(setSubscriber(responseData['subscriber']));
+          dispatch(setMovies(responseData['movies']));
+          dispatch(setFavoriteMovies(responseData['favourites']));
+
           await storeData(dataToBeStored);
 
           setIsLoading(false)
@@ -139,61 +146,61 @@ export default function LoginScreen() {
     >
       <KeyboardAvoidingView
 
-          behavior={Platform.OS === 'android' ? 'padding' : 'height'}
-        >
-          <StatusBar translucent backgroundColor='transparent'></StatusBar>
+        behavior={Platform.OS === 'android' ? 'padding' : 'height'}
+      >
+        <StatusBar translucent backgroundColor='transparent'></StatusBar>
 
-          <View style={[
-            {
-              backgroundColor: AppStyles.generalColors.dark_three,
-              paddingVertical: 50,
-              padding: AppStyles.generalPadding.higher,
-              opacity: 1,
-            }
-          ]}>
-            <View>
-              <Text style={[
-                styles.title,
+        <View style={[
+          {
+            backgroundColor: AppStyles.generalColors.dark_three,
+            paddingVertical: 50,
+            padding: AppStyles.generalPadding.higher,
+            opacity: 1,
+          }
+        ]}>
+          <View>
+            <Text style={[
+              styles.title,
+              {
+                fontSize: AppStyles.generalFontSize.large,
+                marginBottom: AppStyles.generalMargin.higher,
+              }
+            ]}>Login</Text>
+            <TextInput
+              style={[
+                styles.input,
                 {
-                  fontSize: AppStyles.generalFontSize.large,
-                  marginBottom: AppStyles.generalMargin.higher,
-                }
-              ]}>Login</Text>
-              <TextInput
-                style={[
-                  styles.input,
-                  {
-                    height: AppStyles.generalHeight.height_one,
-                    marginBottom: AppStyles.generalMargin.higher,
-                    borderRadius: AppStyles.generalBorderRadius.radius_one
-                  }
-                ]}
-                placeholder='phone number'
-                onChangeText={(text) => setPhone(text)}
-              />
-              <TouchableOpacity onPress={handleLogin} style={[
-                styles.loginButton,
-                {
-                  backgroundColor: AppStyles.generalColors.blue,
-                  padding: AppStyles.generalPadding.lower,
                   height: AppStyles.generalHeight.height_one,
+                  marginBottom: AppStyles.generalMargin.higher,
                   borderRadius: AppStyles.generalBorderRadius.radius_one
                 }
-              ]}>
-                <Text style={{
-                  color: AppStyles.generalColors.white_one,
-                  fontSize: AppStyles.generalFontSize.normal,
-                  fontWeight: AppStyles.generalFontWeight.weight_one
-                }}>
-                  {isLoading ? <ActivityIndicator color={'white'} /> : 'Login'}
-                </Text>
-              </TouchableOpacity>
-              {/* <TouchableOpacity style={styles.innerContainer} onPress={handleRegister}>
+              ]}
+              placeholder='phone number'
+              onChangeText={(text) => setPhone(text)}
+            />
+            <TouchableOpacity onPress={handleLogin} style={[
+              styles.loginButton,
+              {
+                backgroundColor: AppStyles.generalColors.blue,
+                padding: AppStyles.generalPadding.lower,
+                height: AppStyles.generalHeight.height_one,
+                borderRadius: AppStyles.generalBorderRadius.radius_one
+              }
+            ]}>
+              <Text style={{
+                color: AppStyles.generalColors.white_one,
+                fontSize: AppStyles.generalFontSize.normal,
+                fontWeight: AppStyles.generalFontWeight.weight_one
+              }}>
+                {isLoading ? <ActivityIndicator color={'white'} /> : 'Login'}
+              </Text>
+            </TouchableOpacity>
+            {/* <TouchableOpacity style={styles.innerContainer} onPress={handleRegister}>
               <Text style={styles.notRegistered}>Not a subscriber? Register</Text>
             </TouchableOpacity> */}
-            </View>
           </View>
-        </KeyboardAvoidingView>
+        </View>
+      </KeyboardAvoidingView>
     </ImageBackground>
   )
 }
