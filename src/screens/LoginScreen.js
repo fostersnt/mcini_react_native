@@ -2,7 +2,6 @@ import { View, Text, StyleSheet, TouchableOpacity, TextInput, StatusBar, Image, 
 import React, { useState, useEffect } from 'react'
 import { checkAuthAPI, allUserData } from '../api/UserAPI';
 import { useNavigation } from '@react-navigation/native';
-import { storeData, getStorageData } from '../utilities/LocalStorage';
 import { AppStyles } from '../utilities/AppStyles';
 import { replaceFirstDigitWith233 } from '../utilities/Validations';
 import { showToast } from '../components/ToastAlert';
@@ -12,13 +11,11 @@ import { setFavoriteMovies, setMovies, setWatchList } from '../redux/slice/Movie
 
 const bannerImage = require('../assets/images/banner.png');
 
-// const mciniLogo = require('../assets/images/logo/mcini.jpg')
-
 export default function LoginScreen() {
   const dispatch = useDispatch();
   const [phone, setPhone] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [subscriber, setSubscriber] = useState(null);
+  const [currentSubscriber, setCurrentSubscriber] = useState(null);
 
   useEffect(() => {
     const authData = async () => {
@@ -26,10 +23,10 @@ export default function LoginScreen() {
         // const storageData = await getStorageData(phone);
         const subscriberData = useSelector((state) => state.subscriber.subscriberDetails);
 
-        setSubscriber(subscriberData);
+        setCurrentSubscriber(subscriberData);
 
-        if (subscriber != null && subscriber.msisdn != '') {
-          const response = await checkAuthAPI(subscriber.msisdn);
+        if (currentSubscriber != null && currentSubscriber.msisdn != '') {
+          const response = await checkAuthAPI(currentSubscriber.msisdn);
 
           const message = response['message'].toString().toLowerCase();
 
