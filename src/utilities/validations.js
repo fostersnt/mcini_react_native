@@ -9,3 +9,7 @@ export const replaceFirstDigitWith233 = (phoneNumber) => {
     
     return msisdn;
 }
+
+export const reduceStringLength = (text) => {
+    return text != null && text.length > 20 ? `${text.substring(0, 20)}...` : text;
+  };

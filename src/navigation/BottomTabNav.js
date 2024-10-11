@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import HomeScreen from '../screens/HomeScreen'
 import ProfileScreen from '../screens/ProfileScreen'
 import SearchScreen from '../screens/SearchScreen'
-import FavouriteScreen from '../screens/FavouriteScreen'
+import FavoriteScreen from '../screens/FavoriteScreen'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import IonIcons from 'react-native-vector-icons/Ionicons'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
@@ -36,7 +36,7 @@ export default function BottomTabNav() {
             <AntIcons name='home' color={color} size={size} />
           )
         }} />
-      <Tab.Screen name="Favourites" component={FavouriteScreen} 
+      <Tab.Screen name="Favorites" component={FavoriteScreen} 
       options={{
         tabBarIcon: ({ color, size }) => (
           <MaterialIcons name='favorite-outline' color={color} size={size} />

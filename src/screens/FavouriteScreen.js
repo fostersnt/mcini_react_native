@@ -1,59 +1,55 @@
 import { View, Text, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { addOrRemoveFavourite } from '../api/UserAPI';
+import { addOrRemoveFavorite } from '../api/UserAPI';
 import { getStorageData, storeData } from '../utilities/LocalStorage';
 import WebView from 'react-native-webview';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { AppStyles } from '../utilities/AppStyles';
 import { showToast } from '../components/ToastAlert';
 import { useSelector } from 'react-redux';
+import { reduceStringLength } from '../utilities/Validations';
 
-export default function FavouriteScreen() {
-  const [favourites, setFavourites] = useState(null);
+export default function FavoriteScreen() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [dataFromStorage, setDataFromStorage] = useState(null);
   const [subscriberData, setSubscriberData] = useState(null);
 
-  const subData = useSelector((state) => state.subscriber.subscriberDetails);
+  // const subData = useSelector((state) => state.subscriber.subscriberDetails);
+  const favorites = useSelector((state) => state.movie.favoriteMovies);
 
-  const truncateTitle = (title) => {
-    return title != null && title.length > 20 ? `${title.substring(0, 20)}...` : title;
-  };
+  // const fetchFavorites = async () => {
+  //   setLoading(true);
+  //   setRefreshing(true);
 
-  const fetchFavourites = async () => {
-    console.log('SUBSCRIBER DETAILS FROM REDUX STORE === ', subData);
-    setLoading(true);
-    setRefreshing(true);
+  //   try {
+  //     const storageData = await getStorageData();
+  //     if (storageData != null) {
+  //       setDataFromStorage(storageData);
+  //       setFavorites(storageData.favorites);
+  //       setSubscriberData(storageData.subscriber);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching favorites:', error);
+  //   } finally {
+  //     setLoading(false);
+  //     setRefreshing(false);
+  //   }
+  // };
 
-    try {
-      const storageData = await getStorageData();
-      if (storageData != null) {
-        setDataFromStorage(storageData);
-        setFavourites(storageData.favourites);
-        setSubscriberData(storageData.subscriber);
-      }
-    } catch (error) {
-      console.error('Error fetching favourites:', error);
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchFavourites();
-  }, []);
+  // useEffect(() => {
+  //   fetchFavorites();
+  // }, []);
 
   const renderContent = () => {
     if (loading && !refreshing) {
       return <ActivityIndicator size="large" color="white" style={{ flex: 1, justifyContent: 'center' }} />;
     }
 
-    if (favourites && favourites.length > 0) {
+    if (favorites && favorites.length > 0) {
       return (
         <FlatList
-          data={favourites}
+          data={favorites}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <View
@@ -79,29 +75,29 @@ export default function FavouriteScreen() {
               </View>
               <View>
                 <Text style={{ flexWrap: 'wrap', color: AppStyles.generalColors.white_one }}>
-                  {truncateTitle(item['title'])}
+                  {reduceStringLength(item['title'])}
                 </Text>
               </View>
               <View>
                 <TouchableOpacity onPress={async () => {
-                  // const favourites = dataFromStorage != null ? dataFromStorage.favourites : [];
+                  // const favorites = dataFromStorage != null ? dataFromStorage.favorites : [];
 
-                  if (favourites != null && favourites.length > 0) {
-                    const updatedMovies = favourites.filter(currentMovie => currentMovie.id !== item.id);
+                  if (favorites != null && favorites.length > 0) {
+                    const updatedMovies = favorites.filter(currentMovie => currentMovie.id !== item.id);
                     console.log('UPDATED FAVOURITES === ', updatedMovies);
                     
-                    setFavourites(updatedMovies);
-                    dataFromStorage.favourites = favourites;
+                    setFavorites(updatedMovies);
+                    dataFromStorage.favorites = favorites;
                     await storeData(dataFromStorage)
                     console.log('STORAGE STORAGE');
 
                   }
-                  console.log('EXISTING FAVOURITES === ', favourites);
+                  console.log('EXISTING FAVOURITES === ', favorites);
                   
-                  if (favourites != null && favourites.length == 0) {
+                  if (favorites != null && favorites.length == 0) {
                     console.log('ggggggggg');
                     
-                    setFavourites([]);
+                    setFavorites([]);
                   }
 
                   console.log('FAVOURITE MOVIE DELETED');
@@ -116,14 +112,14 @@ export default function FavouriteScreen() {
                     isFavorite: `${0}`
                   };
 
-                  const result = await addOrRemoveFavourite(payload);
+                  const result = await addOrRemoveFavorite(payload);
 
                   console.log('FAVOURITES RESPONSE === ', result);
 
                   if (result['success'] === 'true') {
-                    showToast('Favourites', result['message'], 'success', 3000)
+                    showToast('Favorites', result['message'], 'success', 3000)
                   } else {
-                    showToast('Favourites', result['message'], 'error', 5000)
+                    showToast('Favorites', result['message'], 'error', 5000)
                   }
                 }}>
                   <Ionicons name='remove-circle-outline' size={20} style={{ color: AppStyles.generalColors.white_one }} />
@@ -132,8 +128,8 @@ export default function FavouriteScreen() {
             </View>
           )}
           contentContainerStyle={{ paddingTop: 40 }}
-          refreshing={refreshing}
-          onRefresh={fetchFavourites}
+          // refreshing={refreshing}
+          // onRefresh={fetchFavorites}
         />
       );
     }
@@ -141,9 +137,9 @@ export default function FavouriteScreen() {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Text style={{ color: AppStyles.generalColors.white_one }}>
-          {refreshing ? 'Refreshing...' : 'No favourites available'}
+          {refreshing ? 'Refreshing...' : 'No favorites available'}
         </Text>
-        <TouchableOpacity onPress={fetchFavourites} style={{
+        <TouchableOpacity onPress={() => console.log('REFRESH BUTTON CLICKED')} style={{
           marginTop: 20,
           padding: 10,
           backgroundColor: AppStyles.generalColors.dark_one, // Adjust your button styles here

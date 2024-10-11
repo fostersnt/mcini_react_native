@@ -17,12 +17,11 @@ export default function HomeScreen() {
 
   const subscriber = useSelector((state) => state.subscriber.subscriberDetails)
   const movies = useSelector((state) => state.movie.movies)
-  const favourites = useSelector((state) => state.movie.favouriteMovies);
+  const favorites = useSelector((state) => state.movie.favoriteMovies);
   const watchList = useSelector((state) => state.movie.watchList)
 
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [homeBanner, setHomeBanner] = useState([]);
-  const [currentMovie, setCurrentMovie] = useState(null);
 
   useEffect(() => {
     const funcCall = async () => {

@@ -16,7 +16,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Entypo from 'react-native-vector-icons/Entypo'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { getStorageData, storeData } from '../utilities/LocalStorage';
-import { addOrRemoveFavourite } from '../api/UserAPI';
+import { addOrRemoveFavorite } from '../api/UserAPI';
 
 const handleHttpError = (syntheticEvent) => {
     const { nativeEvent } = syntheticEvent;
@@ -30,9 +30,9 @@ const handleOnRenderProcessGone = (syntheticEvent) => {
 
 function ViewAllMoviesPlayer() {
     const { width: screenWidth, height: screenHeight } = Dimensions.get('screen')
-    const [madeFavourite, setMadeFavourite] = useState();
-    const [favourites, setFavourites] = useState([]);
-    const [isFavourite, setIsFavourite] = useState(0);
+    const [madeFavorite, setMadeFavorite] = useState();
+    const [favorites, setFavorites] = useState([]);
+    const [isFavorite, setIsFavorite] = useState(0);
     const [dataFromStorage, setDataFromStorage] = useState(null);
 
     const route = useRoute();
@@ -53,61 +53,61 @@ function ViewAllMoviesPlayer() {
             
             setDataFromStorage(storageData);
 
-            setFavourites(storageData != null ? storageData.favourites : []);
+            setFavorites(storageData != null ? storageData.favorites : []);
 
-            console.log('STORAGE FAVOURITE MOVIES NOW === ', storageData['favourites']);
+            console.log('STORAGE FAVOURITE MOVIES NOW === ', storageData['favorites']);
             
-            const subscriberFavourites = storageData.favourites || [];
-            setFavourites(subscriberFavourites);
-            if (favourites != null && favourites.length > 0) {
-                const checkExistence = favourites.find((item) => item.id == singleMovie.id);
-                setIsFavourite(checkExistence.length > 0 ? 1 : 0);
+            const subscriberFavorites = storageData.favorites || [];
+            setFavorites(subscriberFavorites);
+            if (favorites != null && favorites.length > 0) {
+                const checkExistence = favorites.find((item) => item.id == singleMovie.id);
+                setIsFavorite(checkExistence.length > 0 ? 1 : 0);
             }
         }
         fetchStorageData();
     }, []);
 
-    const handleAndOrRemoveFavourites = async () => {
+    const handleAndOrRemoveFavorites = async () => {
 
-        let apiFavourite = isFavourite;
+        let apiFavorite = isFavorite;
 
-        if (isFavourite == 1) {
-            apiFavourite = 0;
+        if (isFavorite == 1) {
+            apiFavorite = 0;
         } else {
-            apiFavourite = 1;
+            apiFavorite = 1;
         }
 
-        setIsFavourite(apiFavourite)
-        // setIsFavourite(isFavourite == 1 ? 0 : 1);
+        setIsFavorite(apiFavorite)
+        // setIsFavorite(isFavorite == 1 ? 0 : 1);
 
-        let newFavourites = null;
+        let newFavorites = null;
 
-        console.log('API FAVOURITE === ', apiFavourite);
+        console.log('API FAVOURITE === ', apiFavorite);
         
         try {
             const payload = {
                 msisdn: subscriber.msisdn,
                 movieId: `${singleMovie.id}`,
-                isFavorite: `${apiFavourite}`
+                isFavorite: `${apiFavorite}`
             }
 
-            if (apiFavourite == 1) {
-                newFavourites = favourites != null ? favourites.push(singleMovie) : null;
-                dataFromStorage.favourites = newFavourites;
-                console.log('CURRENT FAVOURITES === ', dataFromStorage.favourites);
+            if (apiFavorite == 1) {
+                newFavorites = favorites != null ? favorites.push(singleMovie) : null;
+                dataFromStorage.favorites = newFavorites;
+                console.log('CURRENT FAVOURITES === ', dataFromStorage.favorites);
             } else {
-                newFavourites = favourites != null ? favourites.filter((item) => item.id != singleMovie.id) : null;
-                dataFromStorage.favourites = newFavourites
+                newFavorites = favorites != null ? favorites.filter((item) => item.id != singleMovie.id) : null;
+                dataFromStorage.favorites = newFavorites
             }
 
-            // setIsFavourite(0);
+            // setIsFavorite(0);
 
-            console.log('FAVOURITES === ', favourites);
+            console.log('FAVOURITES === ', favorites);
             console.log('PAYLOAD === ', payload);
             
             await storeData(dataFromStorage)
 
-            const result = await addOrRemoveFavourite(payload);
+            const result = await addOrRemoveFavorite(payload);
 
             console.log('ADD / REMOVE FROM FAVOURITE RESPONSE === ', result);
         } catch (error) {
@@ -150,9 +150,9 @@ function ViewAllMoviesPlayer() {
                     <View style={{ marginLeft: 20 }}><Entypo name='share' size={25} color={'#fff'} /></View>
                     <View style={{ marginLeft: 20 }}>
                         <TouchableOpacity onPress={() => {
-                            handleAndOrRemoveFavourites();
+                            handleAndOrRemoveFavorites();
                         }}>
-                            <MaterialIcons name='favorite' size={25} color={isFavourite == 1 ? '#00aeef' : '#fff'} />
+                            <MaterialIcons name='favorite' size={25} color={isFavorite == 1 ? '#00aeef' : '#fff'} />
                         </TouchableOpacity>
                     </View>
                 </View>

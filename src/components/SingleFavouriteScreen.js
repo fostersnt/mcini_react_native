@@ -7,7 +7,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import AntIcons from 'react-native-vector-icons/AntDesign'
 import { AppStyles } from '../utilities/AppStyles'
 
-export default function SingleFavouriteScreen({ movie }) {
+export default function SingleFavoriteScreen({ movie }) {
 
     // console.log('CURRENT MOVIE === ', movie['video']['default_thumbnail_filename']);
 

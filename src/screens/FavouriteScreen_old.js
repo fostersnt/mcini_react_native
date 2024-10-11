@@ -1,13 +1,13 @@
 import { View, Text, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { addOrRemoveFavourite} from '../api/UserAPI';
+import { addOrRemoveFavorite} from '../api/UserAPI';
 import { getStorageData } from '../utilities/LocalStorage';
 import WebView from 'react-native-webview';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { AppStyles } from '../utilities/AppStyles';
 
-export default function FavouriteScreen() {
-  const [favourites, setFavourites] = useState([]);
+export default function FavoriteScreen() {
+  const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const truncateTitle = (title) => {
@@ -15,27 +15,27 @@ export default function FavouriteScreen() {
   };
 
   useEffect(() => {
-    const myFavourites = async () => {
+    const myFavorites = async () => {
       try {
         const storageData = await getStorageData();
 
-        const subscriberFavourites = storageData.favourites;
+        const subscriberFavorites = storageData.favorites;
 
-        if (subscriberFavourites != null && subscriberFavourites.length > 0) {
+        if (subscriberFavorites != null && subscriberFavorites.length > 0) {
           console.log('SUBSCRIBER WATCH-LIST FROM STORAGE === ', subWatchList[0]['video_url']);
         }
         console.log('NO SUBSCRIBER WATCH-LIST FROM STORAGE');
 
-        setFavourites(subscriberFavourites);  // Use data.data as per your API response
+        setFavorites(subscriberFavorites);  // Use data.data as per your API response
         // console.log('USER FAVOURITE MOVIES === ', data.data);
       } catch (error) {
-        console.error('Error fetching favourites:', error);
+        console.error('Error fetching favorites:', error);
       } finally {
         setLoading(false);  // Always set loading to false after the fetch
       }
     };
 
-    myFavourites();
+    myFavorites();
   }, []);
 
   if (loading) {
@@ -47,9 +47,9 @@ export default function FavouriteScreen() {
       flex: 1,
       backgroundColor: AppStyles.generalColors.dark_four,
     }}>
-      {favourites != null && favourites.length > 0 ? (
+      {favorites != null && favorites.length > 0 ? (
         <FlatList
-          data={favourites}
+          data={favorites}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <View
@@ -104,12 +104,12 @@ export default function FavouriteScreen() {
                   const payload = {
                     msisdn: msisdn,
                     movieId: movieId,
-                    isFavourite: 0
+                    isFavorite: 0
                   }
-                  const result = await addOrRemoveFavourite(payload);
+                  const result = await addOrRemoveFavorite(payload);
                   if (result['success'] == 'true') {
-                    const updatedMovies = favourites.filter(currentMovie => currentMovie.id !== item.id);
-                    setFavourites(updatedMovies)
+                    const updatedMovies = favorites.filter(currentMovie => currentMovie.id !== item.id);
+                    setFavorites(updatedMovies)
                   }
                 }}>
                   <Ionicons name='remove-circle-outline' size={20}
@@ -127,7 +127,7 @@ export default function FavouriteScreen() {
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <Text
             style={{ color: AppStyles.generalColors.white_one }}
-          >No favourites available</Text>
+          >No favorites available</Text>
         </View>
       )}
     </View>

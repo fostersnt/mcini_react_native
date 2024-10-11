@@ -15,7 +15,7 @@ export default function HomeScreen() {
   const { width: screenWidth } = Dimensions.get('window');
   const mySize = screenWidth / 3;
   const route = useRoute();
-  const { subscriber, movies, favourites, watchList } = route.params;
+  const { subscriber, movies, favorites, watchList } = route.params;
 
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [homeBanner, setHomeBanner] = useState([]);

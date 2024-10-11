@@ -110,8 +110,8 @@ export const userLogout = async (phone) => {
     }
 }
 
-//--------------------This function fetches user favourite movies--------------------
-export const userFavouriteMoviesAPI = async (phone) => {
+//--------------------This function fetches user favorite movies--------------------
+export const userFavoriteMoviesAPI = async (phone) => {
     var prefix = 'FAVOURITES MESSAGE: '
     
     const options = {
@@ -150,8 +150,8 @@ export const userFavouriteMoviesAPI = async (phone) => {
     }
 }
 
-//--------------------This function fetches user favourite movies--------------------
-export const addOrRemoveFavourite = async (payload) => {
+//--------------------This function fetches user favorite movies--------------------
+export const addOrRemoveFavorite = async (payload) => {
     const options = {
         method: 'POST',
         headers: {
@@ -225,7 +225,7 @@ export const allUserData = async (subscriberMsisdn) => {
     var message = '';
     var subscriber = null;
     var movies = null;
-    var favourites = null;
+    var favorites = null;
     var watchList = null;
 
     const subscriberData = await userLoginAPI(subscriberMsisdn);
@@ -234,8 +234,8 @@ export const allUserData = async (subscriberMsisdn) => {
     const allMovies = await movieListAPI();
     console.log('=== MOVIES LIST API STARTED === ', allMovies['message']);
 
-    const favouriteMovies = await userFavouriteMoviesAPI(subscriberMsisdn);
-    console.log('=== FAVOURITE MOVIES API STARTED === ', favouriteMovies['message']);
+    const favoriteMovies = await userFavoriteMoviesAPI(subscriberMsisdn);
+    console.log('=== FAVOURITE MOVIES API STARTED === ', favoriteMovies['message']);
 
     const userWatchList = await userWatchListAPI(subscriberMsisdn);
     console.log('=== WATCH-LIST API STARTED === ', userWatchList['message']);
@@ -253,9 +253,9 @@ export const allUserData = async (subscriberMsisdn) => {
         movies = allMovies['data'];
     }
 
-    //Checking favourite movies data
-    if (favouriteMovies['success'] == 'true') {
-        favourites = favouriteMovies['data'];
+    //Checking favorite movies data
+    if (favoriteMovies['success'] == 'true') {
+        favorites = favoriteMovies['data'];
     }
 
     //Checking watch-list data
@@ -268,7 +268,7 @@ export const allUserData = async (subscriberMsisdn) => {
         'message': message,
         'subscriber': subscriber,
         'movies': movies,
-        'favourites': favourites,
+        'favorites': favorites,
         'watchList': watchList
     }
 }

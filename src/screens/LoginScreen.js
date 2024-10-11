@@ -46,7 +46,7 @@ export default function LoginScreen() {
         console.log('USE EFFECT ERROR AT LOGIN SCREEN: ', error.toString());
       }
     }
-    
+
 
     //Calling the authCheck function
     authData();
@@ -69,13 +69,13 @@ export default function LoginScreen() {
 
         const responseData = await allUserData(phone);
 
-        // console.log('MAIN USER LOGIN API RESPONSE: ', responseData['favourites']);
+        // console.log('MAIN USER LOGIN API RESPONSE: ', responseData['favorites']);
 
         var dataToBeStored = {
           msisdn: formattedPhone,
           subscriber: null,
           movies: null,
-          favourites: null,
+          favorites: null,
           watchList: null,
         }
 
@@ -101,14 +101,14 @@ export default function LoginScreen() {
             msisdn: formattedPhone,
             subscriber: responseData['subscriber'],
             movies: responseData['movies'],
-            favourites: responseData['favourites'],
+            favorites: responseData['favorites'],
             watchList: watchListArray,
           }
 
-          // console.log('LOGIN FAVOURITE MOVIES === ', dataToBeStored.favourites);
+          // console.log('LOGIN FAVOURITE MOVIES === ', dataToBeStored.favorites);
           dispatch(setSubscriber(responseData['subscriber']));
           dispatch(setMovies(responseData['movies']));
-          dispatch(setFavoriteMovies(responseData['favourites']));
+          dispatch(setFavoriteMovies(responseData['favorites']));
           dispatch(setWatchList(watchListArray))
 
           await storeData(dataToBeStored);
