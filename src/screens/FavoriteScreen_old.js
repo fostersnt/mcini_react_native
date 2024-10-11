@@ -5,14 +5,11 @@ import { getStorageData } from '../utilities/LocalStorage';
 import WebView from 'react-native-webview';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { AppStyles } from '../utilities/AppStyles';
+import { reduceStringLength } from '../utilities/Validations';
 
 export default function FavoriteScreen() {
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const truncateTitle = (title) => {
-    return title != null && title.length > 20 ? `${title.substring(0, 20)}...` : title;
-  };
 
   useEffect(() => {
     const myFavorites = async () => {
@@ -94,7 +91,7 @@ export default function FavoriteScreen() {
                     flexWrap: 'wrap',
                     color: AppStyles.generalColors.white_one,
                   }}
-                >{truncateTitle(item['video']['title'])}</Text>
+                >{reduceStringLengthh(item['video']['title'])}</Text>
               </View>
               <View>
                 <TouchableOpacity onPress={async () => {

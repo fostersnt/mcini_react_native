@@ -3,7 +3,6 @@ import React, { useState, useEffect, memo } from 'react';
 import MovieBanner from '../components/MovieBanner';
 import { AppStyles } from '../utilities/AppStyles';
 import SingleMovieCard from '../components/SingleMovieCard';
-import { getStorageData } from '../utilities/LocalStorage';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 
@@ -20,6 +19,9 @@ export default function HomeScreen() {
   const favorites = useSelector((state) => state.movie.favoriteMovies);
   const watchList = useSelector((state) => state.movie.watchList)
 
+  // console.log('SUBSCRIBER DATA === ', subscriber);
+  // console.log('MOVIES === ', movies);
+
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [homeBanner, setHomeBanner] = useState([]);
 
@@ -27,9 +29,6 @@ export default function HomeScreen() {
     const funcCall = async () => {
       const newBanner = homeBannerData();
       setHomeBanner(newBanner);
-      const storageData = await getStorageData();
-      const subscriberStorageData = storageData.subscriber;
-      // console.log('SUBSCRIBER DATA FROM STORAGE === ', subscriberStorageData);
     }
     funcCall()
   }, [movies]);

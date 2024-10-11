@@ -10,4 +10,6 @@ export const appStore = configureStore({
     },
 
     devTools: process.env.NODE_ENV !== 'production',
+
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }),
 })

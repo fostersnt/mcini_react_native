@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 import { reduceStringLength } from '../utilities/Validations';
 
 export default function FavoriteScreen() {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [dataFromStorage, setDataFromStorage] = useState(null);
   const [subscriberData, setSubscriberData] = useState(null);
