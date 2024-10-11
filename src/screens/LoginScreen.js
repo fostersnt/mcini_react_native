@@ -36,7 +36,7 @@ export default function LoginScreen() {
 
         console.log('MESSAGE: ', message);
 
-        if (response.success == 'true' && message == 'user authenticated') {
+        if (response.success == 'true' && message == 'user authenticated!') {
           navigation.navigate('BottomTabNav', {
             Screen: 'HomeScreen',
             params: { movies: response.data }
@@ -46,6 +46,7 @@ export default function LoginScreen() {
         console.log('USE EFFECT ERROR AT LOGIN SCREEN: ', error.toString());
       }
     }
+    
 
     //Calling the authCheck function
     authData();
@@ -115,13 +116,7 @@ export default function LoginScreen() {
           setIsLoading(false)
 
           navigation.navigate('BottomTabNav', {
-            screen: 'Home', //This is the name I used in the BottomTabNav for the HomeScreen
-            params: {
-              subscriber: responseData['subscriber'],
-              movies: responseData['movies'],
-              favourites: responseData['favourites'],
-              watchList: watchListArray
-            } //This is the data I am passing to the HomeScreen
+            screen: 'Home',
           });
         }
       }

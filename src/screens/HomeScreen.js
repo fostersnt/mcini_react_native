@@ -1,11 +1,11 @@
-import { View, StyleSheet, StatusBar, FlatList, Dimensions, ScrollView, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, FlatList, Dimensions, Text, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect, memo } from 'react';
 import MovieBanner from '../components/MovieBanner';
 import { AppStyles } from '../utilities/AppStyles';
-import { useRoute } from '@react-navigation/native';
 import SingleMovieCard from '../components/SingleMovieCard';
 import { getStorageData } from '../utilities/LocalStorage';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 const MemoizedMovieBanner = memo(MovieBanner);
 const MemoizedSingleMovieCard = memo(SingleMovieCard);
@@ -14,8 +14,11 @@ export default function HomeScreen() {
   const navigator = useNavigation();
   const { width: screenWidth } = Dimensions.get('window');
   const mySize = screenWidth / 3;
-  const route = useRoute();
-  const { subscriber, movies, favourites, watchList } = route.params;
+
+  const subscriber = useSelector((state) => state.subscriber.subscriberDetails)
+  const movies = useSelector((state) => state.movie.movies)
+  const favourites = useSelector((state) => state.movie.favouriteMovies);
+  const watchList = useSelector((state) => state.movie.watchList)
 
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [homeBanner, setHomeBanner] = useState([]);
