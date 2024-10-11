@@ -17,12 +17,12 @@ export default function LoginScreen() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentSubscriber, setCurrentSubscriber] = useState(null);
 
+  const subscriberData = useSelector((state) => state.subscriber.subscriberDetails);
+
   useEffect(() => {
     const authData = async () => {
       try {
         // const storageData = await getStorageData(phone);
-        const subscriberData = useSelector((state) => state.subscriber.subscriberDetails);
-
         setCurrentSubscriber(subscriberData);
 
         if (currentSubscriber != null && currentSubscriber.msisdn != '') {
@@ -92,11 +92,11 @@ export default function LoginScreen() {
 
           setIsLoading(false)
 
-          navigation.navigate('Home');
+          // navigation.navigate('Home');
 
-          // navigation.navigate('BottomTabNav', {
-          //   screen: 'Home',
-          // });
+          navigation.navigate('BottomTabNav', {
+            screen: 'Home',
+          });
         }
       }
     }

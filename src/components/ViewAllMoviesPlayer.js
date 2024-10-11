@@ -17,6 +17,8 @@ import Entypo from 'react-native-vector-icons/Entypo'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { getStorageData, storeData } from '../utilities/LocalStorage';
 import { addOrRemoveFavorite } from '../api/UserAPI';
+import { useDispatch } from 'react-redux';
+import { addMovieToFavorites } from '../redux/slice/MovieSlice';
 
 const handleHttpError = (syntheticEvent) => {
     const { nativeEvent } = syntheticEvent;
@@ -34,6 +36,8 @@ function ViewAllMoviesPlayer() {
     const [favorites, setFavorites] = useState([]);
     const [isFavorite, setIsFavorite] = useState(0);
     const [dataFromStorage, setDataFromStorage] = useState(null);
+
+    const dispatch = useDispatch();
 
     const route = useRoute();
 
@@ -55,9 +59,9 @@ function ViewAllMoviesPlayer() {
 
             setFavorites(storageData != null ? storageData.favorites : []);
 
-            console.log('STORAGE FAVOURITE MOVIES NOW === ', storageData['favorites']);
+            // console.log('STORAGE FAVOURITE MOVIES NOW === ', storageData['favorites']);
             
-            const subscriberFavorites = storageData.favorites || [];
+            // const subscriberFavorites = storageData.favorites || [];
             setFavorites(subscriberFavorites);
             if (favorites != null && favorites.length > 0) {
                 const checkExistence = favorites.find((item) => item.id == singleMovie.id);
@@ -79,6 +83,8 @@ function ViewAllMoviesPlayer() {
 
         setIsFavorite(apiFavorite)
         // setIsFavorite(isFavorite == 1 ? 0 : 1);
+
+        dispatch(addMovieToFavorites(singleMovie))
 
         let newFavorites = null;
 

@@ -17,7 +17,12 @@ const MovieSlice = createSlice({
             state.favoriteMovies = action.payload
         },
         addMovieToFavorites: (state, action) => {
-            state.favoriteMovies.push(action.payload);
+            if (state.favoriteMovies != null) {
+                state.favoriteMovies.push(action.payload);
+            } else {
+                state.favoriteMovies = [];
+                state.favoriteMovies.push(action.payload);
+            }
         },
         setMovies: (state, action) => {
             state.movies = action.payload;
