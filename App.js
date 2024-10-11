@@ -7,14 +7,18 @@ import {
 
 import AppNavigation from './src/navigation/AppNavigation';
 import Toast from 'react-native-toast-message';
+import { appStore } from './src/redux/store/appStore';
+import { Provider } from 'react-redux';
 
 function App() {
   return (
-    <View style={styles.viewContainer}>
-      <AppNavigation />
-      {/* <Toast config={ToastAlertConfig} /> */}
-      <Toast />
-    </View>
+    <Provider store={appStore}>
+      <View style={styles.viewContainer}>
+        <AppNavigation />
+        {/* <Toast config={ToastAlertConfig} /> */}
+        <Toast />
+      </View>
+    </Provider>
   );
 }
 
