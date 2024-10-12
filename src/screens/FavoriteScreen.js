@@ -88,7 +88,7 @@ export default function FavoriteScreen() {
                   //   showToast('Favorites', result['message'], 'error', 5000)
                   // }
                 }}>
-                  <Ionicons name='remove-circle-outline' size={20} style={{ color: AppStyles.generalColors.white_one }} />
+                  <Ionicons name='remove-circle-outline' size={25} style={{ color: AppStyles.generalColors.white_one }} />
                 </TouchableOpacity>
               </View>
             </View>
