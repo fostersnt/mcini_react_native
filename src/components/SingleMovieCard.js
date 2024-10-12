@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, Dimensions, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, Dimensions, StyleSheet, Text } from 'react-native';
 import { AppStyles } from '../utilities/AppStyles';
 import WebView from 'react-native-webview';
 import { useNavigation } from '@react-navigation/native';

@@ -1,36 +1,20 @@
-import { View, Text, ScrollView, StyleSheet, StatusBar, FlatList, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, StatusBar, FlatList, TextInput, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { movieListAPI } from '../api/MovieAPI';
 import { AppStyles } from '../utilities/AppStyles';
-import SingleSearchCard from './search/SingleSearchCard';
-import Icon from 'react-native-vector-icons/FontAwesome5'
 import Etypto from 'react-native-vector-icons/Entypo'
 import Octicons from 'react-native-vector-icons/Octicons'
-import { showToast } from '../components/ToastAlert';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 export default function SearchScreen() {
-  const [movies, setMovies] = useState(null);
+  const movies = useSelector((state) => state.movie.movies);
+
   const [history, setHistory] = useState([]);
   const [foundMovies, setFoundMovies] = useState([]);
   const [inputText, setInputText] = useState([]);
 
   const navigator = useNavigation();
-
-  useEffect(() => {
-    const fetchMovies = async () => {
-      console.log('SEARCH MOVIE API STARTED');
-
-      const movieResult = await movieListAPI();
-      const movieData = movieResult['data'];
-      setMovies(movieData)
-
-      console.log('SEARCH SCREEN COMPLETED');
-      // console.log('SEARCH RESULT === ', movieResult['data'][0]);
-    }
-
-    fetchMovies();
-  }, []);
 
   const handleUserInput = (text) => {
     const searchText = text.toLowerCase();

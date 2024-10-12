@@ -69,29 +69,31 @@ const ViewAllMoviesPlayer = () => {
     };
 
     const renderMainMovie = () => (
-        <View style={styles.mainVideo}>
-            <WebView
-                style={{
-                    backgroundColor: AppStyles.generalColors.dark_four,
-                    width: widthSize,
-                    // height: screenHeight / 2,
-                    height: 400
-                }}
-                source={{ uri: singleMovie['video_url'], headers: { Referer: 'https://mcini.tv' } }}
-                javaScriptEnabled
-                domStorageEnabled
-                allowsInlineMediaPlayback
-                renderError={() => (
-                    <View style={styles.errorContainer}>
-                        <Text style={styles.errorText}>Failed to load page.</Text>
+        <View>
+            <View style={styles.mainVideo}>
+                <WebView
+                    style={{
+                        backgroundColor: AppStyles.generalColors.dark_four,
+                        width: widthSize,
+                        // height: screenHeight / 2,
+                        height: 400
+                    }}
+                    source={{ uri: singleMovie['video_url'], headers: { Referer: 'https://mcini.tv' } }}
+                    javaScriptEnabled
+                    domStorageEnabled
+                    allowsInlineMediaPlayback
+                    renderError={() => (
+                        <View style={styles.errorContainer}>
+                            <Text style={styles.errorText}>Failed to load page.</Text>
+                        </View>
+                    )}
+                />
+            </View>
+            {isDescription && (
+                    <View style={styles.descriptionContainer}>
+                        <Text style={styles.descriptionText}>{singleMovie.description}</Text>
                     </View>
                 )}
-            />
-            {isDescription && (
-                <View style={styles.descriptionContainer}>
-                    <Text style={styles.descriptionText}>{singleMovie.description}</Text>
-                </View>
-            )}
             <View style={[styles.iconsContainer, { marginTop: isDescription ? 0 : 20 }]}>
                 <FontAwesome name='thumbs-o-up' size={25} color='#fff' style={{ marginLeft: 10 }} />
                 <Entypo name='share' size={25} color='#fff' style={{ marginLeft: 20 }} />
@@ -126,14 +128,14 @@ const styles = StyleSheet.create({
         backgroundColor: AppStyles.generalColors.dark_four,
     },
     mainVideo: {
-        borderRadius: 40,
+        borderRadius: 30,
         overflow: 'hidden',
-        margin: 10,
-        marginTop: 30,
+        marginHorizontal: 10,
     },
     descriptionContainer: {
         marginBottom: 20,
         color: 'white',
+        padding: 5,
     },
     descriptionText: {
         color: 'white',
