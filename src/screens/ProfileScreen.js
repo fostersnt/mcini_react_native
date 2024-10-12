@@ -10,39 +10,16 @@ import OctIcons from 'react-native-vector-icons/Octicons'
 import { useNavigation } from '@react-navigation/native';
 import { userLogout } from '../api/UserAPI';
 import { showToast } from '../components/ToastAlert';
+import { useSelector } from 'react-redux';
 
 
 export default function ProfileScreen() {
 
-  const [subscriber, setSubscriber] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const navigator = useNavigation();
 
-  useEffect(() => {
-    const mySubscriber = async () => {
-      try {
-        const storageData = await getStorageData();
-
-        const subscriberData = storageData.subscriber;
-
-        if (subscriberData != null) {
-          console.log('SUBSCRIBER DATA FROM STORAGE === ', subscriber);
-        }
-
-        setSubscriber(subscriberData);  // Use data.data as per your API response
-        console.log('NO SUBSCRIBER WATCH-LIST FROM STORAGE');
-        // console.log('USER FAVOURITE MOVIES === ', data.data);
-      } catch (error) {
-        console.error('Error fetching subscriber data:', error);
-      }
-      // finally {
-      //   setLoading(false);  // Always set loading to false after the fetch
-      // }
-    };
-
-    mySubscriber();
-  }, []);
+  const subscriber = useSelector((state) => state.subscriber.subscriberDetails);
 
   return (
     <ScrollView

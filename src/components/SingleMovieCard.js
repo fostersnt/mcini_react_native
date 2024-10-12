@@ -1,204 +1,83 @@
-import { View, Text, TouchableOpacity, Modal, StyleSheet, ActivityIndicator, Dimensions } from 'react-native'
-import React, { useState } from 'react'
-import { AppStyles } from '../utilities/AppStyles'
-import WebView from 'react-native-webview'
-import { useNavigation } from '@react-navigation/native'
-import { userData } from '../apiData/UserData'
-import { user_MTN_subscription, userSubscriptionCheck } from '../api/UserAPI'
-import { showToast } from './ToastAlert'
-import { useSelector } from 'react-redux'
+import React, { useState } from 'react';
+import { View, TouchableOpacity, Dimensions, StyleSheet } from 'react-native';
+import { AppStyles } from '../utilities/AppStyles';
+import WebView from 'react-native-webview';
+import { useNavigation } from '@react-navigation/native';
+import { userData } from '../apiData/UserData';
+import { userSubscriptionCheck } from '../api/UserAPI';
+import { showToast } from './ToastAlert';
+import { useSelector } from 'react-redux';
+import SubscriptionModal from './SubscriptionModal'; // Import the new modal component
 
-export default function SingleMovieCard({ movie }) {
-    const navigator = useNavigation()
-
+export default function SingleMovieCard({ movie, onMoviePressedFunc }) {
+    const navigator = useNavigation();
     const similar_movies = useSelector((state) => state.movie.movies);
     const subscriber = useSelector((state) => state.subscriber.subscriberDetails);
-
-    const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
+    const { width: screenWidth } = Dimensions.get('screen');
 
     const [modalVisible, setModalVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isStatusCheck, setIsStatusCheck] = useState(false);
     const [isPaymentCheck, setIsPaymentCheck] = useState(false);
 
-    const [verifySubscription, setVerifySubscription] = useState(null);
-
-    verifySubscription
-
-    const size = (screenWidth / 3) - 10;
-
     const myData = userData;
-
-    const msisdn = subscriber != null ? subscriber.msisdn : 'N/A'
+    const msisdn = subscriber ? subscriber.msisdn : 'N/A';
     const plan_id = myData.dailyPlanId;
     const network = myData.network.mtn;
 
+    const size = (screenWidth / 3) - 10;
+
+    onMoviePressedFunc = async () => {
+        setIsStatusCheck(true);
+        const statusCheck = await userSubscriptionCheck(msisdn);
+        setIsStatusCheck(false);
+
+        if (statusCheck['data']?.subscription_status === 'active') {
+            navigator.navigate('ViewAllMoviesPlayer', { singleMovie: movie });
+        } else {
+            showToast('Subscription status', 'You have no active subscription', 'error', 5000);
+            setModalVisible(true);
+        }
+    };
+
     return (
         <View style={{ borderRadius: 25, overflow: 'hidden' }}>
-            <TouchableOpacity
-                onPress={async () => {
-                    // setIsStatusCheck(true)
-
-                    const subStatus = subscriber != null ? subscriber.subscription_status : 'N/A';
-
-                    console.log('CHECK STARTED');
-
-                    // const statusCheck = await userSubscriptionCheck(msisdn);
-
-                    // setIsStatusCheck(false)
-
-                    // console.log('CHECK COMPLETED === ', statusCheck);
-
-                    // var message_type = statusCheck['success'] == 'true' ? 'success' : 'error';
-
-                    // if (statusCheck['data'] != null && statusCheck['data']['subscription_status'] == 'active') {
-                        setModalVisible(false)
-                        navigator.navigate('ViewAllMoviesPlayer', {
-                            singleMovie: movie,
-                        });
-                    // } else if (statusCheck['data'] != null && statusCheck['data']['subscription_status'] == 'inactive') {
-                    //     showToast('Subscription status', 'You have no active subscription', message_type, 5000);
-                    //     setModalVisible(true)
-                    // } else {
-                    //     showToast('Subscription status', statusCheck['message'], message_type, 5000);
-                    //     setModalVisible(true)
-                    // }
-                }}
-            >
-
-                {/* WAITING MODAL */}
-                <Modal
-                    transparent={true}
-                    visible={isStatusCheck}
-                    animationType="slide" // You can use 'fade' or 'none' for other effects
-                    onRequestClose={() => isStatusCheck(false)} // For Android back button
-                >
-                    <View style={styles.modalBackground}>
-                        <View style={styles.modalContainer}>
-                            <Text style={styles.modalText}>Checking subscription status...</Text>
-                            <View style={styles.modalButtonsContainer}>
-                                {
-                                    isStatusCheck ? <ActivityIndicator color={'white'} /> : ''
-                                }
-                            </View>
-                        </View>
-                    </View>
-                </Modal>
-
-                {/* SUBSCRIPTION REQUEST & CONFIRMATION MODAL */}
-                <Modal
-                    transparent={true}
-                    visible={modalVisible}
-                    animationType="slide" // You can use 'fade' or 'none' for other effects
-                    onRequestClose={() => setModalVisible(false)} // For Android back button
-                >
-                    <View style={styles.modalBackground}>
-                        <View style={[
-                            styles.modalContainer,
-                            isPaymentCheck ?
-                                { backgroundColor: AppStyles.generalColors.dark_one } : { backgroundColor: AppStyles.generalColors.dark_one }
-                        ]}>
-                            <Text style={styles.modalText}>{isPaymentCheck ? 'Verifying payment...' : 'No active subscription available'}</Text>
-                            {
-                                isLoading ? <ActivityIndicator color={'white'} /> : ''
-                            }
-                            {
-                                isPaymentCheck ? '' :
-                                    <View style={styles.modalButtonsContainer}>
-                                        <TouchableOpacity style={styles.modalButtonRed} onPress={() => setModalVisible(false)}>
-                                            <Text style={styles.modalBtnText}>Cancel</Text>
-                                        </TouchableOpacity>
-
-                                        <TouchableOpacity style={styles.modalButtonBlue} onPress={async () => {
-                                            setIsLoading(true);
-                                            console.log('SUBSCRIPTION REQUEST STARTED');
-
-                                            const payload = {
-                                                msisdn: msisdn,
-                                                network: network,
-                                                plan_id: plan_id
-                                            }
-                                            //Subscribing to a package
-                                            const result = await user_MTN_subscription(payload);
-
-                                            console.log('SUBSCRIPTION REQUEST COMPLETED === ', result);
-
-                                            var message_type = result['success'] == 'true' ? 'success' : 'error';
-                                            var alertTitle = isPaymentCheck ? 'Payment confirmation' : 'Subscription Request';
-                                            var alertMessage = result['message'];
-
-                                            showToast(alertTitle, alertMessage, message_type, 5000);
-
-                                            if (result['success'] == 'true') {
-                                                //Verifying user subscription / payment
-                                                setIsPaymentCheck(true)
-                                                setIsLoading(true)
-
-                                                setTimeout(async () => {
-                                                    const verifySubscription = await userSubscriptionCheck(msisdn)
-                                                    console.log('PAYMENT VERIFICATION COMPLETED === ', verifySubscription);
-
-                                                    setModalVisible(false)
-
-                                                    setIsLoading(false)
-
-                                                    setIsPaymentCheck(false)
-
-
-                                                    if (verifySubscription['data'] != null && verifySubscription['data']['subscription_status'] == 'active') {
-                                                        showToast('Verification Completed', verifySubscription['message'], 'error', 5000);
-                                                        // setTimeout(() => {
-                                                        navigator.navigate('MoviePlayer', {
-                                                            singleMovie: movie
-                                                        });
-                                                        // }, 6000);
-                                                    } else if (verifySubscription['data'] != null && verifySubscription['data']['subscription_status'] == 'inactive') {
-                                                        showToast('Verification Completed', `Subscription status: ${verifySubscription['data']['subscription_status'].toUpperCase()}`, 'success', 5000);
-                                                    } else {
-                                                        showToast('Verification Error', 'Unable to verify subscription', 'error', 5000);
-                                                    }
-                                                }, 30000);
-                                            } else {
-                                                showToast('Subscription Request Error', result['message'], 'error', 5000);
-                                            }
-                                        }}>
-                                            <Text style={styles.modalBtnText}>Subscribe</Text>
-                                        </TouchableOpacity>
-                                    </View>
-                            }
-                        </View>
-                    </View>
-                </Modal>
-
+            <TouchableOpacity onPress={onMoviePressedFunc}>
                 <WebView
                     style={{
                         backgroundColor: AppStyles.generalColors.dark_four,
-                        // padding: 10,
-                        // flex: 1,
                         marginHorizontal: 5,
-                        // marginBottom: 10,
                         width: size,
                         height: 200
                     }}
-                    // source={{ uri: movie['video_url'] }}
                     source={{ uri: movie['default_thumbnail_filename'], headers: { Referer: 'https://mcini.tv' } }}
                     javaScriptEnabled={true}
                     domStorageEnabled={true}
                     allowsInlineMediaPlayback={true}
-                    // onHttpError={handleHttpError}
-                    // onError={handleOnRenderProcessGone}
                     renderError={() => (
                         <View style={styles.errorContainer}>
                             <Text style={styles.errorText}>Failed to load page.</Text>
                         </View>
                     )}
-
-                // onRenderProcessGone={handleOnRenderProcessGone}
-                >
-                </WebView>
+                />
             </TouchableOpacity>
+            <SubscriptionModal
+                modalVisible={modalVisible}
+                setModalVisible={setModalVisible}
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
+                isStatusCheck={isStatusCheck}
+                setIsStatusCheck={setIsStatusCheck}
+                isPaymentCheck={isPaymentCheck}
+                setIsPaymentCheck={setIsPaymentCheck}
+                msisdn={msisdn}
+                network={network}
+                plan_id={plan_id}
+                movie={movie}
+                navigation={navigator}
+            />
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({

@@ -18,7 +18,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { getStorageData, storeData } from '../utilities/LocalStorage';
 import { addOrRemoveFavorite } from '../api/UserAPI';
 import { useDispatch, useSelector } from 'react-redux';
-import { addMovieToFavorites } from '../redux/slice/MovieSlice';
+import { addMovieToFavorites, setFavoriteMovies } from '../redux/slice/MovieSlice';
 
 const handleHttpError = (syntheticEvent) => {
     const { nativeEvent } = syntheticEvent;
@@ -32,10 +32,7 @@ const handleOnRenderProcessGone = (syntheticEvent) => {
 
 function ViewAllMoviesPlayer() {
     const { width: screenWidth, height: screenHeight } = Dimensions.get('screen')
-    const [madeFavorite, setMadeFavorite] = useState();
-    const [favorites, setFavorites] = useState([]);
     const [isFavorite, setIsFavorite] = useState(0);
-    const [dataFromStorage, setDataFromStorage] = useState(null);
 
     const dispatch = useDispatch();
 
@@ -45,30 +42,17 @@ function ViewAllMoviesPlayer() {
 
     const similar_movies = useSelector((state) => state.movie.movies);
     const subscriber = useSelector((state) => state.subscriber.subscriberDetails);
+    const favorites = useSelector((state) => state.movie.favoriteMovies);
 
     const isDescription = (singleMovie != null && singleMovie['description'] != null);
 
-    useEffect(() => {
-        const fetchStorageData = async () => {
-            const storageData = await getStorageData();
-            
-            // console.log('STORAGE DATA DATA === ', storageData);
-            
-            setDataFromStorage(storageData);
-
-            setFavorites(storageData != null ? storageData.favorites : []);
-
-            // console.log('STORAGE FAVOURITE MOVIES NOW === ', storageData['favorites']);
-            
-            if (favorites != null && favorites.length > 0) {
-                const checkExistence = favorites.find((item) => item.id == singleMovie.id);
-                setIsFavorite(checkExistence.length > 0 ? 1 : 0);
-            }
-        }
-        fetchStorageData();
-    }, []);
-
     const handleAndOrRemoveFavorites = async () => {
+
+        const favoriteCheck = favorites != null && favorites.find((item) => item.id == singleMovie.id) ? 1 : 0;
+
+        setIsFavorite(favoriteCheck)
+        
+        console.log('FAVORITE STATUS === ', favoriteCheck);
 
         let apiFavorite = isFavorite;
 
@@ -79,14 +63,12 @@ function ViewAllMoviesPlayer() {
         }
 
         setIsFavorite(apiFavorite)
-        // setIsFavorite(isFavorite == 1 ? 0 : 1);
 
-        dispatch(addMovieToFavorites(singleMovie))
 
         let newFavorites = null;
 
         console.log('API FAVOURITE === ', apiFavorite);
-        
+
         try {
             const payload = {
                 msisdn: subscriber.msisdn,
@@ -95,20 +77,11 @@ function ViewAllMoviesPlayer() {
             }
 
             if (apiFavorite == 1) {
-                newFavorites = favorites != null ? favorites.push(singleMovie) : null;
-                dataFromStorage.favorites = newFavorites;
-                console.log('CURRENT FAVOURITES === ', dataFromStorage.favorites);
+                dispatch(addMovieToFavorites(singleMovie))
             } else {
                 newFavorites = favorites != null ? favorites.filter((item) => item.id != singleMovie.id) : null;
-                dataFromStorage.favorites = newFavorites
+                dispatch(setFavoriteMovies(favorites));
             }
-
-            // setIsFavorite(0);
-
-            console.log('FAVOURITES === ', favorites);
-            console.log('PAYLOAD === ', payload);
-            
-            await storeData(dataFromStorage)
 
             const result = await addOrRemoveFavorite(payload);
 
@@ -176,10 +149,9 @@ function ViewAllMoviesPlayer() {
                     if (item.id == 0) {
                         return renderMainMovie()
                     } else {
-                        // console.log('ID OF CLICKED ITEM === ', singleMovie['id']);
                         return (
                             <View style={{ marginBottom: 10 }}>
-                                <SingleMovieCard similar_movies={similar_movies} movie={item} subscriber={subscriber} />
+                                <SingleMovieCard movie={item} />
                             </View>
                         )
                     }
