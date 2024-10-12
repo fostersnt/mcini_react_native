@@ -88,7 +88,8 @@ export default function LoginScreen() {
           dispatch(setMovies(responseData['movies']));
           dispatch(setFavoriteMovies(responseData['favorites']));
           dispatch(setWatchList(watchListArray))
-
+          console.log('LOGIN FAVORITES === ', responseData['favorites']);
+          
           setIsLoading(false)
 
           navigation.navigate('BottomTabNav', {

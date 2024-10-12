@@ -16,7 +16,8 @@ export default function FavoriteScreen() {
 
   const subscriber = useSelector((state) => state.subscriber.subscriberDetails);
   const favorites = useSelector((state) => state.movie.favoriteMovies);
-
+  console.log('FAVORITE === ', favorites);
+  
   const renderContent = () => {
     if (loading && !refreshing) {
       return <ActivityIndicator size="large" color="white" style={{ flex: 1, justifyContent: 'center' }} />;
@@ -37,10 +38,17 @@ export default function FavoriteScreen() {
                 alignItems: 'center',
                 flexDirection: 'row',
                 padding: 10,
-                marginBottom: 10
+                marginHorizontal: 10,
+                marginBottom: 10,
+                borderRadius: 20
               }}
             >
-              <View style={{ width: '40%', marginRight: 5 }}>
+              <View style={{ 
+                width: '40%', 
+                marginRight: 5,
+                borderRadius: 20,
+                overflow: 'hidden'
+                }}>
                 <WebView
                   source={{ uri: item['default_thumbnail_filename'] }}
                   javaScriptEnabled={true}
@@ -74,11 +82,11 @@ export default function FavoriteScreen() {
 
                   console.log('FAVOURITES RESPONSE === ', result);
 
-                  if (result['success'] === 'true') {
-                    showToast('Favorites', result['message'], 'success', 3000)
-                  } else {
-                    showToast('Favorites', result['message'], 'error', 5000)
-                  }
+                  // if (result['success'] === 'true') {
+                  //   showToast('Favorites', result['message'], 'success', 3000)
+                  // } else {
+                  //   showToast('Favorites', result['message'], 'error', 5000)
+                  // }
                 }}>
                   <Ionicons name='remove-circle-outline' size={20} style={{ color: AppStyles.generalColors.white_one }} />
                 </TouchableOpacity>
