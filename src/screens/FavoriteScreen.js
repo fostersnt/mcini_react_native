@@ -1,45 +1,21 @@
 import { View, Text, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { addOrRemoveFavorite } from '../api/UserAPI';
-import { getStorageData, storeData } from '../utilities/LocalStorage';
 import WebView from 'react-native-webview';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { AppStyles } from '../utilities/AppStyles';
 import { showToast } from '../components/ToastAlert';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { reduceStringLength } from '../utilities/Validations';
+import { setFavoriteMovies } from '../redux/slice/MovieSlice';
 
 export default function FavoriteScreen() {
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [dataFromStorage, setDataFromStorage] = useState(null);
-  const [subscriberData, setSubscriberData] = useState(null);
+  const dispatch = useDispatch();
 
-  // const subData = useSelector((state) => state.subscriber.subscriberDetails);
+  const subscriber = useSelector((state) => state.subscriber.subscriberDetails);
   const favorites = useSelector((state) => state.movie.favoriteMovies);
-
-  // const fetchFavorites = async () => {
-  //   setLoading(true);
-  //   setRefreshing(true);
-
-  //   try {
-  //     const storageData = await getStorageData();
-  //     if (storageData != null) {
-  //       setDataFromStorage(storageData);
-  //       setFavorites(storageData.favorites);
-  //       setSubscriberData(storageData.subscriber);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error fetching favorites:', error);
-  //   } finally {
-  //     setLoading(false);
-  //     setRefreshing(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchFavorites();
-  // }, []);
 
   const renderContent = () => {
     if (loading && !refreshing) {
@@ -80,34 +56,16 @@ export default function FavoriteScreen() {
               </View>
               <View>
                 <TouchableOpacity onPress={async () => {
-                  // const favorites = dataFromStorage != null ? dataFromStorage.favorites : [];
-
                   if (favorites != null && favorites.length > 0) {
-                    const updatedMovies = favorites.filter(currentMovie => currentMovie.id !== item.id);
-                    console.log('UPDATED FAVOURITES === ', updatedMovies);
-                    
-                    setFavorites(updatedMovies);
-                    dataFromStorage.favorites = favorites;
-                    await storeData(dataFromStorage)
-                    console.log('STORAGE STORAGE');
-
-                  }
-                  console.log('EXISTING FAVOURITES === ', favorites);
-                  
-                  if (favorites != null && favorites.length == 0) {
-                    console.log('ggggggggg');
-                    
-                    setFavorites([]);
+                    const updatedMovies = favorites.filter(currentMovie => currentMovie.id != item.id);
+                    dispatch(setFavoriteMovies(updatedMovies));
                   }
 
-                  console.log('FAVOURITE MOVIE DELETED');
-
-                  const data = dataFromStorage;
-                  const msisdn = data.msisdn;
+                  const msisdn = subscriber.msisdn;
 
                   const movieId = item.id;
                   const payload = {
-                    msisdn: msisdn,
+                    msisdn: `${msisdn}`,
                     movieId: `${movieId}`,
                     isFavorite: `${0}`
                   };

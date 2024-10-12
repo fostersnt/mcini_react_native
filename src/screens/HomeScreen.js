@@ -1,4 +1,4 @@
-import { View, StyleSheet, FlatList, Dimensions, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, FlatList, Dimensions, Text, TouchableOpacity, StatusBar } from 'react-native';
 import React, { useState, useEffect, memo } from 'react';
 import MovieBanner from '../components/MovieBanner';
 import { AppStyles } from '../utilities/AppStyles';
@@ -16,11 +16,6 @@ export default function HomeScreen() {
 
   const subscriber = useSelector((state) => state.subscriber.subscriberDetails)
   const movies = useSelector((state) => state.movie.movies)
-  const favorites = useSelector((state) => state.movie.favoriteMovies);
-  const watchList = useSelector((state) => state.movie.watchList)
-
-  // console.log('SUBSCRIBER DATA === ', subscriber);
-  // console.log('MOVIES === ', movies);
 
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [homeBanner, setHomeBanner] = useState([]);
@@ -118,6 +113,10 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.mainContainer}>
+      <StatusBar animated={true} barStyle={'light-content'}
+        backgroundColor={AppStyles.generalColors.dark_four}
+        translucent={true}
+      ></StatusBar>
       <FlatList
         data={[{ collection_name: 'bannerCollection' }, ...groupedDataArray]}
         keyExtractor={(item) => item.collection_name}
@@ -129,10 +128,11 @@ export default function HomeScreen() {
                 data={homeBanner}
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={({ item }) => (
-                  <MemoizedMovieBanner
-                    // myWidth={screenWidth}
-                    movie={item}
-                  />
+                  // <View style={{margin: 10}}>
+                    <MemoizedMovieBanner
+                      movie={item}
+                    />
+                  // </View>
                 )}
                 horizontal
                 showsHorizontalScrollIndicator={false}
@@ -156,9 +156,9 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   mainContainer: {
-    padding: 0,
+    // padding: 10,
     flex: 1,
-    paddingTop: 25,
+    // paddingTop: 25,
     backgroundColor: AppStyles.generalColors.dark_four,
   },
   collectionName: {

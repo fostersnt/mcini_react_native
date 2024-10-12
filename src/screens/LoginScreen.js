@@ -39,7 +39,6 @@ export default function LoginScreen() {
             });
           }
         }
-        console.log('SUBSCRIBER MSISDN === ', currentSubscriber ? currentSubscriber.msisdn : 'N/A');
       } catch (error) {
         console.log('USE EFFECT ERROR AT LOGIN SCREEN: ', error.toString());
       }
@@ -91,8 +90,6 @@ export default function LoginScreen() {
           dispatch(setWatchList(watchListArray))
 
           setIsLoading(false)
-
-          // navigation.navigate('Home');
 
           navigation.navigate('BottomTabNav', {
             screen: 'Home',

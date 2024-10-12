@@ -1,6 +1,7 @@
 import React from 'react';
 
 import {
+  StatusBar,
   StyleSheet,
   View,
 } from 'react-native';
@@ -9,6 +10,7 @@ import AppNavigation from './src/navigation/AppNavigation';
 import Toast from 'react-native-toast-message';
 import { appStore } from './src/redux/store/appStore';
 import { Provider } from 'react-redux';
+import { AppStyles } from './src/utilities/AppStyles';
 
 function App() {
   return (

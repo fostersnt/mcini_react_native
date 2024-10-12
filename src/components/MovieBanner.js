@@ -9,9 +9,9 @@ export default function MovieBanner({ movie }) {
         The value 10 is based on the padding given to the parent container of this component. This component is used
         in HomeScreen.js
     */
-   const {width: screenWidth, height: screenHeight} = Dimensions.get('screen');
-    const widthSize = screenWidth; 
-    const heightSize = screenHeight; 
+    const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
+    const widthSize = screenWidth - 20;
+    const heightSize = screenHeight;
 
     const handleHttpError = (syntheticEvent) => {
         const { nativeEvent } = syntheticEvent;
@@ -25,15 +25,14 @@ export default function MovieBanner({ movie }) {
 
     return (
         <View style={{
-            borderRadius: 20,
+            borderRadius: 40,
             overflow: 'hidden',
-            // padding: 10,
+            margin: 10,
+            marginTop: 30,
         }}>
             <WebView
                 style={{
                     backgroundColor: AppStyles.generalColors.dark_four,
-                    // flex: 1,
-                    // marginRight: 10,
                     marginBottom: 10,
                     width: widthSize,
                     height: 400
