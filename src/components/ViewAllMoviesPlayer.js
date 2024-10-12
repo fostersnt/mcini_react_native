@@ -4,7 +4,7 @@ import WebView from 'react-native-webview';
 import { Dimensions } from 'react-native';
 import { AppStyles } from '../utilities/AppStyles';
 import SingleMovieCard from './SingleMovieCard';
-import { useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -16,6 +16,7 @@ const ViewAllMoviesPlayer = () => {
     const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
     const widthSize = screenWidth - 20;
     const [isFavorite, setIsFavorite] = useState(0);
+    const navigator = useNavigation();
 
     const dispatch = useDispatch();
     const route = useRoute();
