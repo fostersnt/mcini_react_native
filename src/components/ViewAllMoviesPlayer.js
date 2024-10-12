@@ -14,6 +14,7 @@ import { addMovieToFavorites, setFavoriteMovies } from '../redux/slice/MovieSlic
 
 const ViewAllMoviesPlayer = () => {
     const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
+    const widthSize = screenWidth - 20;
     const [isFavorite, setIsFavorite] = useState(0);
 
     const dispatch = useDispatch();
@@ -32,13 +33,11 @@ const ViewAllMoviesPlayer = () => {
                 console.log('SAMPLE CHECK === ', isFav);
             }
         };
-        
+
         isFavouriteChange();
     }, [favorites, singleMovie]);
-    
-    
-    // console.log('ALL FAVOURITES === ', singleMovie['description']);
-    
+
+
     const isDescription = singleMovie?.description != null;
 
     const handleSingleMoviePress = (movie) => {
@@ -72,7 +71,12 @@ const ViewAllMoviesPlayer = () => {
     const renderMainMovie = () => (
         <View style={styles.mainVideo}>
             <WebView
-                style={{ width: screenWidth, height: screenHeight / 2 }}
+                style={{
+                    backgroundColor: AppStyles.generalColors.dark_four,
+                    width: widthSize,
+                    // height: screenHeight / 2,
+                    height: 400
+                }}
                 source={{ uri: singleMovie['video_url'], headers: { Referer: 'https://mcini.tv' } }}
                 javaScriptEnabled
                 domStorageEnabled
@@ -122,8 +126,10 @@ const styles = StyleSheet.create({
         backgroundColor: AppStyles.generalColors.dark_four,
     },
     mainVideo: {
-        borderRadius: 30,
+        borderRadius: 40,
         overflow: 'hidden',
+        margin: 10,
+        marginTop: 30,
     },
     descriptionContainer: {
         marginBottom: 20,
