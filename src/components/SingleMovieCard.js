@@ -27,22 +27,23 @@ export default function SingleMovieCard({ movie, onMoviePressedFunc }) {
 
     const size = (screenWidth / 3) - 10;
 
-    onMoviePressedFunc = async () => {
-        setIsStatusCheck(true);
-        const statusCheck = await userSubscriptionCheck(msisdn);
-        setIsStatusCheck(false);
-
-        if (statusCheck['data']?.subscription_status === 'active') {
-            navigator.navigate('ViewAllMoviesPlayer', { singleMovie: movie });
-        } else {
-            showToast('Subscription status', 'You have no active subscription', 'error', 5000);
-            setModalVisible(true);
-        }
-    };
-
     return (
         <View style={{ borderRadius: 25, overflow: 'hidden' }}>
-            <TouchableOpacity onPress={onMoviePressedFunc}>
+            <TouchableOpacity onPress={async () => {
+                // setIsStatusCheck(true);
+
+                // const statusCheck = await userSubscriptionCheck(subscriber.msisdn);
+
+                // setIsStatusCheck(false);
+
+                // if (statusCheck['data']?.subscription_status === 'active') {
+                    onMoviePressedFunc(movie)
+                // } else {
+                //     showToast('Subscription status', 'You have no active subscription', 'error', 5000);
+                //     setModalVisible(true);
+                // }
+
+            }}>
                 <WebView
                     style={{
                         backgroundColor: AppStyles.generalColors.dark_four,

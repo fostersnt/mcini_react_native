@@ -25,6 +25,10 @@ export default function HomeScreen() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [homeBanner, setHomeBanner] = useState([]);
 
+  const handleMoviePressedFunc = (movie) => {
+    navigator.navigate('ViewAllMoviesPlayer', { singleMovie: movie });
+  };
+
   useEffect(() => {
     const funcCall = async () => {
       const newBanner = homeBannerData();
@@ -47,7 +51,7 @@ export default function HomeScreen() {
     setIsRefreshing(false);
   };
 
-  const groupedMovies = movies.reduce((result, item) => {
+  const groupedMovies = movies != null ? movies.reduce((result, item) => {
     const { collection_name } = item;
     if (!result[collection_name] || collection_name.toLowerCase() == 'free') {
       result[collection_name] = [];
@@ -56,7 +60,7 @@ export default function HomeScreen() {
     result[collection_name].push(item);
     // }
     return result;
-  }, {});
+  }, {}) : [];
 
   const groupedDataArray = Object.keys(groupedMovies)
     .filter(collection_name => collection_name.toLowerCase() !== 'free') // Filter out "free"
@@ -85,6 +89,7 @@ export default function HomeScreen() {
           return (
             <MemoizedSingleMovieCard
               movie={item}
+              onMoviePressedFunc={handleMoviePressedFunc}
             />
           )
         }}
