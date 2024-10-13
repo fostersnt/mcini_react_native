@@ -22,7 +22,6 @@ export default function LoginScreen() {
   useEffect(() => {
     const authData = async () => {
       try {
-        // const storageData = await getStorageData(phone);
         setCurrentSubscriber(subscriberData);
 
         if (currentSubscriber != null && currentSubscriber.msisdn != '') {

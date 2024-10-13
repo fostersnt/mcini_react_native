@@ -10,7 +10,6 @@ import { addMovieToFavorites, setFavoriteMovies } from '../redux/slice/MovieSlic
 
 export default function FavoriteScreen() {
   const [loading, setLoading] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
   const dispatch = useDispatch();
 
   const subscriber = useSelector((state) => state.subscriber.subscriberDetails);
@@ -100,17 +99,7 @@ export default function FavoriteScreen() {
 
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text style={{ color: AppStyles.generalColors.white_one }}>
-          {refreshing ? 'Refreshing...' : 'No favorites available'}
-        </Text>
-        <TouchableOpacity onPress={() => console.log('REFRESH BUTTON CLICKED')} style={{
-          marginTop: 20,
-          padding: 10,
-          backgroundColor: AppStyles.generalColors.dark_one, // Adjust your button styles here
-          borderRadius: 5
-        }}>
-          <Text style={{ color: '#fff' }}>Refresh</Text>
-        </TouchableOpacity>
+        <Text style={{ color: AppStyles.generalColors.white_one }}>No favorites available</Text>
       </View>
     );
   };

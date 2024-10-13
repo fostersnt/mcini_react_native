@@ -77,7 +77,7 @@ const ViewAllMoviesPlayer = () => {
                         <Text style={styles.descriptionText}>{singleMovie.description}</Text>
                     </View>
                 )}
-                <View style={[styles.iconsContainer, { marginTop: descriptionCheck ? 0 : 20 }]}>
+                <View style={[styles.iconsContainer, { marginTop: isDescription ? 0 : 20 }]}>
                     <FontAwesome name='thumbs-o-up' size={25} color='#fff' style={{ marginLeft: 10 }} />
                     <Entypo name='share' size={25} color='#fff' style={{ marginLeft: 20 }} />
                     <TouchableOpacity onPress={actionFunc}>
@@ -110,7 +110,7 @@ const ViewAllMoviesPlayer = () => {
                 />
             </View>
             {/* ACTION ICONS HERE */}
-            <ActionIcons descriptionCheck ={isDescription} favoriteCheck={isFavorite} actionFunc={handleAndOrRemoveFavorites} />
+            <ActionIcons actionFunc={handleAndOrRemoveFavorites} />
         </View>
     );
 
