@@ -4,7 +4,6 @@ import { addOrRemoveFavorite } from '../api/UserAPI';
 import WebView from 'react-native-webview';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { AppStyles } from '../utilities/AppStyles';
-import { showToast } from '../components/ToastAlert';
 import { useDispatch, useSelector } from 'react-redux';
 import { reduceStringLength } from '../utilities/Validations';
 import { addMovieToFavorites, setFavoriteMovies } from '../redux/slice/MovieSlice';
@@ -16,7 +15,8 @@ export default function FavoriteScreen() {
 
   const subscriber = useSelector((state) => state.subscriber.subscriberDetails);
   const favorites = useSelector((state) => state.movie.favoriteMovies);
-  console.log('FAVORITE === ', favorites);
+
+  // console.log('FAVORITE === ', favorites);
 
   const renderContent = () => {
     if (loading && !refreshing) {

@@ -69,6 +69,25 @@ const ViewAllMoviesPlayer = () => {
         }
     };
 
+    const ActionIcons = React.memo(({ actionFunc})=> {
+        return (
+            <View>
+                {isDescription && (
+                    <View style={styles.descriptionContainer}>
+                        <Text style={styles.descriptionText}>{singleMovie.description}</Text>
+                    </View>
+                )}
+                <View style={[styles.iconsContainer, { marginTop: descriptionCheck ? 0 : 20 }]}>
+                    <FontAwesome name='thumbs-o-up' size={25} color='#fff' style={{ marginLeft: 10 }} />
+                    <Entypo name='share' size={25} color='#fff' style={{ marginLeft: 20 }} />
+                    <TouchableOpacity onPress={actionFunc}>
+                        <MaterialIcons name='favorite' size={25} color={isFavorite === 1 ? '#00aeef' : '#fff'} style={{ marginLeft: 20 }} />
+                    </TouchableOpacity>
+                </View>
+            </View>
+        )
+    });
+
     const renderMainMovie = () => (
         <View>
             <View style={styles.mainVideo}>
@@ -90,18 +109,8 @@ const ViewAllMoviesPlayer = () => {
                     )}
                 />
             </View>
-            {isDescription && (
-                    <View style={styles.descriptionContainer}>
-                        <Text style={styles.descriptionText}>{singleMovie.description}</Text>
-                    </View>
-                )}
-            <View style={[styles.iconsContainer, { marginTop: isDescription ? 0 : 20 }]}>
-                <FontAwesome name='thumbs-o-up' size={25} color='#fff' style={{ marginLeft: 10 }} />
-                <Entypo name='share' size={25} color='#fff' style={{ marginLeft: 20 }} />
-                <TouchableOpacity onPress={handleAndOrRemoveFavorites}>
-                    <MaterialIcons name='favorite' size={25} color={isFavorite === 1 ? '#00aeef' : '#fff'} style={{ marginLeft: 20 }} />
-                </TouchableOpacity>
-            </View>
+            {/* ACTION ICONS HERE */}
+            <ActionIcons descriptionCheck ={isDescription} favoriteCheck={isFavorite} actionFunc={handleAndOrRemoveFavorites} />
         </View>
     );
 

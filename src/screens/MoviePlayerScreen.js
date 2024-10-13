@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import { useRoute } from '@react-navigation/native';
+import React from 'react';
 import {
   SafeAreaView,
   StyleSheet,
   Text,
   View,
-  StatusBar,
-  ActivityIndicator
+  StatusBar
 } from 'react-native';
-import { useRoute } from '@react-navigation/native';
 import WebView from 'react-native-webview';
 import { AppStyles } from '../utilities/AppStyles';
 
@@ -22,39 +21,31 @@ const handleOnRenderProcessGone = (syntheticEvent) => {
 }
 
 function MoviePlayerScreen() {
-  const route = useRoute();
-  const { singleMovie } = route.params;
-  const [loading, setLoading] = useState(true); // State to manage loading
-
+const route = useRoute();
+const {singleMovie} = route.params;
+  const url = "https://iframe.mediadelivery.net/embed/182548/e941715e-7de1-4875-a42b-c52a982fa72c?autoplay=true";
+  console.log('SINGLE MOVIE TEST === ', singleMovie);
+  
   return (
-    <View style={styles.container}>
-      {loading && (
-        <ActivityIndicator 
-          size="large" 
-          color="#fff" // Customize your loading indicator color
-          // color="#00aeef" // Customize your loading indicator color
-          style={styles.loadingIndicator} 
-        />
+    <WebView
+      style={styles.videoContainer}
+      source={{ uri: singleMovie['video_url'] }}
+      javaScriptEnabled={true}
+      domStorageEnabled={true}
+      allowsInlineMediaPlayback={true}
+      onHttpError={handleHttpError}
+      onError={handleOnRenderProcessGone}
+      renderError={() => (
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorText}>Failed to load page.</Text>
+        </View>
       )}
-      <WebView
-        style={styles.videoContainer}
-        source={{ uri: singleMovie['video_url'] }}
-        javaScriptEnabled={true}
-        domStorageEnabled={true}
-        allowsInlineMediaPlayback={true}
-        onHttpError={handleHttpError}
-        onError={handleOnRenderProcessGone}
-        renderError={() => (
-          <View style={styles.errorContainer}>
-            <Text style={styles.errorText}>Failed to load page.</Text>
-          </View>
-        )}
-        onRenderProcessGone={handleOnRenderProcessGone}
-        onLoadStart={() => setLoading(true)} // Show loading indicator
-        onLoadEnd={() => setLoading(false)} // Hide loading indicator
-      />
-      <StatusBar translucent backgroundColor={'transparent'} />
-    </View>
+
+      onRenderProcessGone={handleOnRenderProcessGone}
+    >
+      <StatusBar translucent backgroundColor={'transparent'}></StatusBar>
+
+    </WebView>
   );
 }
 
@@ -64,16 +55,10 @@ const styles = StyleSheet.create({
   },
   videoContainer: {
     flex: 1,
-    width: '100%',
-    height: 300,
-    backgroundColor: AppStyles.generalColors.dark_four,
-  },
-  loadingIndicator: {
-    // position: 'absolute',
-    // top: '50%',
-    // left: '50%',
-    // marginLeft: -15, // Half the width of the indicator
-    // marginTop: -15, // Half the height of the indicator
+    width: '100%',  // Use '100%' instead of '100'
+    height: 300,    // Set a specific height
+    // marginBottom: 20
+    backgroundColor: AppStyles.generalColors.dark_four
   },
   errorContainer: {
     flex: 1,
