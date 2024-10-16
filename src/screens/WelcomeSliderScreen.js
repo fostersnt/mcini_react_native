@@ -29,7 +29,8 @@ export default function WelcomeSliderScreen() {
     ];
 
     const onSkipPress = () => {
-        navigator.navigate('BottomTabNav', { screen: 'Login' }); // Navigate to the login screen
+        navigator.navigate('Login'); // Navigate to the login screen
+        // navigator.navigate('BottomTabNav', { screen: 'Login' }); // Navigate to the login screen
     };
 
     return (
