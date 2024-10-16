@@ -58,7 +58,6 @@ export default function SingleMovieCard({ movie, onMoviePressedFunc }) {
                             setModalVisible(true);
                         }
                         console.log('STATUS CHECK RESPONSE === ', statusCheck['data']['subscription_status']);
-
                     }}>
                         {/* WebView */}
                         <WebView
