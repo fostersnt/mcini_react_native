@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, Dimensions, StyleSheet, Text } from 'react-native';
+import { View, TouchableOpacity, Dimensions, StyleSheet, Text, ActivityIndicator, Button } from 'react-native';
 import { AppStyles } from '../utilities/AppStyles';
 import WebView from 'react-native-webview';
 import { useNavigation } from '@react-navigation/native';
@@ -15,6 +15,7 @@ export default function SingleMovieCard({ movie, onMoviePressedFunc }) {
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
+    const [key, setKey] = useState(0);
 
     const similar_movies = useSelector((state) => state.movie.movies);
     const subscriber = useSelector((state) => state.subscriber.subscriberDetails);
@@ -31,6 +32,11 @@ export default function SingleMovieCard({ movie, onMoviePressedFunc }) {
     const network = myData.network.mtn;
 
     const size = (screenWidth / 3) - 10;
+
+    const handleRetry = () => {
+        setError(false);
+        setKey(prevKey => prevKey + 1);
+    };
 
     return (
         <View style={{ borderRadius: 25, overflow: 'hidden' }}>
@@ -55,6 +61,7 @@ export default function SingleMovieCard({ movie, onMoviePressedFunc }) {
 
                     }}>
                         <WebView
+                        key={key}
                             style={{
                                 backgroundColor: AppStyles.generalColors.dark_four,
                                 marginHorizontal: 5,
@@ -94,10 +101,9 @@ export default function SingleMovieCard({ movie, onMoviePressedFunc }) {
                     />
                 </View>
             ) : (
-                <Image
-                    source={imagePath}  // Replace with your error image URL
-                    style={styles.errorImage}
-                />
+                <View>
+                    <Button title="Retry" onPress={handleRetry} />
+                </View>
             )}
         </View>
     );

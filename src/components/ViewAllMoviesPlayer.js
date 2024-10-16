@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, ActivityIndicator, Button } from 'react-native';
 import WebView from 'react-native-webview';
 import { Dimensions } from 'react-native';
 import { AppStyles } from '../utilities/AppStyles';
@@ -13,6 +13,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addMovieToFavorites, setFavoriteMovies } from '../redux/slice/MovieSlice';
 
 const ViewAllMoviesPlayer = () => {
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
+    const [key, setKey] = useState(0);
+
     const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
     const widthSize = screenWidth - 20;
     const [isFavorite, setIsFavorite] = useState(0);
@@ -29,17 +33,11 @@ const ViewAllMoviesPlayer = () => {
 
     useEffect(() => {
         const isFavouriteChange = () => {
-            // if (favorites && favorites.length > 0) {
-            //     const isFav = favorites.some((item) => item.id === singleMovie.id);
-            //     setIsFavorite(isFav ? 1 : 0);
-            //     console.log('SAMPLE CHECK === ', isFav);
-            // }
             console.log('IS FAVORITE USEEFFECT === ', isFavorite);
         };
 
         isFavouriteChange();
     }, [isFavorite]);
-
 
     const isDescription = singleMovie?.description != null;
 
@@ -48,72 +46,67 @@ const ViewAllMoviesPlayer = () => {
     };
 
     const handleAndOrRemoveFavorites = async () => {
-
         console.log('IS FAVORITE INITIAL === ', isFavorite);
         setIsFavorite(isFavorite == 0 ? 1 : 0);
         if (isFavorite == 1) {
-            setFavoriteColor('pink')
+            setFavoriteColor('pink');
         } else {
-
-            setFavoriteColor('red')
+            setFavoriteColor('red');
         }
         console.log('IS FAVORITE FINAL === ', isFavorite);
+    };
 
-        // const favoriteCheck = favorites?.some((item) => item.id === singleMovie.id) ? 1 : 0;
-        // const apiFavorite = isFavorite;
-
-        // try {
-        //     const payload = {
-        //         msisdn: subscriber.msisdn,
-        //         movieId: `${singleMovie.id}`,
-        //         isFavorite: `${apiFavorite}`,
-        //     };
-
-        //     if (apiFavorite === 1) {
-        //         dispatch(addMovieToFavorites(singleMovie));
-        //     } else {
-        //         const newFavorites = favorites.filter((item) => item.id !== singleMovie.id);
-        //         dispatch(setFavoriteMovies(newFavorites));
-        //     }
-
-        //     await addOrRemoveFavorite(payload);
-        // } catch (error) {
-        //     console.error('ERROR OCCURRED === ', error.toString());
-        // }
+    const handleRetry = () => {
+        setError(false);
+        setKey(prevKey => prevKey + 1);
     };
 
     const ActionIcons = React.memo(({ actionFunc }) => {
         return (
-
             <TouchableOpacity onPress={actionFunc}>
                 <MaterialIcons name='favorite' size={25} color={favoriteColor} style={{ marginLeft: 20 }} />
-                {/* <MaterialIcons name='favorite' size={25} color={isFavorite === 1 ? '#00aeef' : '#fff'} style={{ marginLeft: 20 }} /> */}
             </TouchableOpacity>
-        )
+        );
     });
 
     const renderMainMovie = () => (
         <View>
-            <View style={styles.mainVideo}>
-                <WebView
-                    style={{
-                        backgroundColor: AppStyles.generalColors.dark_four,
-                        width: widthSize,
-                        // height: screenHeight / 2,
-                        height: 400
-                    }}
-                    source={{ uri: singleMovie['video_url'], headers: { Referer: 'https://mcini.tv' } }}
-                    javaScriptEnabled
-                    domStorageEnabled
-                    allowsInlineMediaPlayback
-                    renderError={() => (
-                        <View style={styles.errorContainer}>
-                            <Text style={styles.errorText}>Failed to load page.</Text>
-                        </View>
-                    )}
-                />
+            <View style={[styles.mainVideo, {
+                backgroundColor: AppStyles.generalColors.dark_four,
+                width: widthSize,
+                height: 400
+            }]}>
+                {loading && !error && (
+                    <ActivityIndicator size="large" color="#fff" style={styles.loader} />
+                )}
+                {!error ? (
+                    <WebView
+                        key={key}
+                        style={{
+                            backgroundColor: AppStyles.generalColors.dark_four,
+                            width: widthSize,
+                            height: 400,
+                            zIndex: 1 // Ensures WebView content stays behind loader
+                        }}
+                        source={{ uri: singleMovie['video_url'], headers: { Referer: 'https://mcini.tv' } }}
+                        javaScriptEnabled
+                        domStorageEnabled
+                        onLoadStart={() => setLoading(true)}
+                        onLoadEnd={() => setLoading(false)}
+                        onError={() => setError(true)}
+                        allowsInlineMediaPlayback
+                        renderError={() => (
+                            <View style={styles.errorContainer}>
+                                <Text style={styles.errorText}>Failed to load page.</Text>
+                            </View>
+                        )}
+                    />
+                ) : (
+                    <View>
+                        <Button title="Retry" onPress={handleRetry} />
+                    </View>
+                )}
             </View>
-            {/* ACTION ICONS HERE */}
             {isDescription && (
                 <View style={styles.descriptionContainer}>
                     <Text style={styles.descriptionText}>{singleMovie.description}</Text>
@@ -143,17 +136,27 @@ const ViewAllMoviesPlayer = () => {
     );
 };
 
-
 const styles = StyleSheet.create({
+    loader: {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: [{ translateX: -25 }, { translateY: -25 }], // Adjust for centering
+        zIndex: 10, // Ensure it appears above the WebView
+    },
     contentContainer: {
         flex: 1,
         paddingTop: 30,
         backgroundColor: AppStyles.generalColors.dark_four,
     },
     mainVideo: {
+        position: 'relative',
         borderRadius: 30,
         overflow: 'hidden',
         marginHorizontal: 10,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     descriptionContainer: {
         marginBottom: 20,
@@ -169,6 +172,14 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         display: 'flex',
         flexDirection: 'row',
+    },
+    errorContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 400,
+    },
+    errorText: {
+        color: 'white',
     },
 });
 
