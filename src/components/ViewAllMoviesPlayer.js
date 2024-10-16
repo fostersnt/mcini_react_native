@@ -20,7 +20,7 @@ const ViewAllMoviesPlayer = () => {
     const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
     const widthSize = screenWidth - 20;
     const [isFavorite, setIsFavorite] = useState(0);
-    const [favoriteColor, setFavoriteColor] = useState('green');
+    const [favoriteColor, setFavoriteColor] = useState('#fff');
     const navigator = useNavigation();
 
     const dispatch = useDispatch();
@@ -31,13 +31,15 @@ const ViewAllMoviesPlayer = () => {
     const subscriber = useSelector((state) => state.subscriber.subscriberDetails);
     const favorites = useSelector((state) => state.movie.favoriteMovies);
 
-    useEffect(() => {
-        const isFavouriteChange = () => {
-            console.log('IS FAVORITE USEEFFECT === ', isFavorite);
-        };
-
-        isFavouriteChange();
-    }, [isFavorite]);
+    // Use effect to update the favorite color based on `isFavorite` state
+    // useEffect(() => {
+    //     if (isFavorite === 1) {
+    //         setFavoriteColor(AppStyles.generalColors.blue);
+    //     } else {
+    //         setFavoriteColor(AppStyles.generalColors.white_one);
+    //     }
+    //     console.log('IS FAVORITE USEEFFECT === ', isFavorite);
+    // }, [isFavorite]);
 
     const isDescription = singleMovie?.description != null;
 
@@ -45,23 +47,30 @@ const ViewAllMoviesPlayer = () => {
         navigator.navigate('ViewAllMoviesPlayer', { singleMovie: movie });
     };
 
+    // Handle add or remove from favorites
     const handleAndOrRemoveFavorites = async () => {
         console.log('IS FAVORITE INITIAL === ', isFavorite);
-        setIsFavorite(isFavorite == 0 ? 1 : 0);
-        if (isFavorite == 1) {
-            setFavoriteColor('pink');
-        } else {
-            setFavoriteColor('red');
-        }
+
+        // Using functional state update to handle the current state properly
+        setIsFavorite((prevFavorite) => {
+            const newFavorite = prevFavorite === 0 ? 1 : 0;
+
+            // Optionally, dispatch here if needed to handle backend requests
+            // dispatch(addOrRemoveFavorite(newFavorite)); // Assuming this is where you handle API requests
+
+            return newFavorite;
+        });
+
         console.log('IS FAVORITE FINAL === ', isFavorite);
     };
 
     const handleRetry = () => {
         setError(false);
-        setKey(prevKey => prevKey + 1);
+        setKey((prevKey) => prevKey + 1);
     };
 
-    const ActionIcons = React.memo(({ actionFunc }) => {
+    // ActionIcons component memoized for optimal rendering
+    const ActionIcons = React.memo(({ actionFunc, favoriteColor }) => {
         return (
             <TouchableOpacity onPress={actionFunc}>
                 <MaterialIcons name='favorite' size={25} color={favoriteColor} style={{ marginLeft: 20 }} />
@@ -71,14 +80,17 @@ const ViewAllMoviesPlayer = () => {
 
     const renderMainMovie = () => (
         <View>
-            <View style={[styles.mainVideo, {
-                backgroundColor: AppStyles.generalColors.dark_four,
-                width: widthSize,
-                height: 400
-            }]}>
-                {loading && !error && (
-                    <ActivityIndicator size="large" color="#fff" style={styles.loader} />
-                )}
+            <View
+                style={[
+                    styles.mainVideo,
+                    {
+                        backgroundColor: AppStyles.generalColors.dark_four,
+                        width: widthSize,
+                        height: 400,
+                    },
+                ]}
+            >
+                {loading && !error && <ActivityIndicator size="large" color="#fff" style={styles.loader} />}
                 {!error ? (
                     <WebView
                         key={key}
@@ -86,7 +98,7 @@ const ViewAllMoviesPlayer = () => {
                             backgroundColor: AppStyles.generalColors.dark_four,
                             width: widthSize,
                             height: 400,
-                            zIndex: 1 // Ensures WebView content stays behind loader
+                            zIndex: 1, // Ensures WebView content stays behind loader
                         }}
                         source={{ uri: singleMovie['video_url'], headers: { Referer: 'https://mcini.tv' } }}
                         javaScriptEnabled
@@ -113,9 +125,10 @@ const ViewAllMoviesPlayer = () => {
                 </View>
             )}
             <View style={[styles.iconsContainer, { marginTop: isDescription ? 0 : 20 }]}>
-                <FontAwesome name='thumbs-o-up' size={25} color='#fff' style={{ marginLeft: 10 }} />
-                <Entypo name='share' size={25} color='#fff' style={{ marginLeft: 20 }} />
-                <ActionIcons actionFunc={handleAndOrRemoveFavorites} />
+                <FontAwesome name="thumbs-o-up" size={25} color="#fff" style={{ marginLeft: 10 }} />
+                <Entypo name="share" size={25} color="#fff" style={{ marginLeft: 20 }} />
+                {/* Pass favoriteColor to ActionIcons */}
+                <ActionIcons actionFunc={handleAndOrRemoveFavorites} favoriteColor={favoriteColor} />
             </View>
         </View>
     );
@@ -126,11 +139,15 @@ const ViewAllMoviesPlayer = () => {
                 numColumns={3}
                 data={[{ id: 0, title: 'my video' }, ...similar_movies]}
                 keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => (item.id === 0 ? renderMainMovie() : (
-                    <View style={{ marginBottom: 10 }}>
-                        <SingleMovieCard movie={item} onMoviePressedFunc={handleSingleMoviePress} />
-                    </View>
-                ))}
+                renderItem={({ item }) =>
+                    item.id === 0 ? (
+                        renderMainMovie()
+                    ) : (
+                        <View style={{ marginBottom: 10 }}>
+                            <SingleMovieCard movie={item} onMoviePressedFunc={handleSingleMoviePress} />
+                        </View>
+                    )
+                }
             />
         </View>
     );
