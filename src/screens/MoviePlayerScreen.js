@@ -1,50 +1,57 @@
 import { useRoute } from '@react-navigation/native';
 import React, { useState } from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
   Text,
   View,
   StatusBar,
-  ActivityIndicator
+  ActivityIndicator,
+  Button,
 } from 'react-native';
 import WebView from 'react-native-webview';
 import { AppStyles } from '../utilities/AppStyles';
 
-const handleHttpError = (syntheticEvent) => {
-  const { nativeEvent } = syntheticEvent;
-  console.log('HTTP Error:', nativeEvent);
-};
-
-const handleOnRenderProcessGone = (syntheticEvent) => {
-  const { nativeEvent } = syntheticEvent;
-  console.warn('WebView Crashed: ', nativeEvent.didCrash);
-}
-
-const handleRetry = () => {
-  setError(false);
-  setKey((prevKey) => prevKey + 1);
-};
-
 function MoviePlayerScreen() {
-
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [key, setKey] = useState(0);
 
   const route = useRoute();
-  const { singleMovie } = route.params;
-  const url = "https://iframe.mediadelivery.net/embed/182548/e941715e-7de1-4875-a42b-c52a982fa72c?autoplay=true";
-  console.log('SINGLE MOVIE TEST === ', singleMovie);
+
+  const singleMovie = route.params?.singleMovie;
+
+  if (!singleMovie) {
+    return (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>No movie data available.</Text>
+      </View>
+    );
+  }
+
+  const handleHttpError = (syntheticEvent) => {
+    const { nativeEvent } = syntheticEvent;
+    console.log('HTTP Error:', nativeEvent);
+  };
+
+  const handleOnRenderProcessGone = (syntheticEvent) => {
+    const { nativeEvent } = syntheticEvent;
+    console.warn('WebView Crashed: ', nativeEvent.didCrash);
+  };
+
+  const handleRetry = () => {
+    setError(false);
+    setKey((prevKey) => prevKey + 1);
+  };
 
   return (
-    <View
-      style={styles.videoContainer}
-    >
-      {loading && !error && <ActivityIndicator size="large" color="#fff" style={styles.loader} />}
+    <View style={styles.videoContainer}>
+      {loading && !error && (
+        <ActivityIndicator size="large" color="#fff" style={styles.loader} />
+      )}
       {!error ? (
         <WebView
-          style={styles.videoContainer}
+          key={key} // Add key to force re-render on retry
+          style={styles.webView}
           source={{ uri: singleMovie['video_url'] }}
           javaScriptEnabled={true}
           domStorageEnabled={true}
@@ -56,16 +63,16 @@ function MoviePlayerScreen() {
           renderError={() => (
             <View style={styles.errorContainer}>
               <Text style={styles.errorText}>Failed to load page.</Text>
+              <Button title="Retry" onPress={handleRetry} />
             </View>
           )}
-
           onRenderProcessGone={handleOnRenderProcessGone}
         >
-          <StatusBar translucent backgroundColor={'transparent'}></StatusBar>
-
+          <StatusBar translucent backgroundColor={'transparent'} />
         </WebView>
       ) : (
-        <View>
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorText}>Failed to load the video.</Text>
           <Button title="Retry" onPress={handleRetry} />
         </View>
       )}
@@ -74,25 +81,38 @@ function MoviePlayerScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   videoContainer: {
     flex: 1,
-    width: '100%',  // Use '100%' instead of '100'
-    height: 300,    // Set a specific height
-    // marginBottom: 20
-    backgroundColor: AppStyles.generalColors.dark_four
+    width: '100%',
+    height: 300, // Fixed height for the video container
+    backgroundColor: AppStyles.generalColors.dark_four,
+    justifyContent: 'center',
+    alignItems: 'center', // Center content horizontally
+  },
+  webView: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+  },
+  loader: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: [{ translateX: -25 }, { translateY: -25 }], // Adjust for centering
+    zIndex: 1, // Ensure it appears above the WebView
   },
   errorContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#f8d7da',
+    padding: 20,
   },
   errorText: {
     color: '#721c24',
     fontSize: 18,
+    marginBottom: 10,
+    textAlign: 'center',
   },
 });
 

@@ -48,7 +48,7 @@ export default function WelcomeSliderScreen() {
     
               if (response.success == 'true' && message == 'user authenticated!') {
                 navigator.navigate('BottomTabNav', {
-                  Screen: 'HomeScreen',
+                  Screen: 'Home',
                 });
               }
             }
