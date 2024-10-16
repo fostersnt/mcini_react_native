@@ -20,21 +20,13 @@ function MoviePlayerScreen() {
 
   const singleMovie = route.params?.singleMovie;
 
-  if (!singleMovie) {
-    return (
-      <View style={styles.errorContainer}>
-        <Text style={styles.errorText}>No movie data available.</Text>
-      </View>
-    );
-  }
-
   const handleRetry = () => {
     setLoading(true)
     setError(false);
     setKey((prevKey) => prevKey + 1);
   };
 
-  console.log('MY SINGLE MOVIE === ', singleMovie['video_url']);
+  // console.log('MY SINGLE MOVIE === ', singleMovie['video_url']);
 
 
   return (
@@ -44,21 +36,31 @@ function MoviePlayerScreen() {
       )}
       {!error ? (
         <WebView
-          key={key} // Add key to force re-render on retry
+          // key={key} // Add key to force re-render on retry
           style={styles.webView}
           source={{ uri: singleMovie['video_url'] }}
-          javaScriptEnabled={true}
-          domStorageEnabled={true}
-          allowsInlineMediaPlayback={true}
+          javaScriptEnabled
+          domStorageEnabled
+          allowsInlineMediaPlayback
           mediaPlaybackRequiresUserAction={false}
           onLoadStart={() => setLoading(true)}
           onLoadEnd={() => setLoading(false)}
-          onError={() => setError(true)}
+          onError={(syntheticEvent) => {
+            const { nativeEvent } = syntheticEvent;
+            console.warn('WebView error: ', nativeEvent);
+            setError(true);
+          }}
+          renderError={() => (
+            <View style={styles.errorContainer}>
+              <Text style={styles.errorText}>Failed to load the video.</Text>
+              <Button title="Retry" onPress={handleRetry} />
+            </View>
+          )}
         >
           {/* <StatusBar translucent backgroundColor={'transparent'} /> */}
         </WebView>
       ) : (
-        <View style={styles.errorContainer}>
+        <View style={styles.retryContainer}>
           {/* <Text style={styles.errorText}>Failed to load the video.</Text> */}
           <Button title="Retry" onPress={handleRetry} />
         </View>
@@ -70,13 +72,13 @@ function MoviePlayerScreen() {
 const styles = StyleSheet.create({
   videoContainer: {
     flex: 1,
-    width: '100%',
-    height: 300, // Fixed height for the video container
-    backgroundColor: AppStyles.generalColors.dark_four,
-    justifyContent: 'center',
-    alignItems: 'center', // Center content horizontally
+    // width: '100%',
+    // height: '100%',
+    // justifyContent: 'center',
+    // alignItems: 'center', // Center content horizontally
   },
   webView: {
+    backgroundColor: AppStyles.generalColors.dark_four,
     flex: 1,
     width: '100%',
     height: '100%',
@@ -88,13 +90,7 @@ const styles = StyleSheet.create({
     transform: [{ translateX: -25 }, { translateY: -25 }], // Adjust for centering
     zIndex: 1, // Ensure it appears above the WebView
   },
-  errorContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    // backgroundColor: '#f8d7da',
-    padding: 20,
-  },
+
   errorText: {
     color: '#721c24',
     fontSize: 18,

@@ -73,6 +73,20 @@ const ViewAllMoviesPlayer = () => {
     //     checkFavorite()
     // }, [isFavorite])
 
+    const toggleFavorite = () => {
+        setIsFavorite(!isFavorite);
+    }
+
+    const FavoriteIcon = React.memo(({ isFavorite, toggleFavorite }) => (
+        <TouchableOpacity onPress={toggleFavorite}>
+            <Ionicons
+                name={isFavorite ? 'heart' : 'heart-outline'} size={25}
+                color={isFavorite ? '#00aeef' : '#fff'}
+                style={{ marginLeft: 20 }}
+            />
+        </TouchableOpacity>
+    ))
+
     const renderMainMovie = () => (
         <View>
             <View
