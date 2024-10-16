@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { userData } from '../apiData/UserData';
 import { useSelector } from 'react-redux';
 import SubscriptionModal from './SubscriptionModal'; // Import the new modal component
+import { userSubscriptionCheck } from '../api/UserAPI';
 
 const imagePath = require('../assets/images/banner.png')
 
@@ -40,14 +41,25 @@ export default function SingleMovieCard({ movie, onMoviePressedFunc }) {
 
     return (
         <View style={{ borderRadius: 25, overflow: 'hidden' }}>
-            {/* Loader - Displayed only when loading is true and error is false */}
             {loading && !error && (
                 <ActivityIndicator size="large" color="#fff" style={styles.loader} />
             )}
 
             <View>
                 {!error ? (
-                    <TouchableOpacity onPress={async () => { onMoviePressedFunc(movie) }}>
+                    <TouchableOpacity onPress={async () => {
+                        setIsStatusCheck(true);
+                        const statusCheck = await userSubscriptionCheck(subscriber.msisdn);
+                        setIsStatusCheck(false);
+                        const status = statusCheck['data']['subscription_status'];
+                        if (status.toLowerCase() == 'active') {
+                            onMoviePressedFunc(movie)
+                        } else {
+                            setModalVisible(true);
+                        }
+                        console.log('STATUS CHECK RESPONSE === ', statusCheck['data']['subscription_status']);
+
+                    }}>
                         {/* WebView */}
                         <WebView
                             key={key}
