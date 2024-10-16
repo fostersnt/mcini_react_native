@@ -33,7 +33,10 @@ export default function WelcomeSliderScreen() {
     };
 
     return (
-        <Swiper loop={false} showsPagination={true} style={styles.swiper}>
+        <Swiper loop={false} showsPagination={true} style={styles.swiper}
+            dot={<View style={styles.dot} />} // Custom dot style
+            activeDot={<View style={styles.activeDot} />} // Custom active dot style
+        >
             {/* First image */}
             <View style={styles.slide}>
                 <Image source={images[0].image} style={styles.image} />
@@ -86,4 +89,24 @@ const styles = StyleSheet.create({
         bottom: 70, // Distance from the top (you can adjust this)
         // right: 50, // Distance from the right side (you can adjust this)
     },
+    dot: {
+        backgroundColor: 'rgba(255, 255, 255, 0.3)', // Semi-transparent white for inactive dots
+        width: 8,
+        height: 8,
+        borderRadius: 4,
+        marginLeft: 3,
+        marginRight: 3,
+        marginTop: 3,
+        marginBottom: 3,
+      },
+      activeDot: {
+        backgroundColor: '#fff', // Fully opaque white for active dot
+        width: 8,
+        height: 8,
+        borderRadius: 4,
+        marginLeft: 3,
+        marginRight: 3,
+        marginTop: 3,
+        marginBottom: 3,
+      },
 });
