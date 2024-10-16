@@ -16,6 +16,7 @@ const ViewAllMoviesPlayer = () => {
     const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
     const widthSize = screenWidth - 20;
     const [isFavorite, setIsFavorite] = useState(0);
+    const [favoriteColor, setFavoriteColor] = useState('green');
     const navigator = useNavigation();
 
     const dispatch = useDispatch();
@@ -28,15 +29,16 @@ const ViewAllMoviesPlayer = () => {
 
     useEffect(() => {
         const isFavouriteChange = () => {
-            if (favorites && favorites.length > 0) {
-                const isFav = favorites.some((item) => item.id === singleMovie.id);
-                setIsFavorite(isFav ? 1 : 0);
-                console.log('SAMPLE CHECK === ', isFav);
-            }
+            // if (favorites && favorites.length > 0) {
+            //     const isFav = favorites.some((item) => item.id === singleMovie.id);
+            //     setIsFavorite(isFav ? 1 : 0);
+            //     console.log('SAMPLE CHECK === ', isFav);
+            // }
+            console.log('IS FAVORITE USEEFFECT === ', isFavorite);
         };
 
         isFavouriteChange();
-    }, [favorites, singleMovie]);
+    }, [isFavorite]);
 
 
     const isDescription = singleMovie?.description != null;
@@ -46,45 +48,47 @@ const ViewAllMoviesPlayer = () => {
     };
 
     const handleAndOrRemoveFavorites = async () => {
-        const favoriteCheck = favorites?.some((item) => item.id === singleMovie.id) ? 1 : 0;
-        const apiFavorite = favoriteCheck === 1 ? 0 : 1;
 
-        try {
-            const payload = {
-                msisdn: subscriber.msisdn,
-                movieId: `${singleMovie.id}`,
-                isFavorite: `${apiFavorite}`,
-            };
+        console.log('IS FAVORITE INITIAL === ', isFavorite);
+        setIsFavorite(isFavorite == 0 ? 1 : 0);
+        if (isFavorite == 1) {
+            setFavoriteColor('pink')
+        } else {
 
-            if (apiFavorite === 1) {
-                dispatch(addMovieToFavorites(singleMovie));
-            } else {
-                const newFavorites = favorites.filter((item) => item.id !== singleMovie.id);
-                dispatch(setFavoriteMovies(newFavorites));
-            }
-
-            await addOrRemoveFavorite(payload);
-        } catch (error) {
-            console.error('ERROR OCCURRED === ', error.toString());
+            setFavoriteColor('red')
         }
+        console.log('IS FAVORITE FINAL === ', isFavorite);
+
+        // const favoriteCheck = favorites?.some((item) => item.id === singleMovie.id) ? 1 : 0;
+        // const apiFavorite = isFavorite;
+
+        // try {
+        //     const payload = {
+        //         msisdn: subscriber.msisdn,
+        //         movieId: `${singleMovie.id}`,
+        //         isFavorite: `${apiFavorite}`,
+        //     };
+
+        //     if (apiFavorite === 1) {
+        //         dispatch(addMovieToFavorites(singleMovie));
+        //     } else {
+        //         const newFavorites = favorites.filter((item) => item.id !== singleMovie.id);
+        //         dispatch(setFavoriteMovies(newFavorites));
+        //     }
+
+        //     await addOrRemoveFavorite(payload);
+        // } catch (error) {
+        //     console.error('ERROR OCCURRED === ', error.toString());
+        // }
     };
 
-    const ActionIcons = React.memo(({ actionFunc})=> {
+    const ActionIcons = React.memo(({ actionFunc }) => {
         return (
-            <View>
-                {isDescription && (
-                    <View style={styles.descriptionContainer}>
-                        <Text style={styles.descriptionText}>{singleMovie.description}</Text>
-                    </View>
-                )}
-                <View style={[styles.iconsContainer, { marginTop: isDescription ? 0 : 20 }]}>
-                    <FontAwesome name='thumbs-o-up' size={25} color='#fff' style={{ marginLeft: 10 }} />
-                    <Entypo name='share' size={25} color='#fff' style={{ marginLeft: 20 }} />
-                    <TouchableOpacity onPress={actionFunc}>
-                        <MaterialIcons name='favorite' size={25} color={isFavorite === 1 ? '#00aeef' : '#fff'} style={{ marginLeft: 20 }} />
-                    </TouchableOpacity>
-                </View>
-            </View>
+
+            <TouchableOpacity onPress={actionFunc}>
+                <MaterialIcons name='favorite' size={25} color={favoriteColor} style={{ marginLeft: 20 }} />
+                {/* <MaterialIcons name='favorite' size={25} color={isFavorite === 1 ? '#00aeef' : '#fff'} style={{ marginLeft: 20 }} /> */}
+            </TouchableOpacity>
         )
     });
 
@@ -110,7 +114,16 @@ const ViewAllMoviesPlayer = () => {
                 />
             </View>
             {/* ACTION ICONS HERE */}
-            <ActionIcons actionFunc={handleAndOrRemoveFavorites} />
+            {isDescription && (
+                <View style={styles.descriptionContainer}>
+                    <Text style={styles.descriptionText}>{singleMovie.description}</Text>
+                </View>
+            )}
+            <View style={[styles.iconsContainer, { marginTop: isDescription ? 0 : 20 }]}>
+                <FontAwesome name='thumbs-o-up' size={25} color='#fff' style={{ marginLeft: 10 }} />
+                <Entypo name='share' size={25} color='#fff' style={{ marginLeft: 20 }} />
+                <ActionIcons actionFunc={handleAndOrRemoveFavorites} />
+            </View>
         </View>
     );
 

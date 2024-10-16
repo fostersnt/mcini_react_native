@@ -205,6 +205,7 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: 'white',
+    color: AppStyles.generalColors.dark_four,
     width: '100%',
     paddingHorizontal: 10,
   },

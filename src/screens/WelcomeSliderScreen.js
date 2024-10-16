@@ -5,12 +5,14 @@ import { Dimensions } from 'react-native';
 import { AppStyles } from '../utilities/AppStyles';
 import Entypo from 'react-native-vector-icons/Entypo'
 import { useNavigation } from '@react-navigation/native';
+import Swiper from 'react-native-swiper';
 
 export default function WelcomeSliderScreen() {
 
     const navigator = useNavigation();
 
     const { width: screenWidth } = Dimensions.get('screen');
+
     const images = [
         {
             id: '1',
@@ -26,72 +28,62 @@ export default function WelcomeSliderScreen() {
         },
     ];
 
-    const renderItem = ({ item }) => (
-        <View style={styles.container}>
-            <Image source={imagePath} style={[styles.image, { width: screenWidth }]} />
-            <View style={styles.innerContainer}>
-                <View style={styles.circleContainer}>
-                    <Entypo name='circle' size={15} color={'white'} />
-                    <Entypo name='circle' size={15} color={'white'} />
-                    <Entypo name='circle' size={15} color={'white'} />
-                </View>
-                <TouchableOpacity
-                    onPress={() => {
-                        navigator.navigate('Login')
-                    }}
-                >
-                    <View>
-                        <Text style={styles.text}>Skip</Text>
-                    </View>
-                </TouchableOpacity>
-            </View>
-        </View >
-    );
+    const onSkipPress = () => {
+        navigator.navigate('BottomTabNav', { screen: 'Login' }); // Navigate to the login screen
+    };
 
     return (
-        <FlatList
-            data={images}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id}
-            horizontal
-        />
+        <Swiper loop={false} showsPagination={true} style={styles.swiper}>
+            {/* First image */}
+            <View style={styles.slide}>
+                <Image source={images[0].image} style={styles.image} />
+                <View style={[styles.absoluteTouchableOpacity, { left: (screenWidth / 2) - 20 }]}>
+                    <TouchableOpacity onPress={onSkipPress}><Text style={styles.skip}>Skip</Text></TouchableOpacity>
+                </View>
+            </View>
+
+            {/* Second image */}
+            <View style={styles.slide}>
+                <Image source={images[1].image} style={styles.image} />
+                <View style={[styles.absoluteTouchableOpacity, { left: (screenWidth / 2) - 20 }]}>
+                    <TouchableOpacity onPress={onSkipPress}><Text style={styles.skip}>Skip</Text></TouchableOpacity>
+                </View>
+            </View>
+
+            {/* Third image */}
+            <View style={styles.slide}>
+                <Image source={images[2].image} style={styles.image} />
+                <View style={[styles.absoluteTouchableOpacity, { left: (screenWidth / 2) - 20 }]}>
+                    <TouchableOpacity onPress={onSkipPress}><Text style={styles.skip}>Skip</Text></TouchableOpacity>
+                </View>
+            </View>
+        </Swiper>
     );
-}
+};
 
 const styles = StyleSheet.create({
-    container: {
-        position: 'relative',
-        flex: 1,
-        backgroundColor: AppStyles.generalColors.dark_four
+    swiper: {
+        position: 'relative'
     },
-    image: {
-        height: '100%',
-        marginBottom: 10,
+    skip: {
+        color: '#fff',
+        fontSize: 18
     },
-    innerContainer: {
+    slide: {
         flex: 1,
-        width: '100%',
-        display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        position: 'absolute', // Position text absolutely
-        bottom: 40, // Position text 10 pixels from the bottom
-        // left: 10, // Position text 10 pixels from the left
-        color: 'white', // Text color
-        fontSize: 16, // Font size
-        // backgroundColor: 'rgba(0, 0, 0, 0.5)', // Optional: semi-transparent background for better readability
-        padding: 5, // Padding around the text
+        // backgroundColor: '#fff',
     },
-    circleContainer: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        flexDirection: 'row',
-        width: 100,
-        marginBottom: 30
+    image: {
+        flex: 1,
+        // width: '100%',
+        // height: '100%',
+        // resizeMode: 'cover',
     },
-    text: {
-        color: 'white',
-        fontWeight: 'bold',
-        fontSize: 20
-    }
+    absoluteTouchableOpacity: {
+        position: 'absolute',
+        bottom: 70, // Distance from the top (you can adjust this)
+        // right: 50, // Distance from the right side (you can adjust this)
+    },
 });
