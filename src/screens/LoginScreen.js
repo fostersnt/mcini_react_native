@@ -17,35 +17,6 @@ export default function LoginScreen() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentSubscriber, setCurrentSubscriber] = useState(null);
 
-  const subscriberData = useSelector((state) => state.subscriber.subscriberDetails);
-
-  useEffect(() => {
-    const authData = async () => {
-      try {
-        setCurrentSubscriber(subscriberData);
-
-        if (currentSubscriber != null && currentSubscriber.msisdn != '') {
-          const response = await checkAuthAPI(currentSubscriber.msisdn);
-
-          const message = response['message'].toString().toLowerCase();
-
-          console.log('MESSAGE: ', message);
-
-          if (response.success == 'true' && message == 'user authenticated!') {
-            navigation.navigate('BottomTabNav', {
-              Screen: 'HomeScreen',
-              params: { movies: response.data }
-            });
-          }
-        }
-      } catch (error) {
-        console.log('USE EFFECT ERROR AT LOGIN SCREEN: ', error.toString());
-      }
-    }
-    //Calling the authCheck function
-    authData();
-  }, []);
-
   const navigation = useNavigation();
 
   //LOGIN FUNCTION

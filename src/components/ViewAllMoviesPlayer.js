@@ -8,7 +8,6 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { addOrRemoveFavorite } from '../api/UserAPI';
 import { useDispatch, useSelector } from 'react-redux';
 import { addMovieToFavorites, setFavoriteMovies } from '../redux/slice/MovieSlice';
 
@@ -37,18 +36,31 @@ const ViewAllMoviesPlayer = () => {
     };
 
     // Handle add or remove from favorites
-    const handleAndOrRemoveFavorites = async () => {
+    const handleAndOrRemoveFavorites = () => {
         console.log('IS FAVORITE INITIAL === ', isFavorite);
+        setIsFavorite(isFavorite == 0 ? 1 : 0);
+        if (isFavorite == 0) {
+            dispatch(addMovieToFavorites(singleMovie));
+        } else {
+            const updatedMovies = favorites.filter((item) => item.id != singleMovie.id);
+            dispatch(setFavoriteMovies(updatedMovies));
+        }
+        // // Using functional state update to handle the current state properly
+        // setIsFavorite((prevFavorite) => {
+        //     const newFavorite = prevFavorite === 0 ? 1 : 0;
 
-        // Using functional state update to handle the current state properly
-        setIsFavorite((prevFavorite) => {
-            const newFavorite = prevFavorite === 0 ? 1 : 0;
+        //     setIsFavorite(newFavorite);
 
-            setIsFavorite(newFavorite);
-            // Optionally, dispatch here if needed to handle backend requests
-            dispatch(addOrRemoveFavorite(newFavorite)); // Assuming this is where you handle API requests
+        //     if (newFavorite == 1) {
+        //         dispatch(addMovieToFavorites(singleMovie));
+        //     } else {
+        //         const updatedMovies = favorites.filter((item) => item.id != singleMovie.id);
+        //         dispatch(setFavoriteMovies(updatedMovies));
+        //     }
+        //     // Optionally, dispatch here if needed to handle backend requests
+        //     // dispatch(addOrRemoveFavorite(newFavorite)); // Assuming this is where you handle API requests
 
-        });
+        // });
 
         console.log('IS FAVORITE FINAL === ', isFavorite);
     };
@@ -57,6 +69,21 @@ const ViewAllMoviesPlayer = () => {
         setError(false);
         setKey((prevKey) => prevKey + 1);
     };
+
+    useEffect(() => {
+        const checkFavorite = () => {
+            const outcome = favorites != null && favorites.length > 0 ? favorites.some((item) => item.id == singleMovie.id) : false;
+            if (isFavorite == 1) {
+                dispatch(addMovieToFavorites(singleMovie));
+            } else {
+                const updatedMovies = favorites.filter((item) => item.id != singleMovie.id);
+                dispatch(setFavoriteMovies(updatedMovies));
+            }
+            console.log('SOME DATA === ', outcome);
+        }
+        
+        checkFavorite()
+    }, [isFavorite])
 
     const renderMainMovie = () => (
         <View>

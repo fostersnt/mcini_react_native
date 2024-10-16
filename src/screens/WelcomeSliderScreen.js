@@ -6,11 +6,15 @@ import { AppStyles } from '../utilities/AppStyles';
 import Entypo from 'react-native-vector-icons/Entypo'
 import { useNavigation } from '@react-navigation/native';
 import Swiper from 'react-native-swiper';
+import { checkAuthAPI } from '../api/UserAPI';
+import { useSelector } from 'react-redux';
 
 export default function WelcomeSliderScreen() {
-    const [sliderIndex, setSliderIndex] = useState(0);
 
-    const navigator = useNavigation();
+  const subscriberData = useSelector((state) => state.subscriber.subscriberDetails);
+  const navigator = useNavigation();
+
+  const [sliderIndex, setSliderIndex] = useState(0);
 
     const { width: screenWidth } = Dimensions.get('screen');
 
@@ -30,12 +34,31 @@ export default function WelcomeSliderScreen() {
     ];
 
     useEffect(() => {
-        const changeSliderIndex = () => {
-            setSliderIndex(0);
+        const authData = async () => {
+          try {
+            // setCurrentSubscriber(subscriberData);
+            console.log('DATA DATA === ', subscriberData);
+            
+            if (subscriberData != null && subscriberData.msisdn != '') {
+              const response = await checkAuthAPI(subscriberData.msisdn);
+    
+              const message = response['message'].toString().toLowerCase();
+    
+              console.log('MESSAGE: ', message);
+    
+              if (response.success == 'true' && message == 'user authenticated!') {
+                navigator.navigate('BottomTabNav', {
+                  Screen: 'HomeScreen',
+                });
+              }
+            }
+          } catch (error) {
+            console.log('USE EFFECT ERROR AT LOGIN SCREEN: ', error.toString());
+          }
         }
-
-        changeSliderIndex();
-    }, [])
+        //Calling the authCheck function
+        authData();
+      }, []);
 
     const onSkipPress = () => {
         navigator.navigate('Login'); 
