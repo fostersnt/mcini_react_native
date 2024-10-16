@@ -48,15 +48,15 @@ export default function SingleMovieCard({ movie, onMoviePressedFunc }) {
             <View>
                 {!error ? (
                     <TouchableOpacity onPress={async () => {
-                        setIsStatusCheck(true);
-                        const statusCheck = await userSubscriptionCheck(subscriber.msisdn);
-                        setIsStatusCheck(false);
-                        const status = statusCheck['data']['subscription_status'];
-                        if (status.toLowerCase() == 'active') {
-                            onMoviePressedFunc(movie)
-                        } else {
+                        // setIsStatusCheck(true);
+                        // const statusCheck = await userSubscriptionCheck(subscriber.msisdn);
+                        // setIsStatusCheck(false);
+                        // const status = statusCheck['data']['subscription_status'];
+                        // if (status.toLowerCase() == 'active') {
+                        //     onMoviePressedFunc(movie)
+                        // } else {
                             setModalVisible(true);
-                        }
+                        // }
                         console.log('STATUS CHECK RESPONSE === ', statusCheck['data']['subscription_status']);
                     }}>
                         {/* WebView */}

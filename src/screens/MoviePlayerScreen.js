@@ -1,11 +1,12 @@
 import { useRoute } from '@react-navigation/native';
-import React from 'react';
+import React, { useState } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
   Text,
   View,
-  StatusBar
+  StatusBar,
+  ActivityIndicator
 } from 'react-native';
 import WebView from 'react-native-webview';
 import { AppStyles } from '../utilities/AppStyles';
@@ -20,32 +21,55 @@ const handleOnRenderProcessGone = (syntheticEvent) => {
   console.warn('WebView Crashed: ', nativeEvent.didCrash);
 }
 
+const handleRetry = () => {
+  setError(false);
+  setKey((prevKey) => prevKey + 1);
+};
+
 function MoviePlayerScreen() {
-const route = useRoute();
-const {singleMovie} = route.params;
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [key, setKey] = useState(0);
+
+  const route = useRoute();
+  const { singleMovie } = route.params;
   const url = "https://iframe.mediadelivery.net/embed/182548/e941715e-7de1-4875-a42b-c52a982fa72c?autoplay=true";
   console.log('SINGLE MOVIE TEST === ', singleMovie);
-  
+
   return (
-    <WebView
+    <View
       style={styles.videoContainer}
-      source={{ uri: singleMovie['video_url'] }}
-      javaScriptEnabled={true}
-      domStorageEnabled={true}
-      allowsInlineMediaPlayback={true}
-      onHttpError={handleHttpError}
-      onError={handleOnRenderProcessGone}
-      renderError={() => (
-        <View style={styles.errorContainer}>
-          <Text style={styles.errorText}>Failed to load page.</Text>
+    >
+      {loading && !error && <ActivityIndicator size="large" color="#fff" style={styles.loader} />}
+      {!error ? (
+        <WebView
+          style={styles.videoContainer}
+          source={{ uri: singleMovie['video_url'] }}
+          javaScriptEnabled={true}
+          domStorageEnabled={true}
+          allowsInlineMediaPlayback={true}
+          onHttpError={handleHttpError}
+          onLoadStart={() => setLoading(true)}
+          onLoadEnd={() => setLoading(false)}
+          onError={() => setError(true)}
+          renderError={() => (
+            <View style={styles.errorContainer}>
+              <Text style={styles.errorText}>Failed to load page.</Text>
+            </View>
+          )}
+
+          onRenderProcessGone={handleOnRenderProcessGone}
+        >
+          <StatusBar translucent backgroundColor={'transparent'}></StatusBar>
+
+        </WebView>
+      ) : (
+        <View>
+          <Button title="Retry" onPress={handleRetry} />
         </View>
       )}
-
-      onRenderProcessGone={handleOnRenderProcessGone}
-    >
-      <StatusBar translucent backgroundColor={'transparent'}></StatusBar>
-
-    </WebView>
+    </View>
   );
 }
 
