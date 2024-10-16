@@ -53,11 +53,11 @@ export default function SingleMovieCard({ movie, onMoviePressedFunc }) {
                         // setIsStatusCheck(false);
                         // const status = statusCheck['data']['subscription_status'];
                         // if (status.toLowerCase() == 'active') {
-                        //     onMoviePressedFunc(movie)
+                            onMoviePressedFunc(movie)
                         // } else {
-                            setModalVisible(true);
+                            // setModalVisible(true);
                         // }
-                        console.log('STATUS CHECK RESPONSE === ', statusCheck['data']['subscription_status']);
+                        // console.log('STATUS CHECK RESPONSE === ', statusCheck['data']['subscription_status']);
                     }}>
                         {/* WebView */}
                         <WebView

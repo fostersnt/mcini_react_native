@@ -28,20 +28,14 @@ function MoviePlayerScreen() {
     );
   }
 
-  const handleHttpError = (syntheticEvent) => {
-    const { nativeEvent } = syntheticEvent;
-    console.log('HTTP Error:', nativeEvent);
-  };
-
-  const handleOnRenderProcessGone = (syntheticEvent) => {
-    const { nativeEvent } = syntheticEvent;
-    console.warn('WebView Crashed: ', nativeEvent.didCrash);
-  };
-
   const handleRetry = () => {
+    setLoading(true)
     setError(false);
     setKey((prevKey) => prevKey + 1);
   };
+
+  console.log('MY SINGLE MOVIE === ', singleMovie['video_url']);
+
 
   return (
     <View style={styles.videoContainer}>
@@ -56,23 +50,16 @@ function MoviePlayerScreen() {
           javaScriptEnabled={true}
           domStorageEnabled={true}
           allowsInlineMediaPlayback={true}
-          onHttpError={handleHttpError}
+          mediaPlaybackRequiresUserAction={false}
           onLoadStart={() => setLoading(true)}
           onLoadEnd={() => setLoading(false)}
           onError={() => setError(true)}
-          renderError={() => (
-            <View style={styles.errorContainer}>
-              <Text style={styles.errorText}>Failed to load page.</Text>
-              <Button title="Retry" onPress={handleRetry} />
-            </View>
-          )}
-          onRenderProcessGone={handleOnRenderProcessGone}
         >
-          <StatusBar translucent backgroundColor={'transparent'} />
+          {/* <StatusBar translucent backgroundColor={'transparent'} /> */}
         </WebView>
       ) : (
         <View style={styles.errorContainer}>
-          <Text style={styles.errorText}>Failed to load the video.</Text>
+          {/* <Text style={styles.errorText}>Failed to load the video.</Text> */}
           <Button title="Retry" onPress={handleRetry} />
         </View>
       )}
@@ -105,7 +92,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f8d7da',
+    // backgroundColor: '#f8d7da',
     padding: 20,
   },
   errorText: {

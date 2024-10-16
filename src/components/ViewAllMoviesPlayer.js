@@ -42,8 +42,10 @@ const ViewAllMoviesPlayer = () => {
         if (isFavorite == 0) {
             dispatch(addMovieToFavorites(singleMovie));
         } else {
-            const updatedMovies = favorites.filter((item) => item.id != singleMovie.id);
-            dispatch(setFavoriteMovies(updatedMovies));
+            const updatedMovies = favorites != null && favorites.length > 0 ? favorites.filter((item) => item.id != singleMovie.id) : null;
+            if (updatedMovies != null) {
+                dispatch(setFavoriteMovies(updatedMovies));
+            }
         }
         // // Using functional state update to handle the current state properly
         // setIsFavorite((prevFavorite) => {
@@ -66,6 +68,7 @@ const ViewAllMoviesPlayer = () => {
     };
 
     const handleRetry = () => {
+        setLoading(true)
         setError(false);
         setKey((prevKey) => prevKey + 1);
     };
@@ -76,12 +79,12 @@ const ViewAllMoviesPlayer = () => {
             if (isFavorite == 1) {
                 dispatch(addMovieToFavorites(singleMovie));
             } else {
-                const updatedMovies = favorites.filter((item) => item.id != singleMovie.id);
+                const updatedMovies = favorites != null && favorites.length > 0 ? favorites.filter((item) => item.id != singleMovie.id) : null;
                 dispatch(setFavoriteMovies(updatedMovies));
             }
             console.log('SOME DATA === ', outcome);
         }
-        
+
         checkFavorite()
     }, [isFavorite])
 
@@ -114,6 +117,7 @@ const ViewAllMoviesPlayer = () => {
                         onLoadEnd={() => setLoading(false)}
                         onError={() => setError(true)}
                         allowsInlineMediaPlayback
+                        mediaPlaybackRequiresUserAction={false}
                         renderError={() => (
                             <View style={styles.errorContainer}>
                                 <Text style={styles.errorText}>Failed to load page.</Text>
