@@ -20,7 +20,6 @@ const ViewAllMoviesPlayer = () => {
     const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
     const widthSize = screenWidth - 20;
     const [isFavorite, setIsFavorite] = useState(0);
-    const [favoriteColor, setFavoriteColor] = useState('#fff');
     const navigator = useNavigation();
 
     const dispatch = useDispatch();
@@ -30,16 +29,6 @@ const ViewAllMoviesPlayer = () => {
     const similar_movies = useSelector((state) => state.movie.movies);
     const subscriber = useSelector((state) => state.subscriber.subscriberDetails);
     const favorites = useSelector((state) => state.movie.favoriteMovies);
-
-    // Use effect to update the favorite color based on `isFavorite` state
-    // useEffect(() => {
-    //     if (isFavorite === 1) {
-    //         setFavoriteColor(AppStyles.generalColors.blue);
-    //     } else {
-    //         setFavoriteColor(AppStyles.generalColors.white_one);
-    //     }
-    //     console.log('IS FAVORITE USEEFFECT === ', isFavorite);
-    // }, [isFavorite]);
 
     const isDescription = singleMovie?.description != null;
 
@@ -55,10 +44,10 @@ const ViewAllMoviesPlayer = () => {
         setIsFavorite((prevFavorite) => {
             const newFavorite = prevFavorite === 0 ? 1 : 0;
 
+            setIsFavorite(newFavorite);
             // Optionally, dispatch here if needed to handle backend requests
-            // dispatch(addOrRemoveFavorite(newFavorite)); // Assuming this is where you handle API requests
+            dispatch(addOrRemoveFavorite(newFavorite)); // Assuming this is where you handle API requests
 
-            return newFavorite;
         });
 
         console.log('IS FAVORITE FINAL === ', isFavorite);
@@ -68,15 +57,6 @@ const ViewAllMoviesPlayer = () => {
         setError(false);
         setKey((prevKey) => prevKey + 1);
     };
-
-    // ActionIcons component memoized for optimal rendering
-    const ActionIcons = React.memo(({ actionFunc, favoriteColor }) => {
-        return (
-            <TouchableOpacity onPress={actionFunc}>
-                <MaterialIcons name='favorite' size={25} color={favoriteColor} style={{ marginLeft: 20 }} />
-            </TouchableOpacity>
-        );
-    });
 
     const renderMainMovie = () => (
         <View>
@@ -127,8 +107,9 @@ const ViewAllMoviesPlayer = () => {
             <View style={[styles.iconsContainer, { marginTop: isDescription ? 0 : 20 }]}>
                 <FontAwesome name="thumbs-o-up" size={25} color="#fff" style={{ marginLeft: 10 }} />
                 <Entypo name="share" size={25} color="#fff" style={{ marginLeft: 20 }} />
-                {/* Pass favoriteColor to ActionIcons */}
-                <ActionIcons actionFunc={handleAndOrRemoveFavorites} favoriteColor={favoriteColor} />
+                <TouchableOpacity onPress={handleAndOrRemoveFavorites}>
+                    <MaterialIcons name='favorite' size={25} color={isFavorite ? '#00aeef' : '#fff'} style={{ marginLeft: 20 }} />
+                </TouchableOpacity>
             </View>
         </View>
     );

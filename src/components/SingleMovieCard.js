@@ -42,7 +42,7 @@ export default function SingleMovieCard({ movie, onMoviePressedFunc }) {
         <View style={{ borderRadius: 25, overflow: 'hidden' }}>
             {/* Loader - Displayed only when loading is true and error is false */}
             {loading && !error && (
-                <ActivityIndicator size="large" color="#0000ff" style={styles.loader} />
+                <ActivityIndicator size="large" color="#fff" style={styles.loader} />
             )}
 
             <View>

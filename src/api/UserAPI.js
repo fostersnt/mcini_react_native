@@ -228,48 +228,48 @@ export const allUserData = async (subscriberMsisdn) => {
     var favorites = null;
     var watchList = null;
 
-    const subscriberData = await userLoginAPI(subscriberMsisdn);
-    console.log('=== USER LOGIN API STARTED === ', subscriberData['message']);
+    const loginResponse = await userLoginAPI(subscriberMsisdn);
+    // console.log('=== USER LOGIN API STARTED === ', loginResponse['data'].user);
 
-    const allMovies = await movieListAPI();
-    console.log('=== MOVIES LIST API STARTED === ', allMovies['message']);
+    // const allMovies = await movieListAPI();
+    // console.log('=== MOVIES LIST API STARTED === ', allMovies['message']);
 
-    const favoriteMovies = await userFavoriteMoviesAPI(subscriberMsisdn);
-    console.log('=== FAVOURITE MOVIES API STARTED === ', favoriteMovies['message']);
+    // const favoriteMovies = await userFavoriteMoviesAPI(subscriberMsisdn);
+    // console.log('=== FAVOURITE MOVIES API STARTED === ', favoriteMovies['message']);
 
-    const userWatchList = await userWatchListAPI(subscriberMsisdn);
-    console.log('=== WATCH-LIST API STARTED === ', userWatchList['message']);
+    // const userWatchList = await userWatchListAPI(subscriberMsisdn);
+    // console.log('=== WATCH-LIST API STARTED === ', userWatchList['message']);
 
-    message = subscriberData['message'];
+    // message = loginResponse['message'];
 
-    //Checking login data or subscriber information
-    if (subscriberData['success'] == 'true' && subscriberData['data'] != null) {
-        success = subscriberData['success'];
-        subscriber = subscriberData['data'];
-    }
+    // //Checking login data or subscriber information
+    // if (loginResponse['success'] == 'true' && loginResponse['data'] != null) {
+    //     success = loginResponse['success'];
+    //     subscriber = loginResponse['data'];
+    // }
     
-    //Checking all movies data
-    if (allMovies['success'] == 'true') {
-        movies = allMovies['data'];
-    }
+    // //Checking all movies data
+    // if (allMovies['success'] == 'true') {
+    //     movies = allMovies['data'];
+    // }
 
-    //Checking favorite movies data
-    if (favoriteMovies['success'] == 'true') {
-        favorites = favoriteMovies['data'];
-    }
+    // //Checking favorite movies data
+    // if (favoriteMovies['success'] == 'true') {
+    //     favorites = favoriteMovies['data'];
+    // }
 
-    //Checking watch-list data
-    if (userWatchList['success'] == 'true') {
-        watchList = userWatchList['data'];
-    }
+    // //Checking watch-list data
+    // if (userWatchList['success'] == 'true') {
+    //     watchList = userWatchList['data'];
+    // }
 
     return {
-        'success': success,
-        'message': message,
-        'subscriber': subscriber,
-        'movies': movies,
-        'favorites': favorites,
-        'watchList': watchList
+        'success': loginResponse['success'],
+        'message': loginResponse['message'],
+        'subscriber': loginResponse['data'].user,
+        'movies': loginResponse['data'].movies,
+        'favorites': loginResponse['data'].favorites,
+        'watchList': loginResponse['data'].watch_history
     }
 }
 
