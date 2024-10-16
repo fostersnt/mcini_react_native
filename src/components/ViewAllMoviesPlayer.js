@@ -8,6 +8,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
 import { addMovieToFavorites, setFavoriteMovies } from '../redux/slice/MovieSlice';
 
@@ -18,7 +19,7 @@ const ViewAllMoviesPlayer = () => {
 
     const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
     const widthSize = screenWidth - 20;
-    const [isFavorite, setIsFavorite] = useState(0);
+    const [isFavorite, setIsFavorite] = useState(false);
     const navigator = useNavigation();
 
     const dispatch = useDispatch();
@@ -36,36 +37,20 @@ const ViewAllMoviesPlayer = () => {
     };
 
     // Handle add or remove from favorites
-    const handleAndOrRemoveFavorites = () => {
-        console.log('IS FAVORITE INITIAL === ', isFavorite);
-        setIsFavorite(isFavorite == 0 ? 1 : 0);
-        if (isFavorite == 0) {
-            dispatch(addMovieToFavorites(singleMovie));
-        } else {
-            const updatedMovies = favorites != null && favorites.length > 0 ? favorites.filter((item) => item.id != singleMovie.id) : null;
-            if (updatedMovies != null) {
-                dispatch(setFavoriteMovies(updatedMovies));
-            }
-        }
-        // // Using functional state update to handle the current state properly
-        // setIsFavorite((prevFavorite) => {
-        //     const newFavorite = prevFavorite === 0 ? 1 : 0;
+    // const handleAndOrRemoveFavorites = () => {
+    //     console.log('IS FAVORITE INITIAL === ', isFavorite);
+    //     setIsFavorite(isFavorite == 0 ? 1 : 0);
+    //     if (isFavorite == 0) {
+    //         dispatch(addMovieToFavorites(singleMovie));
+    //     } else {
+    //         const updatedMovies = favorites != null && favorites.length > 0 ? favorites.filter((item) => item.id != singleMovie.id) : null;
+    //         if (updatedMovies != null) {
+    //             dispatch(setFavoriteMovies(updatedMovies));
+    //         }
+    //     }
 
-        //     setIsFavorite(newFavorite);
-
-        //     if (newFavorite == 1) {
-        //         dispatch(addMovieToFavorites(singleMovie));
-        //     } else {
-        //         const updatedMovies = favorites.filter((item) => item.id != singleMovie.id);
-        //         dispatch(setFavoriteMovies(updatedMovies));
-        //     }
-        //     // Optionally, dispatch here if needed to handle backend requests
-        //     // dispatch(addOrRemoveFavorite(newFavorite)); // Assuming this is where you handle API requests
-
-        // });
-
-        console.log('IS FAVORITE FINAL === ', isFavorite);
-    };
+    //     console.log('IS FAVORITE FINAL === ', isFavorite);
+    // };
 
     const handleRetry = () => {
         setLoading(true)
@@ -73,20 +58,20 @@ const ViewAllMoviesPlayer = () => {
         setKey((prevKey) => prevKey + 1);
     };
 
-    useEffect(() => {
-        const checkFavorite = () => {
-            const outcome = favorites != null && favorites.length > 0 ? favorites.some((item) => item.id == singleMovie.id) : false;
-            if (isFavorite == 1) {
-                dispatch(addMovieToFavorites(singleMovie));
-            } else {
-                const updatedMovies = favorites != null && favorites.length > 0 ? favorites.filter((item) => item.id != singleMovie.id) : null;
-                dispatch(setFavoriteMovies(updatedMovies));
-            }
-            console.log('SOME DATA === ', outcome);
-        }
+    // useEffect(() => {
+    //     const checkFavorite = () => {
+    //         const outcome = favorites != null && favorites.length > 0 ? favorites.some((item) => item.id == singleMovie.id) : false;
+    //         if (isFavorite == 0) {
+    //             dispatch(addMovieToFavorites(singleMovie));
+    //         } else {
+    //             const updatedMovies = favorites != null && favorites.length > 0 ? favorites.filter((item) => item.id != singleMovie.id) : null;
+    //             dispatch(setFavoriteMovies(updatedMovies));
+    //         }
+    //         console.log('SOME DATA === ', outcome);
+    //     }
 
-        checkFavorite()
-    }, [isFavorite])
+    //     checkFavorite()
+    // }, [isFavorite])
 
     const renderMainMovie = () => (
         <View>
@@ -118,11 +103,6 @@ const ViewAllMoviesPlayer = () => {
                         onError={() => setError(true)}
                         allowsInlineMediaPlayback
                         mediaPlaybackRequiresUserAction={false}
-                        renderError={() => (
-                            <View style={styles.errorContainer}>
-                                <Text style={styles.errorText}>Failed to load page.</Text>
-                            </View>
-                        )}
                     />
                 ) : (
                     <View>
@@ -138,9 +118,7 @@ const ViewAllMoviesPlayer = () => {
             <View style={[styles.iconsContainer, { marginTop: isDescription ? 0 : 20 }]}>
                 <FontAwesome name="thumbs-o-up" size={25} color="#fff" style={{ marginLeft: 10 }} />
                 <Entypo name="share" size={25} color="#fff" style={{ marginLeft: 20 }} />
-                <TouchableOpacity onPress={handleAndOrRemoveFavorites}>
-                    <MaterialIcons name='favorite' size={25} color={isFavorite ? '#00aeef' : '#fff'} style={{ marginLeft: 20 }} />
-                </TouchableOpacity>
+                <FavoriteIcon isFavorite={isFavorite} />
             </View>
         </View>
     );

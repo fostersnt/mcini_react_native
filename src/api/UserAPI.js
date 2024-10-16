@@ -266,10 +266,10 @@ export const allUserData = async (subscriberMsisdn) => {
     return {
         'success': loginResponse['success'],
         'message': loginResponse['message'],
-        'subscriber': loginResponse['data'].user,
-        'movies': loginResponse['data'].movies,
-        'favorites': loginResponse['data'].favorites,
-        'watchList': loginResponse['data'].watch_history
+        'subscriber': loginResponse['data'] != null ? loginResponse['data'].user : null,
+        'movies': loginResponse['data'] != null ? loginResponse['data'].movies : null,
+        'favorites': loginResponse['data'] != null ? loginResponse['data'].favorites : null,
+        'watchList': loginResponse['data'] != null ? loginResponse['data'].watch_history : null
     }
 }
 
