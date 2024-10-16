@@ -8,9 +8,14 @@ import { userSubscriptionCheck } from '../api/UserAPI';
 import { showToast } from './ToastAlert';
 import { useSelector } from 'react-redux';
 import SubscriptionModal from './SubscriptionModal'; // Import the new modal component
+const imagePath = require('../assets/images/banner.png')
 
 export default function SingleMovieCard({ movie, onMoviePressedFunc }) {
     const navigator = useNavigation();
+
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
+
     const similar_movies = useSelector((state) => state.movie.movies);
     const subscriber = useSelector((state) => state.subscriber.subscriberDetails);
     const { width: screenWidth } = Dimensions.get('screen');
@@ -29,54 +34,71 @@ export default function SingleMovieCard({ movie, onMoviePressedFunc }) {
 
     return (
         <View style={{ borderRadius: 25, overflow: 'hidden' }}>
-            <TouchableOpacity onPress={async () => {
-                // setIsStatusCheck(true);
+            {loading && !error && (
+                <ActivityIndicator size="large" color="#0000ff" style={styles.loader} />
+            )}
+            {!error ? (
+                <View>
+                    <TouchableOpacity onPress={async () => {
+                        // setIsStatusCheck(true);
 
-                // const statusCheck = await userSubscriptionCheck(subscriber.msisdn);
+                        // const statusCheck = await userSubscriptionCheck(subscriber.msisdn);
 
-                // setIsStatusCheck(false);
+                        // setIsStatusCheck(false);
 
-                // if (statusCheck['data']?.subscription_status === 'active') {
-                    onMoviePressedFunc(movie)
-                // } else {
-                //     showToast('Subscription status', 'You have no active subscription', 'error', 5000);
-                //     setModalVisible(true);
-                // }
+                        // if (statusCheck['data']?.subscription_status === 'active') {
+                        onMoviePressedFunc(movie)
+                        // } else {
+                        //     showToast('Subscription status', 'You have no active subscription', 'error', 5000);
+                        //     setModalVisible(true);
+                        // }
 
-            }}>
-                <WebView
-                    style={{
-                        backgroundColor: AppStyles.generalColors.dark_four,
-                        marginHorizontal: 5,
-                        width: size,
-                        height: 200
-                    }}
-                    source={{ uri: movie['default_thumbnail_filename'], headers: { Referer: 'https://mcini.tv' } }}
-                    javaScriptEnabled={true}
-                    domStorageEnabled={true}
-                    allowsInlineMediaPlayback={true}
-                    renderError={() => (
-                        <View style={styles.errorContainer}>
-                            <Text style={styles.errorText}>Failed to load page.</Text>
-                        </View>
-                    )}
+                    }}>
+                        <WebView
+                            style={{
+                                backgroundColor: AppStyles.generalColors.dark_four,
+                                marginHorizontal: 5,
+                                width: size,
+                                height: 200
+                            }}
+                            source={{ uri: movie['default_thumbnail_filename'], headers: { Referer: 'https://mcini.tv' } }}
+                            javaScriptEnabled={true}
+                            domStorageEnabled={true}
+                            allowsInlineMediaPlayback={true}
+                            //NEW
+                            onLoadStart={() => setLoading(true)}
+                            onLoadEnd={() => setLoading(false)}
+                            onError={() => setError(true)}
+                            //END OF NEW
+                            renderError={() => (
+                                <View style={styles.errorContainer}>
+                                    <Text style={styles.errorText}>Failed to load page.</Text>
+                                </View>
+                            )}
+                        />
+                    </TouchableOpacity>
+                    <SubscriptionModal
+                        modalVisible={modalVisible}
+                        setModalVisible={setModalVisible}
+                        isLoading={isLoading}
+                        setIsLoading={setIsLoading}
+                        isStatusCheck={isStatusCheck}
+                        setIsStatusCheck={setIsStatusCheck}
+                        isPaymentCheck={isPaymentCheck}
+                        setIsPaymentCheck={setIsPaymentCheck}
+                        msisdn={msisdn}
+                        network={network}
+                        plan_id={plan_id}
+                        movie={movie}
+                        navigation={navigator}
+                    />
+                </View>
+            ) : (
+                <Image
+                    source={imagePath}  // Replace with your error image URL
+                    style={styles.errorImage}
                 />
-            </TouchableOpacity>
-            <SubscriptionModal
-                modalVisible={modalVisible}
-                setModalVisible={setModalVisible}
-                isLoading={isLoading}
-                setIsLoading={setIsLoading}
-                isStatusCheck={isStatusCheck}
-                setIsStatusCheck={setIsStatusCheck}
-                isPaymentCheck={isPaymentCheck}
-                setIsPaymentCheck={setIsPaymentCheck}
-                msisdn={msisdn}
-                network={network}
-                plan_id={plan_id}
-                movie={movie}
-                navigation={navigator}
-            />
+            )}
         </View>
     );
 }

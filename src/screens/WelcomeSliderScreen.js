@@ -1,5 +1,5 @@
 import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 const imagePath = require('../assets/images/banner.png')
 import { Dimensions } from 'react-native';
 import { AppStyles } from '../utilities/AppStyles';
@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import Swiper from 'react-native-swiper';
 
 export default function WelcomeSliderScreen() {
+    const [sliderIndex, setSliderIndex] = useState(0);
 
     const navigator = useNavigation();
 
@@ -28,15 +29,32 @@ export default function WelcomeSliderScreen() {
         },
     ];
 
+    useEffect(() => {
+        const changeSliderIndex = () => {
+            setSliderIndex(0);
+        }
+
+        changeSliderIndex();
+    }, [])
+
     const onSkipPress = () => {
-        navigator.navigate('Login'); // Navigate to the login screen
-        // navigator.navigate('BottomTabNav', { screen: 'Login' }); // Navigate to the login screen
+        navigator.navigate('Login'); 
+        // navigator.navigate('BottomTabNav', { screen: 'Login' });
     };
+
+    const onIndexChangedFunc = (index) => {
+        if (index === images.length - 1) {
+            setSliderIndex(0)
+          navigator.navigate('Login');
+        }
+      };
 
     return (
         <Swiper loop={false} showsPagination={true} style={styles.swiper}
-            dot={<View style={styles.dot} />} // Custom dot style
-            activeDot={<View style={styles.activeDot} />} // Custom active dot style
+            dot={<View style={styles.dot} />}
+            activeDot={<View style={styles.activeDot} />}
+            onIndexChanged={onIndexChangedFunc}
+            index={sliderIndex}
         >
             {/* First image */}
             <View style={styles.slide}>
