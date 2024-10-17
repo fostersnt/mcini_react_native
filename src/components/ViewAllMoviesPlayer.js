@@ -10,6 +10,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
 import { addMovieToFavorites, setFavoriteMovies } from '../redux/slice/MovieSlice';
+import { isInternetActive } from '../utilities/InternetConnection';
 
 const ViewAllMoviesPlayer = () => {
     const [loading, setLoading] = useState(true);
@@ -17,7 +18,7 @@ const ViewAllMoviesPlayer = () => {
     const [key, setKey] = useState(0);
 
     const { width: screenWidth } = Dimensions.get('screen');
-    const widthSize = screenWidth - 20;
+    const widthSize = screenWidth;
     const [isFavorite, setIsFavorite] = useState(false);
     const navigator = useNavigation();
 
@@ -43,6 +44,18 @@ const ViewAllMoviesPlayer = () => {
     const toggleFavorite = () => {
         setIsFavorite(!isFavorite);
     };
+
+    useEffect(() => {
+        const checkInternet = async () => {
+            const isActive = await isInternetActive();
+            if (isActive) {
+                console.log('Internet is active');
+            } else {
+                console.log('No active internet connection');
+            }
+        };
+        checkInternet();
+    }, []);
 
     const FavoriteIcon = React.memo(({ isFavorite, toggleFavorite }) => {
         return (
@@ -76,9 +89,9 @@ const ViewAllMoviesPlayer = () => {
                     onError={() => setError(true)}
                     allowsInlineMediaPlayback
                     mediaPlaybackRequiresUserAction={false}
-                    onShouldStartLoadWithRequest={(request) => {
-                        return request.url.startsWith('https://trusted-video-source.com');  // Filter out non-trusted sources
-                    }}
+                // onShouldStartLoadWithRequest={(request) => {
+                //     return request.url.startsWith('https://trusted-video-source.com');  // Filter out non-trusted sources
+                // }}
                 />
             ) : (
                 <View>
