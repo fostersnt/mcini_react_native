@@ -77,15 +77,18 @@ const ViewAllMoviesPlayer = () => {
         setIsFavorite(!isFavorite);
     }
 
-    const FavoriteIcon = React.memo(({ isFavorite, toggleFavorite }) => (
-        <TouchableOpacity onPress={toggleFavorite}>
-            <Ionicons
-                name={isFavorite ? 'heart' : 'heart-outline'} size={25}
-                color={isFavorite ? '#00aeef' : '#fff'}
-                style={{ marginLeft: 20 }}
-            />
-        </TouchableOpacity>
-    ))
+    const FavoriteIcon = React.memo(({ isFavorite, toggleFavorite }) => {
+        
+        return (
+            <TouchableOpacity onPress={toggleFavorite}>
+                <Ionicons
+                    name={isFavorite ? 'heart' : 'heart-outline'} size={25}
+                    color={isFavorite ? '#00aeef' : '#fff'}
+                    style={{ marginLeft: 20 }}
+                />
+            </TouchableOpacity>
+        )
+    })
 
     const renderMainMovie = () => (
         <View>
@@ -132,7 +135,7 @@ const ViewAllMoviesPlayer = () => {
             <View style={[styles.iconsContainer, { marginTop: isDescription ? 0 : 20 }]}>
                 <FontAwesome name="thumbs-o-up" size={25} color="#fff" style={{ marginLeft: 10 }} />
                 <Entypo name="share" size={25} color="#fff" style={{ marginLeft: 20 }} />
-                <FavoriteIcon isFavorite={isFavorite} />
+                <FavoriteIcon isFavorite={isFavorite} toggleFavorite={toggleFavorite} />
             </View>
         </View>
     );

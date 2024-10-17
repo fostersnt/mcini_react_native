@@ -109,6 +109,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: AppStyles.generalColors.dark_four,
     paddingTop: 40,
+    padding: 10,
   },
   searchContainer: {
     display: 'flex',
