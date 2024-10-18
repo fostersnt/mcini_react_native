@@ -90,6 +90,11 @@ const styles = StyleSheet.create({
     },
     loader: {
         color: AppStyles.generalColors.white_one,
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: [{ translateX: -25 }, { translateY: -25 }], // Adjust for centering
+        zIndex: 1,
     },
 });
 
