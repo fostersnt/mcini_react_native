@@ -1,4 +1,4 @@
-import { View, Text, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, ActivityIndicator, TouchableOpacity, Dimensions } from 'react-native';
 import React, { useState } from 'react';
 import { addOrRemoveFavorite } from '../api/UserAPI';
 import WebView from 'react-native-webview';
@@ -7,6 +7,7 @@ import { AppStyles } from '../utilities/AppStyles';
 import { useDispatch, useSelector } from 'react-redux';
 import { reduceStringLength } from '../utilities/Validations';
 import { addMovieToFavorites, setFavoriteMovies } from '../redux/slice/MovieSlice';
+import { useNavigation } from '@react-navigation/native';
 
 export default function FavoriteScreen() {
   const [loading, setLoading] = useState(false);
@@ -14,6 +15,9 @@ export default function FavoriteScreen() {
 
   const subscriber = useSelector((state) => state.subscriber.subscriberDetails);
   const favorites = useSelector((state) => state.movie.favoriteMovies);
+  const {width: screenWidth} = Dimensions.get('screen');
+
+  const navigator = useNavigation();
 
   // console.log('FAVORITE === ', favorites);
 
@@ -42,23 +46,43 @@ export default function FavoriteScreen() {
                 borderRadius: 20
               }}
             >
-              <View style={{
-                width: '40%',
-                marginRight: 5,
-                borderRadius: 20,
-                overflow: 'hidden'
-              }}>
-                <WebView
-                  source={{ uri: item['default_thumbnail_filename'], headers: { Referer: 'https://mcini.tv' } }}
-                  javaScriptEnabled={true}
-                  domStorageEnabled={true}
-                  allowsInlineMediaPlayback={true}
-                  style={{ borderRadius: 10 }}
-                />
-              </View>
-              <View>
+              <TouchableOpacity
+                style={{
+                  // width: '40%',
+                  marginRight: 5,
+                  borderRadius: 20,
+                  overflow: 'hidden'
+                }}
+                onPress={
+                  () => {
+                    console.log('LOG');
+                    
+                    navigator.navigate('MoviePlayer', {
+                      params: item
+                    });
+                  }
+                }>
+                <View style={{
+                  // width: '40%',
+                  flex: 1,
+                  marginRight: 5,
+                  borderRadius: 20,
+                  overflow: 'hidden'
+                }}>
+                  <WebView
+                    source={{ uri: item['default_thumbnail_filename'], headers: { Referer: 'https://mcini.tv' } }}
+                    javaScriptEnabled={true}
+                    domStorageEnabled={true}
+                    allowsInlineMediaPlayback={true}
+                    style={{ borderRadius: 10, width: screenWidth / 3, height: 100 }}
+                  />
+                </View>
+              </TouchableOpacity>
+              <View style={{width: screenWidth / 3}}>
                 <Text style={{ flexWrap: 'wrap', color: AppStyles.generalColors.white_one }}>
-                  {reduceStringLength(item['title'])}
+                  {reduceStringLength(40, item['title'])}
+                  {/* {reduceStringLength(`God is good God is good God is good God is good God is good God is good God is good God is good God is good God is good`)} */}
+                   
                 </Text>
               </View>
               <View>
