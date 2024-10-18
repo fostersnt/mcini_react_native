@@ -1,30 +1,62 @@
 import React from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, Dimensions, StatusBar } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { useSelector } from 'react-redux';
+import { AppStyles } from '../utilities/AppStyles';
 
 const WatchListScreen = () => {
-    const {width: screenWidth} = Dimensions.get('screen');
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
+    const [key, setKey] = useState(0);
+
+    const { width: screenWidth } = Dimensions.get('screen');
     const videoWidth = (screenWidth - 20) / 2;
     const subscriberWatchList = useSelector((state) => state.movie.watchList);
     console.log('USER WATCHLIST: ', subscriberWatchList.length);
 
     const renderItem = ({ item }) => (
-        // <TouchableOpacity style={styles.itemContainer}>
         <View style={{
             flex: 1,
-            width:videoWidth,
-            height:videoWidth,
-            margin: 5
+            width: videoWidth,
+            height: videoWidth,
+            margin: 5,
+            backgroundColor: AppStyles.generalColors.dark_four,
         }}>
-            <WebView
-                source={{ uri: item.video_url }}
-                style={styles.thumbnail}
-                javaScriptEnabled={true}
-            />
+            {loading && !error && (
+                <ActivityIndicator size="large" color="#fff" style={styles.loader} />
+            )}
+            {!error ? (
+                <WebView
+                    source={{ uri: item.video_url }}
+                    style={{
+                        backgroundColor: AppStyles.generalColors.dark_one
+                    }}
+                    javaScriptEnabled={true}
+                    domStorageEnabled
+                    allowsInlineMediaPlayback
+                    mediaPlaybackRequiresUserAction={true}
+                    onLoadStart={() => setLoading(true)}
+                    onLoadEnd={() => setLoading(false)}
+                    onError={(syntheticEvent) => {
+                        const { nativeEvent } = syntheticEvent;
+                        console.warn('WebView error: ', nativeEvent);
+                        setError(true);
+                    }}
+                    renderError={() => (
+                        <View style={styles.errorContainer}>
+                            <Text style={styles.errorText}>Failed to load the video.</Text>
+                            <Button title="Retry" onPress={handleRetry} />
+                        </View>
+                    )}
+                />
+            ) : (
+                <View style={styles.retryContainer}>
+                    {/* <Text style={styles.errorText}>Failed to load the video.</Text> */}
+                    <Button title="Retry" onPress={handleRetry} />
+                </View>
+            )}
             <Text style={styles.title}>{item.title}</Text>
         </View>
-        // </TouchableOpacity>
     );
 
     return (
@@ -34,7 +66,7 @@ const WatchListScreen = () => {
                 renderItem={renderItem}
                 keyExtractor={item => item.id}
                 numColumns={2} // Display items in grid format (3 per row)
-                // contentContainerStyle={styles.list}
+            // contentContainerStyle={styles.list}
             />
         </View>
     );
@@ -43,20 +75,20 @@ const WatchListScreen = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 10,
-        backgroundColor: '#fff',
-    },
-    itemContainer: {
-        flex: 1,
-        margin: 10,
-        // alignItems: 'center',
+        // padding: 10,
+        paddingTop: 40,
+        backgroundColor: AppStyles.generalColors.dark_four,
     },
     title: {
         marginTop: 5,
         fontSize: 14,
         textAlign: 'center',
-        color: '#333',
+        color: AppStyles.generalColors.white_one,
+        // color: '#333',
     },
+    loader: {
+        color: AppStyles.generalColors.white_one,
+    }
 });
 
 export default WatchListScreen;
