@@ -36,9 +36,9 @@ function MoviePlayerScreen() {
       )}
       {!error ? (
         <WebView
-          // key={key} // Add key to force re-render on retry
+          key={key} // Add key to force re-render on retry
           style={styles.webView}
-          source={{ uri: singleMovie['video_url'] }}
+          source={{ uri: singleMovie['video_url'], headers: { Referer: 'https://mcini.tv' } }}
           javaScriptEnabled
           domStorageEnabled
           allowsInlineMediaPlayback

@@ -13,6 +13,7 @@ import WelcomeSliderScreen from '../screens/WelcomeSliderScreen'
 import ViewAllMoviesComponent from '../components/ViewAllMoviesComponent'
 import ViewAllMoviesPlayer from '../components/ViewAllMoviesPlayer'
 import { AppStyles } from '../utilities/AppStyles'
+import WatchListScreen from '../screens/WatchListScreen'
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +23,7 @@ export default function AppNavigation() {
         <Stack.Navigator initialRouteName='WelcomeSlider' screenOptions={{headerShown: false}}>
         {/* <Stack.Screen name="MoviePlayer" component={MoviePlayerScreen} /> */}
         <Stack.Screen name="WelcomeSlider" component={WelcomeSliderScreen} />
+        <Stack.Screen name='WatchList' component={WatchListScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="MoviePlayer" component={MoviePlayerScreen} />

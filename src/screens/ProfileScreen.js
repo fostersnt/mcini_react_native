@@ -118,7 +118,11 @@ export default function ProfileScreen() {
               <IonIcons name='chevron-forward-outline' size={20} style={styles.iconStyle} />
             </View>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigator.navigate('WatchList');
+            }}
+          >
             <View style={styles.legalInfoContainer}>
               <View style={{ display: 'flex', flexDirection: 'row' }}>
                 <MaterialIcons name='history' size={20} style={styles.iconStyle} />

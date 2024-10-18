@@ -49,7 +49,7 @@ export default function FavoriteScreen() {
                 overflow: 'hidden'
               }}>
                 <WebView
-                  source={{ uri: item['default_thumbnail_filename'] }}
+                  source={{ uri: item['default_thumbnail_filename'], headers: { Referer: 'https://mcini.tv' } }}
                   javaScriptEnabled={true}
                   domStorageEnabled={true}
                   allowsInlineMediaPlayback={true}

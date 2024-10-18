@@ -15,9 +15,37 @@ export default function LoginScreen() {
   const dispatch = useDispatch();
   const [phone, setPhone] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [currentSubscriber, setCurrentSubscriber] = useState(null);
 
   const navigation = useNavigation();
+
+  const subscriberData = useSelector((state) => state.subscriber.subscriberDetails);
+
+  // useEffect(() => {
+  //   const authData = async () => {
+  //     try {
+  //       // setCurrentSubscriber(subscriberData);
+  //       console.log('DATA DATA === ', subscriberData);
+        
+  //       if (subscriberData != null && subscriberData.msisdn != '') {
+  //         const response = await checkAuthAPI(subscriberData.msisdn);
+
+  //         const message = response['message'].toString().toLowerCase();
+
+  //         console.log('MESSAGE: ', message);
+
+  //         if (response.success == 'true' && message == 'user authenticated!') {
+  //           navigator.navigate('BottomTabNav', {
+  //             Screen: 'Login',
+  //           });
+  //         }
+  //       }
+  //     } catch (error) {
+  //       console.log('USE EFFECT ERROR AT LOGIN SCREEN: ', error.toString());
+  //     }
+  //   }
+  //   //Calling the authCheck function
+  //   authData();
+  // }, []);
 
   //LOGIN FUNCTION
   const handleLogin = async () => {

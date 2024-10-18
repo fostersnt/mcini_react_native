@@ -53,17 +53,18 @@ const ViewAllMoviesPlayer = () => {
             const updatedFavorites = favorites != null && favorites.length > 0 ? favorites.filter((item) => item.id != singleMovie.id) : null;
             dispatch(setFavoriteMovies(updatedFavorites));
         } else {
+            dispatch(addMovieToFavorites(singleMovie));
             isFavoriteParameter = 1;
         }
         //Set favorite action to the API
         const payload = {
             msisdn: `${subscriber.msisdn}`,
             isFavorite: `${isFavoriteParameter}`,
-            network: `${userData.network.mtn}`
+            movieId: `${singleMovie.id}`
         }
 
         try {
-            const result = addOrRemoveFavorite(payload);
+            const result = await addOrRemoveFavorite(payload);
             console.log('FAVORITE DETAILS: ', result);
         } catch (error) {
             console.log('FAVORITE ADD/REMOVE ERROR: ', error.toString());
@@ -73,6 +74,10 @@ const ViewAllMoviesPlayer = () => {
 
     useEffect(() => {
         const checkInternet = async () => {
+            const favoriteCheck = favorites != null && favorites.length > 0 ? favorites.some((item) => item.id == singleMovie.id) : false;
+            if (favoriteCheck == true) {
+                setIsFavorite(true);
+            }
             const isActive = await isInternetActive();
             if (isActive) {
                 console.log('Internet is active');
