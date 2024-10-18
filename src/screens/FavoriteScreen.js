@@ -15,7 +15,7 @@ export default function FavoriteScreen() {
 
   const subscriber = useSelector((state) => state.subscriber.subscriberDetails);
   const favorites = useSelector((state) => state.movie.favoriteMovies);
-  const {width: screenWidth} = Dimensions.get('screen');
+  const { width: screenWidth } = Dimensions.get('screen');
 
   const navigator = useNavigation();
 
@@ -56,9 +56,9 @@ export default function FavoriteScreen() {
                 onPress={
                   () => {
                     console.log('LOG');
-                    
+
                     navigator.navigate('MoviePlayer', {
-                      params: item
+                      params: { singleMovie: item }
                     });
                   }
                 }>
@@ -78,11 +78,9 @@ export default function FavoriteScreen() {
                   />
                 </View>
               </TouchableOpacity>
-              <View style={{width: screenWidth / 3}}>
+              <View style={{ width: screenWidth / 3 }}>
                 <Text style={{ flexWrap: 'wrap', color: AppStyles.generalColors.white_one }}>
                   {reduceStringLength(40, item['title'])}
-                  {/* {reduceStringLength(`God is good God is good God is good God is good God is good God is good God is good God is good God is good God is good`)} */}
-                   
                 </Text>
               </View>
               <View>
