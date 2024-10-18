@@ -57,9 +57,7 @@ export default function FavoriteScreen() {
                   () => {
                     console.log('LOG');
 
-                    navigator.navigate('MoviePlayer', {
-                      params: { singleMovie: item }
-                    });
+                    navigator.navigate('MoviePlayer', { singleMovie: item });
                   }
                 }>
                 <View style={{
