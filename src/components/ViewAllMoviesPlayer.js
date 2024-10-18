@@ -11,6 +11,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
 import { addMovieToFavorites, setFavoriteMovies } from '../redux/slice/MovieSlice';
 import { isInternetActive } from '../utilities/InternetConnection';
+import { addOrRemoveFavorite } from '../api/UserAPI';
+import { userData } from '../apiData/UserData';
 
 const ViewAllMoviesPlayer = () => {
     const [loading, setLoading] = useState(true);
@@ -28,6 +30,7 @@ const ViewAllMoviesPlayer = () => {
 
     const similar_movies = useSelector((state) => state.movie.movies);
     const favorites = useSelector((state) => state.movie.favoriteMovies);
+    const subscriber = useSelector((state) => state.subscriber.subscriberDetails);
 
     const isDescription = singleMovie?.description != null;
 
@@ -41,8 +44,31 @@ const ViewAllMoviesPlayer = () => {
         setKey((prevKey) => prevKey + 1);
     };
 
-    const toggleFavorite = () => {
+    const toggleFavorite = async () => {
+        const currentFavoriteState = isFavorite;
+        let isFavoriteParameter = 0;
+        //NB: setIsFavorite() doesn't immediately update the isFavorite state. That's how useSate() works 
         setIsFavorite(!isFavorite);
+        if (currentFavoriteState == true) {
+            const updatedFavorites = favorites != null && favorites.length > 0 ? favorites.filter((item) => item.id != singleMovie.id) : null;
+            dispatch(setFavoriteMovies(updatedFavorites));
+        } else {
+            isFavoriteParameter = 1;
+        }
+        //Set favorite action to the API
+        const payload = {
+            msisdn: `${subscriber.msisdn}`,
+            isFavorite: `${isFavoriteParameter}`,
+            network: `${userData.network.mtn}`
+        }
+
+        try {
+            const result = addOrRemoveFavorite(payload);
+            console.log('FAVORITE DETAILS: ', result);
+        } catch (error) {
+            console.log('FAVORITE ADD/REMOVE ERROR: ', error.toString());
+            
+        }
     };
 
     useEffect(() => {
@@ -88,7 +114,7 @@ const ViewAllMoviesPlayer = () => {
                     onLoadEnd={() => setLoading(false)}
                     onError={() => setError(true)}
                     allowsInlineMediaPlayback
-                mediaPlaybackRequiresUserAction={false}
+                    mediaPlaybackRequiresUserAction={false}
                 // onShouldStartLoadWithRequest={(request) => {
                 //     return request.url.startsWith('https://trusted-video-source.com');  // Filter out non-trusted sources
                 // }}
