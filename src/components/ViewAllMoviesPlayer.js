@@ -19,7 +19,8 @@ const ViewAllMoviesPlayer = () => {
     const [error, setError] = useState(false);
     const [key, setKey] = useState(0);
 
-    const { width: screenWidth } = Dimensions.get('screen');
+    const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
+
     const widthSize = screenWidth;
     const [isFavorite, setIsFavorite] = useState(false);
     const navigator = useNavigation();
@@ -68,7 +69,7 @@ const ViewAllMoviesPlayer = () => {
             console.log('FAVORITE DETAILS: ', result);
         } catch (error) {
             console.log('FAVORITE ADD/REMOVE ERROR: ', error.toString());
-            
+
         }
     };
 
