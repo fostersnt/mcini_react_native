@@ -88,7 +88,7 @@ const ViewAllMoviesPlayer = () => {
                     onLoadEnd={() => setLoading(false)}
                     onError={() => setError(true)}
                     allowsInlineMediaPlayback
-                    mediaPlaybackRequiresUserAction={false}
+                mediaPlaybackRequiresUserAction={false}
                 // onShouldStartLoadWithRequest={(request) => {
                 //     return request.url.startsWith('https://trusted-video-source.com');  // Filter out non-trusted sources
                 // }}
@@ -111,8 +111,27 @@ const ViewAllMoviesPlayer = () => {
         </View>
     );
 
-    const mySingleMovieList = useMemo(() => {
-        return (
+    // const mySingleMovieList = useMemo(() => {
+    //     return (
+    //         <FlatList
+    //             numColumns={3}
+    //             data={[{ id: 0, title: 'my video' }, ...similar_movies]}
+    //             keyExtractor={(item) => item.id.toString()}
+    //             renderItem={({ item }) =>
+    //                 item.id === 0 ? (
+    //                     renderMainMovie()
+    //                 ) : (
+    //                     <View style={{ marginBottom: 10 }}>
+    //                         <SingleMovieCard movie={item} onMoviePressedFunc={handleSingleMoviePress} />
+    //                     </View>
+    //                 )
+    //             }
+    //         />
+    //     );
+    // }, [similar_movies]);
+
+    return (
+        <View style={styles.contentContainer}>
             <FlatList
                 numColumns={3}
                 data={[{ id: 0, title: 'my video' }, ...similar_movies]}
@@ -127,12 +146,6 @@ const ViewAllMoviesPlayer = () => {
                     )
                 }
             />
-        );
-    }, [similar_movies]);
-
-    return (
-        <View style={styles.contentContainer}>
-            {mySingleMovieList}
         </View>
     );
 };
