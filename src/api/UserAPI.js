@@ -167,6 +167,8 @@ export const addOrRemoveFavorite = async (payload) => {
         const response = await fetch(url, options);
 
         const data = await response.json()
+        // console.log('DATA DATA: ', data);
+        
         return data;
 
     } catch (error) {
