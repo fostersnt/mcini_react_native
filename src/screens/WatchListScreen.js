@@ -1,8 +1,9 @@
-import React from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, Dimensions, StatusBar } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, Dimensions, StatusBar, ActivityIndicator } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { useSelector } from 'react-redux';
 import { AppStyles } from '../utilities/AppStyles';
+import * as Animatable from 'react-native-animatable';
 
 const WatchListScreen = () => {
     const [loading, setLoading] = useState(true);
@@ -77,6 +78,7 @@ const styles = StyleSheet.create({
         flex: 1,
         // padding: 10,
         paddingTop: 40,
+        paddingBottom: 20,
         backgroundColor: AppStyles.generalColors.dark_four,
     },
     title: {
@@ -88,7 +90,7 @@ const styles = StyleSheet.create({
     },
     loader: {
         color: AppStyles.generalColors.white_one,
-    }
+    },
 });
 
 export default WatchListScreen;
