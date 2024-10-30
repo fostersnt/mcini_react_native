@@ -26,10 +26,10 @@ export const userLoginAPI = async (phone) => {
         return subscriberData;
 
     } catch (error) {
-        message = prefix + error.toString();
+        let message = prefix + error.toString();
         return {
             'success': 'false',
-            'message': message,
+            'message': 'Sorry, an error occured',
             'data': null
         };
     }
