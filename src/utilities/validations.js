@@ -28,7 +28,7 @@ export const validateMsisdn = phoneNumber => {
   if (length === 10) {
     if (/^0[25][34567]\d{7}$/.test(phoneNumber)) {
       let check = phoneNumber.substring(0, 3);
-      if (check == '026' || check == '056') {
+      if (check == '026' || check == '056' || check == '027' || check == '057') {
         return 'AT';
       } else {
         return 'MTN';
@@ -37,7 +37,7 @@ export const validateMsisdn = phoneNumber => {
   } else if (length === 12) {
     if (/^233[25][34567]\d{7}$/.test(phoneNumber)) {
       let check = phoneNumber.substring(0, 5);
-      if (check == '026' || check == '056') {
+      if (check == '026' || check == '056' || check == '027' || check == '057') {
         return 'AT';
       } else {
         return 'MTN';
