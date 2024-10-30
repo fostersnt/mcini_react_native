@@ -30,7 +30,7 @@ export default function SingleMovieCard({ movie }) {
     const myData = userData;
 
     const msisdn = subscriber != null ? subscriber.msisdn : 'N/A'
-    const plan_id = myData.dailyPlanId;
+    const plan_id = myData.MTN_dailyPlanId;
     const network = myData.network.mtn;
 
     return (

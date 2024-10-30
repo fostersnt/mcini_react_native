@@ -3,7 +3,8 @@ import React from 'react';
 import { View, Text, Modal, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native';
 import { AppStyles } from '../utilities/AppStyles';
 import { showToast } from './ToastAlert';
-import { user_MTN_subscription, userSubscriptionCheck } from '../api/UserAPI';
+import { user_MTN_subscription, userSubscriptionCheck, user_AT_subscription } from '../api/UserAPI';
+import { validateMsisdn } from '../utilities/Validations';
 
 const SubscriptionModal = ({
     modalVisible,
@@ -24,8 +25,19 @@ const SubscriptionModal = ({
     const handleSubscribe = async () => {
         setIsLoading(true);
         const payload = { msisdn, network, plan_id };
+        const networkCheck = validateMsisdn(msisdn);
         
-        const result = await user_MTN_subscription(payload);
+        let result = {
+            'success': 'false',
+            'message': 'Network type cannot bt identified',
+        };
+
+        if (networkCheck.toLowerCase() == 'mtn') {
+            result = await user_MTN_subscription(payload)
+        }else if(networkCheck.toLowerCase() == 'at'){
+            result = await user_AT_subscription(msisdn);
+        }
+       
         const message_type = result['success'] === 'true' ? 'success' : 'error';
         const alertTitle = isPaymentCheck ? 'Payment confirmation' : 'Subscription Request';
 
