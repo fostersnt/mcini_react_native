@@ -11,10 +11,6 @@ export const userData = {
     }
 }
 
-// {
-//     "msisdn":"233274474834",
-//     "network":"AT",
-//     "plan_type":"daily",
-//     "product_id":"3",
-//     "amount":"1.5"
-// }
+/*
+    AT NUMBER: 233271476337
+*/

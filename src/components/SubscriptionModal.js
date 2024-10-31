@@ -50,12 +50,13 @@ const SubscriptionModal = ({
                 setModalVisible(false);
                 setIsLoading(false);
                 setIsPaymentCheck(false);
+                const subscriptionStatus = verifySubscription['data'] != null ? verifySubscription['data'].subscription_status.toLowerCase() : 'N/A'.toLowerCase();
                 
-                if (verifySubscription['data']?.subscription_status === 'active') {
+                if (subscriptionStatus === 'active') {
                     showToast('Verification Completed', verifySubscription['message'], 'success', 5000);
                     navigation.navigate('MoviePlayer', { singleMovie: movie });
                 } else {
-                    showToast('Verification Completed', `Subscription status: ${verifySubscription['data']['subscription_status'].toUpperCase()}`, 'error', 5000);
+                    showToast('Verification Completed', `Subscription status: ${subscriptionStatus}`, 'error', 5000);
                 }
             }, 30000);
         } else {

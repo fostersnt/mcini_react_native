@@ -50,14 +50,18 @@ export default function SingleMovieCard({ movie, onMoviePressedFunc }) {
                     <TouchableOpacity onPress={async () => {
                         setIsStatusCheck(true);
                         const statusCheck = await userSubscriptionCheck(subscriber.msisdn);
+                        console.log('SUBSCRIPTION STATUS CHECK === ', statusCheck);
+                        
                         setIsStatusCheck(false);
-                        const status = statusCheck['data']['subscription_status'];
+                        const status = statusCheck['data'] != null ? statusCheck['data']['subscription_status'] : 'N/A';
                         if (status.toLowerCase() == 'active') {
                             onMoviePressedFunc(movie)
                         } else {
+                            console.log('UNKNOWN SUBSCRIPTION STATUS');
+                            
                             setModalVisible(true);
                         }
-                        console.log('STATUS CHECK RESPONSE === ', statusCheck['data']['subscription_status']);
+                        console.log('STATUS CHECK RESPONSE === ', status);
                     }}>
                         {/* WebView */}
                         <WebView
