@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, StatusBar, Image, KeyboardAvoidingView, ImageBackground, ActivityIndicator } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, StatusBar, Image, KeyboardAvoidingView, ImageBackground, ActivityIndicator, Platform } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { checkAuthAPI, allUserData } from '../api/UserAPI';
 import { useNavigation } from '@react-navigation/native';
@@ -8,6 +8,9 @@ import { showToast } from '../components/ToastAlert';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSubscriber } from '../redux/slice/SubscriberSlice';
 import { setFavoriteMovies, setMovies, setWatchList } from '../redux/slice/MovieSlice';
+import Video from 'react-native-video';
+
+const bgVideo = require('../assets/videos/login_bg_video.mp4');
 
 const bannerImage = require('../assets/images/banner.png');
 
@@ -103,26 +106,98 @@ export default function LoginScreen() {
     navigation.navigate('Register');
   }
 
-  return (
-    <ImageBackground
-      style={[
-        styles.container,
-        {
-          padding: AppStyles.generalPadding.higher,
-        }
-      ]}
-      source={bannerImage}
-      resizeMode='cover'
-    >
-      <KeyboardAvoidingView
+  //IMAGE BACKGROUND
+  // return (
+  //   <ImageBackground
+  //     style={[
+  //       styles.container,
+  //       {
+  //         padding: AppStyles.generalPadding.higher,
+  //       }
+  //     ]}
+  //     source={bannerImage}
+  //     resizeMode='cover'
+  //   >
+  //     <KeyboardAvoidingView
 
+  //       behavior={Platform.OS === 'android' ? 'padding' : 'height'}
+  //     >
+  //       <StatusBar translucent backgroundColor='transparent'></StatusBar>
+
+  //       <View style={[
+  //         {
+  //           backgroundColor: AppStyles.generalColors.dark_three,
+  //           paddingVertical: 50,
+  //           padding: AppStyles.generalPadding.higher,
+  //           opacity: 1,
+  //         }
+  //       ]}>
+  //         <View>
+  //           <Text style={[
+  //             styles.title,
+  //             {
+  //               fontSize: AppStyles.generalFontSize.large,
+  //               marginBottom: AppStyles.generalMargin.higher,
+  //             }
+  //           ]}>Login</Text>
+  //           <TextInput
+  //             style={[
+  //               styles.input,
+  //               {
+  //                 height: AppStyles.generalHeight.height_one,
+  //                 marginBottom: AppStyles.generalMargin.higher,
+  //                 borderRadius: AppStyles.generalBorderRadius.radius_one
+  //               }
+  //             ]}
+  //             placeholder='phone number'
+  //             onChangeText={(text) => setPhone(text)}
+  //           />
+  //           <TouchableOpacity onPress={handleLogin} style={[
+  //             styles.loginButton,
+  //             {
+  //               backgroundColor: AppStyles.generalColors.blue,
+  //               padding: AppStyles.generalPadding.lower,
+  //               height: AppStyles.generalHeight.height_one,
+  //               borderRadius: AppStyles.generalBorderRadius.radius_one
+  //             }
+  //           ]}>
+  //             <Text style={{
+  //               color: AppStyles.generalColors.white_one,
+  //               fontSize: AppStyles.generalFontSize.normal,
+  //               fontWeight: AppStyles.generalFontWeight.weight_one
+  //             }}>
+  //               {isLoading ? <ActivityIndicator color={'white'} /> : 'Login'}
+  //             </Text>
+  //           </TouchableOpacity>
+  //           {/* <TouchableOpacity style={styles.innerContainer} onPress={handleRegister}>
+  //             <Text style={styles.notRegistered}>Not a subscriber? Register</Text>
+  //           </TouchableOpacity> */}
+  //         </View>
+  //       </View>
+  //     </KeyboardAvoidingView>
+  //   </ImageBackground>
+  // )
+
+  return (
+    <View style={styles.container}>
+      <Video
+        source={bgVideo} // Replace with the path to your video file
+        style={styles.backgroundVideo}
+        resizeMode="cover"
+        repeat
+        muted
+        // fullscreen
+        paused={false}
+      />
+      
+      <KeyboardAvoidingView
         behavior={Platform.OS === 'android' ? 'padding' : 'height'}
       >
-        <StatusBar translucent backgroundColor='transparent'></StatusBar>
-
+        <StatusBar translucent backgroundColor='transparent' />
+  
         <View style={[
           {
-            backgroundColor: AppStyles.generalColors.dark_three,
+            // backgroundColor: AppStyles.generalColors.dark_three,
             paddingVertical: 50,
             padding: AppStyles.generalPadding.higher,
             opacity: 1,
@@ -165,14 +240,11 @@ export default function LoginScreen() {
                 {isLoading ? <ActivityIndicator color={'white'} /> : 'Login'}
               </Text>
             </TouchableOpacity>
-            {/* <TouchableOpacity style={styles.innerContainer} onPress={handleRegister}>
-              <Text style={styles.notRegistered}>Not a subscriber? Register</Text>
-            </TouchableOpacity> */}
           </View>
         </View>
       </KeyboardAvoidingView>
-    </ImageBackground>
-  )
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -197,7 +269,7 @@ const styles = StyleSheet.create({
   //   marginBottom: 20,
   // },
   title: {
-    color: 'white',
+    color: AppStyles.generalColors.blue,
     fontWeight: 'bold',
     alignSelf: 'flex-start'
   },
@@ -230,5 +302,12 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     fontSize: 16
+  },
+  backgroundVideo: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
   },
 })
