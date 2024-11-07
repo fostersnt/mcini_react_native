@@ -144,7 +144,10 @@ export default function HomeScreen() {
             return (
               <View style={{ marginBottom: 20 }}>
                 <Text style={styles.collectionName}>{item.collection_name}</Text>
-                {renderedItem(item.items)}
+                {
+                  //THIS IS CAUSING LONGER LOADING TIME
+                renderedItem(item.items)
+                } 
               </View>
             )
           }
