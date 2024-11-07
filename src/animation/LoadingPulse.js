@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from 'react';
-import { View, Animated, StyleSheet } from 'react-native';
-import { AppStyles } from '../utilities/AppStyles';
+import React, {useEffect, useRef} from 'react';
+import {View, Animated, StyleSheet} from 'react-native';
+import {AppStyles} from '../utilities/AppStyles';
 
 const LoadingPulse = () => {
   const scale = useRef(new Animated.Value(1)).current;
@@ -19,13 +19,13 @@ const LoadingPulse = () => {
           duration: 200,
           useNativeDriver: true,
         }),
-      ])
+      ]),
     ).start();
   }, [scale]);
 
   return (
     <View style={styles.container}>
-      <Animated.View style={[styles.pulse, { transform: [{ scale }] }]} />
+      <Animated.View style={[styles.pulse, {transform: [{scale}]}]} />
     </View>
   );
 };

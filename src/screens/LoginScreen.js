@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, StatusBar, Image, KeyboardAvoidingView, ImageBackground, ActivityIndicator, Platform } from 'react-native'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { checkAuthAPI, allUserData } from '../api/UserAPI';
 import { useNavigation } from '@react-navigation/native';
 import { AppStyles } from '../utilities/AppStyles';
@@ -17,7 +17,7 @@ const bannerImage = require('../assets/images/banner.png');
 
 export default function LoginScreen() {
   const dispatch = useDispatch();
-  const [phone, setPhone] = useState('');
+  const phoneRef = useRef('');
   const [isLoading, setIsLoading] = useState(false);
 
   const navigation = useNavigation();
@@ -53,18 +53,21 @@ export default function LoginScreen() {
 
   //LOGIN FUNCTION
   const handleLogin = async () => {
-    if (phone.length < 1) {
+    const phoneNumber = phoneRef.current;
+    console.log('CURRENT PHONE === ',  phoneNumber);
+
+    if (phoneNumber && phoneNumber.length < 1) {
       showToast('Login Error', 'Phone number is required', 'error', 5000);
     } else {
       if (!isLoading) {
 
         setIsLoading(true);
 
-        const formattedPhone = replaceFirstDigitWith233(phone);
+        const formattedPhone = replaceFirstDigitWith233(phoneNumber);
 
-        setPhone(formattedPhone);
+        // setPhone(formattedPhone);
 
-        const responseData = await allUserData(phone);
+        const responseData = await allUserData(formattedPhone);
 
         if (responseData.success === 'false') {
 
@@ -217,7 +220,11 @@ export default function LoginScreen() {
                 },
               ]}
               placeholder="phone number"
-              onChangeText={(text) => setPhone(text)}
+              onChangeText={(text) => {
+                // if (phoneRef.current) {
+                  phoneRef.current = text;  // Set the phone value in ref
+                // }
+              }}
             />
             <TouchableOpacity onPress={
               isLoading ? null : handleLogin
@@ -300,12 +307,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     color: 'white',
     width: '100%',
-    marginTop: 20
+    marginTop: 20,
   },
   notRegistered: {
     color: 'white',
     fontWeight: 'bold',
-    fontSize: 16
+    fontSize: 16,
   },
   backgroundVideo: {
     position: 'absolute',
@@ -314,4 +321,4 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
   },
-})
+});
