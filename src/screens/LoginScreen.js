@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setSubscriber } from '../redux/slice/SubscriberSlice';
 import { setFavoriteMovies, setMovies, setWatchList } from '../redux/slice/MovieSlice';
 import Video from 'react-native-video';
+import LoadingPulse from '../animation/LoadingPulse';
 
 const bgVideo = require('../assets/videos/login_bg_video.mp4');
 
@@ -28,7 +29,7 @@ export default function LoginScreen() {
   //     try {
   //       // setCurrentSubscriber(subscriberData);
   //       console.log('DATA DATA === ', subscriberData);
-        
+
   //       if (subscriberData != null && subscriberData.msisdn != '') {
   //         const response = await checkAuthAPI(subscriberData.msisdn);
 
@@ -53,11 +54,11 @@ export default function LoginScreen() {
   //LOGIN FUNCTION
   const handleLogin = async () => {
     if (phone.length < 1) {
-      showToast('Login Error', 'Phone number is required', 'error', 5000)
+      showToast('Login Error', 'Phone number is required', 'error', 5000);
     } else {
       if (!isLoading) {
 
-        setIsLoading(true)
+        setIsLoading(true);
 
         const formattedPhone = replaceFirstDigitWith233(phone);
 
@@ -65,17 +66,17 @@ export default function LoginScreen() {
 
         const responseData = await allUserData(phone);
 
-        if (responseData['success'] == 'false') {
+        if (responseData.success === 'false') {
 
-          showToast('Login Error', responseData['message'], 'error', 5000)
+          showToast('Login Error', responseData.message, 'error', 5000);
 
-          setIsLoading(false)
+          setIsLoading(false);
 
-        } else if (responseData['success'] == 'true') {
+        } else if (responseData.success === 'true') {
 
           const watchListArray = [];
 
-          const myWatchList = responseData['watchList'];
+          const myWatchList = responseData.watchList;
 
           if (myWatchList != null && myWatchList.length > 0) {
             myWatchList.forEach(item => {
@@ -85,12 +86,12 @@ export default function LoginScreen() {
             });
           }
 
-          dispatch(setSubscriber(responseData['subscriber']));
-          dispatch(setMovies(responseData['movies']));
-          dispatch(setFavoriteMovies(responseData['favorites']));
-          dispatch(setWatchList(watchListArray))
-          
-          setIsLoading(false)
+          dispatch(setSubscriber(responseData.subscriber));
+          dispatch(setMovies(responseData.movies));
+          dispatch(setFavoriteMovies(responseData.favorites));
+          dispatch(setWatchList(watchListArray));
+
+          setIsLoading(false);
 
           navigation.navigate('BottomTabNav', {
             screen: 'Home',
@@ -98,13 +99,13 @@ export default function LoginScreen() {
         }
       }
     }
-  }
+  };
 
 
   //REGISTER NAVIGATION
-  const handleRegister = () => {
-    navigation.navigate('Register');
-  }
+  // const handleRegister = () => {
+  //   navigation.navigate('Register');
+  // };
 
   //IMAGE BACKGROUND
   // return (
@@ -189,27 +190,22 @@ export default function LoginScreen() {
         // fullscreen
         paused={false}
       />
-      
+
       <KeyboardAvoidingView
         behavior={Platform.OS === 'android' ? 'padding' : 'height'}
       >
-        <StatusBar translucent backgroundColor='transparent' />
-  
-        <View style={[
-          {
-            // backgroundColor: AppStyles.generalColors.dark_three,
-            paddingVertical: 50,
-            padding: AppStyles.generalPadding.higher,
-            opacity: 1,
-          }
-        ]}>
+        <StatusBar translucent backgroundColor="transparent" />
+
+        <View style={styles.myContainer}>
           <View>
+            {/* <LoadingPulse></LoadingPulse> */}
+            {isLoading ? <LoadingPulse /> : null}
             <Text style={[
               styles.title,
               {
                 fontSize: AppStyles.generalFontSize.large,
                 marginBottom: AppStyles.generalMargin.higher,
-              }
+              },
             ]}>Login</Text>
             <TextInput
               style={[
@@ -217,25 +213,27 @@ export default function LoginScreen() {
                 {
                   height: AppStyles.generalHeight.height_one,
                   marginBottom: AppStyles.generalMargin.higher,
-                  borderRadius: AppStyles.generalBorderRadius.radius_one
-                }
+                  borderRadius: AppStyles.generalBorderRadius.radius_one,
+                },
               ]}
-              placeholder='phone number'
+              placeholder="phone number"
               onChangeText={(text) => setPhone(text)}
             />
-            <TouchableOpacity onPress={handleLogin} style={[
+            <TouchableOpacity onPress={
+              isLoading ? null : handleLogin
+            } style={[
               styles.loginButton,
               {
                 backgroundColor: AppStyles.generalColors.blue,
                 padding: AppStyles.generalPadding.lower,
                 height: AppStyles.generalHeight.height_one,
-                borderRadius: AppStyles.generalBorderRadius.radius_one
-              }
+                borderRadius: AppStyles.generalBorderRadius.radius_one,
+              },
             ]}>
               <Text style={{
                 color: AppStyles.generalColors.white_one,
                 fontSize: AppStyles.generalFontSize.normal,
-                fontWeight: AppStyles.generalFontWeight.weight_one
+                fontWeight: AppStyles.generalFontWeight.weight_one,
               }}>
                 {isLoading ? <ActivityIndicator color={'white'} /> : 'Login'}
               </Text>
@@ -248,6 +246,12 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
+  myContainer: {
+    opacity: 1,
+    // backgroundColor: AppStyles.generalColors.dark_three,
+    paddingVertical: 50,
+    padding: AppStyles.generalPadding.higher,
+  },
   logoContainer: {
     display: 'flex',
     justifyContent: 'center',
