@@ -13,6 +13,7 @@ import {AppStyles} from '../utilities/AppStyles';
 import SingleMovieCard from '../components/SingleMovieCard';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
+import IonIcons from 'react-native-vector-icons/Ionicons';
 
 const MemoizedMovieBanner = memo(MovieBanner);
 const MemoizedSingleMovieCard = memo(SingleMovieCard);
@@ -189,9 +190,12 @@ export default function HomeScreen() {
                       }
                     }
                   >
+                    <View style={styles.viewAllContainer}>
                     <Text style={styles.viewAllText}>
                       View All
                     </Text>
+                    <IonIcons name="chevron-forward" color={AppStyles.generalColors.blue} size={20} />
+                    </View>
                   </TouchableWithoutFeedback>
                 </View>
                 {renderedItem(item.items)}
@@ -225,12 +229,24 @@ const styles = StyleSheet.create({
     color: AppStyles.generalColors.white_one,
     marginBottom: 10,
   },
-  viewAllContainer: {
+  viewAllContainer_old: {
     flex: 1,
     height: 200,
     borderRadius: 20,
     backgroundColor: AppStyles.generalColors.dark_one,
     justifyContent: 'center',
+    alignItems: 'center',
+  },
+  viewAllContainer: {
+    // flex: 1,
+    // height: 200,
+    // borderRadius: 20,
+    // backgroundColor: AppStyles.generalColors.dark_one,
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    // justifyContent: 'center',
     alignItems: 'center',
   },
   viewAllText: {
