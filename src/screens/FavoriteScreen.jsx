@@ -46,50 +46,39 @@ export default function FavoriteScreen() {
           renderItem={({item}) => (
             <View style={styles.mainContainer}>
               <TouchableOpacity
-                style={{
-                  // width: '40%',
-                  marginRight: 5,
-                  borderRadius: 20,
-                  overflow: 'hidden',
-                }}
                 onPress={() => {
                   console.log('LOG');
-
                   navigator.navigate('MoviePlayer', {singleMovie: item});
                 }}>
-                <FastImage
-                  source={{
-                    uri: item.default_thumbnail_filename,
-                    headers: {Referer: 'https://mcini.tv'},
-                    cache: FastImage.cacheControl.immutable,
-                    priority: FastImage.priority.high,
-                  }}
-                  resizeMode={FastImage.resizeMode.cover}
-                  style={[styles.fastImage, {width: screenWidth / 3}]}
-                />
-                {/* <WebView
-                    source={{ uri: item['default_thumbnail_filename'], headers: { Referer: 'https://mcini.tv' } }}
-                    javaScriptEnabled={true}
-                    domStorageEnabled={true}
-                    allowsInlineMediaPlayback={true}
-                    style={{ borderRadius: 10, width: screenWidth / 3, height: 100 }}
-                  /> */}
+                <View style={styles.imageAndTextContainer}>
+                  <FastImage
+                    source={{
+                      uri: item.default_thumbnail_filename,
+                      headers: {Referer: 'https://mcini.tv'},
+                      cache: FastImage.cacheControl.immutable,
+                      priority: FastImage.priority.high,
+                    }}
+                    resizeMode={FastImage.resizeMode.cover}
+                    style={[styles.fastImage, {width: screenWidth / 3}]}
+                  />
+                  <View style={{width: screenWidth / 2}}>
+                    <Text
+                      style={styles.titleText}>
+                      {reduceStringLength(20, item.title)}
+                    </Text>
+                    <Text
+                      style={styles.descriptionText}>
+                      {reduceStringLength(90, item.description)}
+                    </Text>
+                  </View>
+                </View>
               </TouchableOpacity>
-              <View style={{width: screenWidth / 3}}>
-                <Text
-                  style={{
-                    flexWrap: 'wrap',
-                    color: AppStyles.generalColors.white_one,
-                  }}>
-                  {reduceStringLength(40, item['title'])}
-                </Text>
-              </View>
               <View>
                 <TouchableOpacity
                   onPress={async () => {
                     if (favorites != null && favorites.length > 0) {
                       const updatedMovies = favorites.filter(
-                        currentMovie => currentMovie.id != item.id,
+                        currentMovie => currentMovie.id !== item.id,
                       );
                       dispatch(setFavoriteMovies(updatedMovies));
                     }
@@ -105,11 +94,11 @@ export default function FavoriteScreen() {
 
                     const result = await addOrRemoveFavorite(payload);
 
-                    console.log('FAVOURITES RESPONSE === ', result);
-
-                    if (result['success'] != 'true') {
+                    if (result.success !== 'true') {
                       dispatch(addMovieToFavorites(item));
                     }
+                    console.log('FAVORITE REMOVAL RESPONSE === ', result);
+
                   }}>
                   <Ionicons
                     name="remove-circle-outline"
@@ -148,6 +137,22 @@ export default function FavoriteScreen() {
 }
 
 const styles = StyleSheet.create({
+  descriptionText: {
+    marginTop: 5,
+    color: AppStyles.generalColors.white_one,
+    // fontWeight: AppStyles.generalFontWeight.weight_one,
+  },
+  titleText: {
+    // flexWrap: 'wrap',
+    color: AppStyles.generalColors.white_one,
+    fontWeight: AppStyles.generalFontWeight.weight_one,
+  },
+  imageAndTextContainer: {
+    paddingVertical: 25,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+  },
   mainContainer: {
     backgroundColor: AppStyles.generalColors.dark_one,
     flex: 1,
@@ -155,13 +160,15 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
-    padding: 10,
-    marginHorizontal: 10,
+    paddingHorizontal: 5,
+    // paddingVertical: 30,
+    // marginHorizontal: 10,
     marginBottom: 10,
     borderRadius: 20,
   },
   fastImage: {
-    height: 80,
-    // width: 100,
+    height: 90,
+    marginRight: 10,
+    borderRadius: 20,
   },
 });
