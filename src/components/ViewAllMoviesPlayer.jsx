@@ -143,8 +143,10 @@ const ViewAllMoviesPlayer = () => {
           // }}
         />
       ) : (
-        <View>
-          <Button title="Retry" onPress={handleRetry} />
+        <View style={[styles.retryContainer, {width: widthSize}]}>
+          <View style={[styles.retryView, {width: widthSize / 2}]}>
+            <Button title="Retry" onPress={handleRetry} />
+          </View>
         </View>
       )}
       {isDescription && (
@@ -209,6 +211,16 @@ const ViewAllMoviesPlayer = () => {
 };
 
 const styles = StyleSheet.create({
+  retryContainer: {
+    backgroundColor: AppStyles.generalColors.dark_four,
+    height: 400,
+    zIndex: 1,
+    flex: 1,
+    flexDirection: 'column',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   webView: {
     backgroundColor: AppStyles.generalColors.dark_four,
     height: 400,
