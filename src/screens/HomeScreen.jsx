@@ -1,25 +1,25 @@
-import React, { useState, useEffect, useRef, memo } from 'react';
+import React, {useState, useEffect, useRef, memo} from 'react';
 import {
   View,
   StyleSheet,
   FlatList,
   Dimensions,
   Text,
-  TouchableOpacity,
+  TouchableWithoutFeedback,
   StatusBar,
 } from 'react-native';
 import MovieBanner from '../components/MovieBanner';
-import { AppStyles } from '../utilities/AppStyles';
+import {AppStyles} from '../utilities/AppStyles';
 import SingleMovieCard from '../components/SingleMovieCard';
-import { useNavigation } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
 
 const MemoizedMovieBanner = memo(MovieBanner);
 const MemoizedSingleMovieCard = memo(SingleMovieCard);
 
 export default function HomeScreen() {
   const navigator = useNavigation();
-  const { width: screenWidth } = Dimensions.get('window');
+  const {width: screenWidth} = Dimensions.get('window');
   const mySize = screenWidth / 3;
 
   const subscriber = useSelector(state => state.subscriber.subscriberDetails);
@@ -28,12 +28,13 @@ export default function HomeScreen() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const movieBannersNew = movies && movies.length > 0 ? movies.slice(0, 10) : [];
+  const movieBannersNew =
+    movies && movies.length > 0 ? movies.slice(0, 10) : [];
 
   const bannerFlatListRef = useRef(null); // Reference to the FlatList for banners
 
   const handleMoviePressedFunc = movie => {
-    navigator.navigate('ViewAllMoviesPlayer', { singleMovie: movie });
+    navigator.navigate('ViewAllMoviesPlayer', {singleMovie: movie});
   };
 
   useEffect(() => {
@@ -55,7 +56,10 @@ export default function HomeScreen() {
   useEffect(() => {
     // Scroll to the next index every time currentIndex changes
     if (bannerFlatListRef.current && movieBannersNew.length > 0) {
-      bannerFlatListRef.current.scrollToIndex({ animated: true, index: currentIndex });
+      bannerFlatListRef.current.scrollToIndex({
+        animated: true,
+        index: currentIndex,
+      });
     }
   }, [currentIndex, movieBannersNew.length]);
 
@@ -68,8 +72,11 @@ export default function HomeScreen() {
   const groupedMovies =
     movies != null
       ? movies.reduce((result, item) => {
-          const { collection_name } = item;
-          if (!result[collection_name] || collection_name.toLowerCase() === 'free') {
+          const {collection_name} = item;
+          if (
+            !result[collection_name] ||
+            collection_name.toLowerCase() === 'free'
+          ) {
             result[collection_name] = [];
           }
           result[collection_name].push(item);
@@ -97,35 +104,33 @@ export default function HomeScreen() {
           offset: 200 * index,
           index,
         })}
-        initialNumToRender={3}
+        initialNumToRender={5}
         maxToRenderPerBatch={2}
         removeClippedSubviews
         data={displayItems}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         keyExtractor={subItem => subItem.id.toString()}
-        renderItem={({ item }) => (
+        renderItem={({item}) => (
           <MemoizedSingleMovieCard
             movie={item}
             onMoviePressedFunc={handleMoviePressedFunc}
           />
         )}
-        ListFooterComponent={
-          showViewAll ? (
-            <TouchableOpacity
-              onPress={() => {
-                navigator.navigate('ViewAllMovies', {
-                  similar_movies: items,
-                  subscriber: subscriber,
-                });
-              }}
-            >
-              <View style={[styles.viewAllContainer, { width: mySize }]}>
-                <Text style={styles.viewAllText}>VIEW ALL</Text>
-              </View>
-            </TouchableOpacity>
-          ) : null
-        }
+        // ListFooterComponent={
+        //   showViewAll ? (
+        //     <TouchableWithoutFeedback
+        //       onPress={() => {
+        //         navigator.navigate('ViewAllMovies', {
+        //           collection_name: items[0].collection_name,
+        //         });
+        //       }}>
+        //       <View style={[styles.viewAllContainer, {width: mySize}]}>
+        //         <Text style={styles.viewAllText}>VIEW ALL</Text>
+        //       </View>
+        //     </TouchableWithoutFeedback>
+        //   ) : null
+        // }
       />
     );
   };
@@ -140,9 +145,9 @@ export default function HomeScreen() {
       />
       <FlatList
         initialNumToRender={3}
-        data={[{ collection_name: 'bannerCollection' }, ...groupedDataArray]}
+        data={[{collection_name: 'bannerCollection'}, ...groupedDataArray]}
         keyExtractor={item => item.collection_name}
-        renderItem={({ item }) => {
+        renderItem={({item}) => {
           if (item.collection_name === 'bannerCollection') {
             return (
               <FlatList
@@ -158,7 +163,7 @@ export default function HomeScreen() {
                 // pagingEnabled
                 data={movieBannersNew}
                 keyExtractor={item => item.id.toString()}
-                renderItem={({ item }) => <MemoizedMovieBanner movie={item} />}
+                renderItem={({item}) => <MemoizedMovieBanner movie={item} />}
                 horizontal
                 snapToInterval={screenWidth} // Snap to the width of each banner
                 snapToAlignment="center" // Align each banner to the center
@@ -170,8 +175,25 @@ export default function HomeScreen() {
             );
           } else {
             return (
-              <View style={{ marginBottom: 20 }}>
-                <Text style={styles.collectionName}>{item.collection_name}</Text>
+              <View style={styles.mainFlatListView}>
+                <View style={styles.collectionNameContainer}>
+                  <Text style={styles.collectionName}>
+                    {item.collection_name}
+                  </Text>
+                  <TouchableWithoutFeedback
+                    onPress={
+                      () => {
+                        navigator.navigate('ViewAllMovies', {
+                          collection_name: item.collection_name,
+                        });
+                      }
+                    }
+                  >
+                    <Text style={styles.viewAllText}>
+                      View All
+                    </Text>
+                  </TouchableWithoutFeedback>
+                </View>
                 {renderedItem(item.items)}
               </View>
             );
@@ -183,6 +205,15 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
+  mainFlatListView: {
+    marginBottom: 20,
+  },
+  collectionNameContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 10,
+  },
   mainContainer: {
     flex: 1,
     paddingTop: 30,
@@ -192,7 +223,6 @@ const styles = StyleSheet.create({
     fontWeight: AppStyles.generalFontWeight.weight_one,
     fontSize: AppStyles.generalFontSize.large,
     color: AppStyles.generalColors.white_one,
-    marginHorizontal: 10,
     marginBottom: 10,
   },
   viewAllContainer: {
@@ -204,7 +234,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   viewAllText: {
-    color: AppStyles.generalColors.white_one,
+    color: AppStyles.generalColors.blue,
     fontWeight: AppStyles.generalFontWeight.weight_one,
     fontSize: AppStyles.generalFontSize.large,
   },

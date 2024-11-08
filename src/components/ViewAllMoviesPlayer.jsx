@@ -4,7 +4,7 @@ import {
   Text,
   View,
   FlatList,
-  TouchableOpacity,
+  TouchableWithoutFeedback,
   ActivityIndicator,
   Button,
 } from 'react-native';
@@ -108,18 +108,18 @@ const ViewAllMoviesPlayer = () => {
       }
     };
     checkInternet();
-  }, []);
+  }, [favorites, singleMovie]);
 
   const FavoriteIcon = React.memo(({isFavorite, toggleFavorite}) => {
     return (
-      <TouchableOpacity onPress={toggleFavorite}>
+      <TouchableWithoutFeedback onPress={toggleFavorite}>
         <Ionicons
           name={isFavorite ? 'heart' : 'heart-outline'}
           size={25}
           color={isFavorite ? '#00aeef' : '#fff'}
           style={{marginLeft: 20}}
         />
-      </TouchableOpacity>
+      </TouchableWithoutFeedback>
     );
   });
 
