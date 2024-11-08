@@ -2,6 +2,7 @@ import {View, Text, StyleSheet, Image, Dimensions} from 'react-native';
 import React from 'react';
 import {AppStyles} from '../utilities/AppStyles';
 import WebView from 'react-native-webview';
+import FastImage from 'react-native-fast-image';
 
 export default function MovieBanner({movie}) {
   // console.log('WIDTH === ', myWidth);
@@ -25,7 +26,15 @@ export default function MovieBanner({movie}) {
 
   return (
     <View style={styles.webViewContainer}>
-      <WebView
+      <FastImage
+        style={[styles.webView, {width: widthSize}]}
+        source={{
+          uri: movie.default_thumbnail_filename,
+          headers: {Referer: 'https://mcini.tv'},
+          cache: FastImage.cacheControl.immutable,
+        }}
+        resizeMode={FastImage.resizeMode.cover}/>
+      {/* <WebView
         style={[styles.webView, {width: widthSize}]}
         source={{
           uri: movie.default_thumbnail_filename,
@@ -42,7 +51,7 @@ export default function MovieBanner({movie}) {
           </View>
         )}
         onRenderProcessGone={handleOnRenderProcessGone}
-      />
+      /> */}
     </View>
   );
 }

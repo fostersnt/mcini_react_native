@@ -76,7 +76,7 @@ export default function HomeScreen() {
 
     return (
       <FlatList
-        windowSize={5}
+        // windowSize={5}
         getItemLayout={(data, index) => ({
           length: 200, // The fixed height of each item
           offset: 200 * index, // The position of the item in the list

@@ -15,13 +15,14 @@ import {userData} from '../apiData/UserData';
 import {useSelector} from 'react-redux';
 import SubscriptionModal from './SubscriptionModal'; // Import the new modal component
 import {userSubscriptionCheck} from '../api/UserAPI';
+import FastImage from 'react-native-fast-image';
 
 const imagePath = require('../assets/images/banner.png');
 
 export default function SingleMovieCard({movie, onMoviePressedFunc}) {
   const navigator = useNavigation();
 
-  const [loading, setLoading] = useState(true);
+//   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [key, setKey] = useState(0);
 
@@ -46,13 +47,10 @@ export default function SingleMovieCard({movie, onMoviePressedFunc}) {
     setError(false);
     setKey(prevKey => prevKey + 1);
   };
+// console.log('IS LOADING === ', isLoading);
 
   return (
     <View style={styles.mainView}>
-        {loading && !error && (
-        <ActivityIndicator size="large" color="#fff" style={styles.loader} />
-      )}
-      {!error ? (
         <TouchableOpacity
           onPress={async () => {
             setIsStatusCheck(true);
@@ -73,7 +71,18 @@ export default function SingleMovieCard({movie, onMoviePressedFunc}) {
             }
             console.log('STATUS CHECK RESPONSE === ', status);
           }}>
-          <WebView
+          <FastImage
+            source={{
+              uri: movie.default_thumbnail_filename,
+              headers: {Referer: 'https://mcini.tv'},
+              cache: FastImage.cacheControl.immutable,
+              priority: FastImage.priority.high,
+            }}
+            resizeMode={FastImage.resizeMode.cover}
+            style={[styles.webView, {width: size}]}
+          />
+
+          {/* <WebView
             key={key}
             style={[styles.webView, {width: size}]}
             source={{
@@ -91,14 +100,8 @@ export default function SingleMovieCard({movie, onMoviePressedFunc}) {
                 <Text style={styles.errorText}>Failed to load page.</Text>
               </View>
             )}
-          />
+          /> */}
         </TouchableOpacity>
-      ) : (
-        <View>
-          {/* Retry Button */}
-          <Button title="Retry" onPress={handleRetry} />
-        </View>
-      )}
 
       {/* Subscription Modal */}
       <SubscriptionModal
