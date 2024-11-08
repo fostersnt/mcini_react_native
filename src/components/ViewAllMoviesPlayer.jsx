@@ -40,9 +40,14 @@ const ViewAllMoviesPlayer = () => {
   const route = useRoute();
   const {singleMovie} = route.params;
 
-  const similar_movies = useSelector(state => state.movie.movies);
+  const movies = useSelector(state => state.movie.movies);
   const favorites = useSelector(state => state.movie.favoriteMovies);
   const subscriber = useSelector(state => state.subscriber.subscriberDetails);
+
+  const similar_movies = movies != null ? movies.filter((currentMovie) => currentMovie.collection_name === singleMovie.collection_name) : null;
+
+  console.log('SINGLE MOVIE COLLECTION NAME === ', singleMovie.collection_name);
+  
 
   const isDescription = singleMovie?.description != null;
 
@@ -90,7 +95,7 @@ const ViewAllMoviesPlayer = () => {
     const checkInternet = async () => {
       const favoriteCheck =
         favorites != null && favorites.length > 0
-          ? favorites.some(item => item.id == singleMovie.id)
+          ? favorites.some(item => item.id === singleMovie.id)
           : false;
       if (favoriteCheck === true) {
         setIsFavorite(true);
@@ -103,7 +108,7 @@ const ViewAllMoviesPlayer = () => {
       }
     };
     checkInternet();
-  }, [singleMovie.id, favorites]);
+  }, []);
 
   const FavoriteIcon = React.memo(({isFavorite, toggleFavorite}) => {
     return (
