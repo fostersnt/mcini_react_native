@@ -4,12 +4,8 @@ import {
   TouchableWithoutFeedback,
   Dimensions,
   StyleSheet,
-  Text,
-  ActivityIndicator,
-  Button,
 } from 'react-native';
 import {AppStyles} from '../utilities/AppStyles';
-import WebView from 'react-native-webview';
 import {useNavigation} from '@react-navigation/native';
 import {userData} from '../apiData/UserData';
 import {useSelector} from 'react-redux';
@@ -27,7 +23,6 @@ export default function SingleMovieCard({movie, onMoviePressedFunc}) {
   const [error, setError] = useState(false);
   const [key, setKey] = useState(0);
 
-  const similar_movies = useSelector(state => state.movie.movies);
   const subscriber = useSelector(state => state.subscriber.subscriberDetails);
 
   const {width: screenWidth} = Dimensions.get('screen');
@@ -55,29 +50,29 @@ export default function SingleMovieCard({movie, onMoviePressedFunc}) {
     <View style={styles.mainView}>
       <TouchableWithoutFeedback
         onPress={async () => {
-        //   setIsStatusCheck(true);
-        //   const statusCheck = await userSubscriptionCheck(subscriber.msisdn);
-        //   console.log('SUBSCRIPTION STATUS CHECK === ', statusCheck);
+          setIsStatusCheck(true);
+          const statusCheck = await userSubscriptionCheck(subscriber.msisdn);
+          console.log('SUBSCRIPTION STATUS CHECK === ', statusCheck);
 
-        //   setIsStatusCheck(false);
-        //   const status =
-        //     statusCheck.data != null
-        //       ? statusCheck.data.subscription_status
-        //       : 'N/A';
-        //   if (status.toLowerCase() === 'active') {
+          setIsStatusCheck(false);
+          const status =
+            statusCheck.data != null
+              ? statusCheck.data.subscription_status
+              : 'N/A';
+          if (status.toLowerCase() === 'active') {
             onMoviePressedFunc(movie);
-        //   } else if (status.toLowerCase() === 'inactive') {
-        //     setModalVisible(true);
-        //   } else {
-        //     showToast(
-        //       'Subscription Check',
-        //       'Unknown error occurred',
-        //       'error',
-        //       5000,
-        //     );
-        //     console.log('UNKNOWN SUBSCRIPTION STATUS');
-        //   }
-        //   console.log('STATUS CHECK RESPONSE === ', status);
+          } else if (status.toLowerCase() === 'inactive') {
+            setModalVisible(true);
+          } else {
+            showToast(
+              'Subscription Check',
+              'Unknown error occurred',
+              'error',
+              5000,
+            );
+            console.log('UNKNOWN SUBSCRIPTION STATUS');
+          }
+          console.log('STATUS CHECK RESPONSE === ', status);
         }}>
         <FastImage
           source={{

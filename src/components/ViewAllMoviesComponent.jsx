@@ -33,10 +33,15 @@ export default function ViewAllMoviesComponent() {
         </Text>
       </View>
       <FlatList
-        initialNumToRender={3}
+        initialNumToRender={5}
         maxToRenderPerBatch={2}
         removeClippedSubviews
         numColumns={3}
+        getItemLayout={(data, index) => ({
+          length: 200,
+          offset: 200 * index,
+          index,
+        })}
         data={similar_movies}
         keyExtractor={item => item.id}
         renderItem={({item}) => {
