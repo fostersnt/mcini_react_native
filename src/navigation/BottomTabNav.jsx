@@ -12,9 +12,9 @@ import {AppStyles} from '../utilities/AppStyles';
 
 const Tab = createBottomTabNavigator();
 
-const getIcon = ({name, color, size}) => {
-  return <Icon name={name} color={color} size={size} />;
-};
+// const getIcon = ({name, color, size}) => {
+//   return <Icon name={name} color={color} size={size} />;
+// };
 
 export default function BottomTabNav() {
   const renderHomeIcon = ({color, size}) => (

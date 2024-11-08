@@ -20,10 +20,9 @@ const Stack = createNativeStackNavigator();
 export default function AppNavigation() {
   return (
     <NavigationContainer>
-        <Stack.Navigator initialRouteName='WelcomeSlider' screenOptions={{headerShown: false}}>
-        {/* <Stack.Screen name="MoviePlayer" component={MoviePlayerScreen} /> */}
+        <Stack.Navigator initialRouteName="WelcomeSlider" screenOptions={{headerShown: false}}>
         <Stack.Screen name="WelcomeSlider" component={WelcomeSliderScreen} />
-        <Stack.Screen name='WatchList' component={WatchListScreen} />
+        <Stack.Screen name="WatchList" component={WatchListScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="MoviePlayer" component={MoviePlayerScreen} />
@@ -34,5 +33,5 @@ export default function AppNavigation() {
         <Stack.Screen name="BottomTabNav" component={BottomTabNav} />
       </Stack.Navigator>
     </NavigationContainer>
-  )
+  );
 }

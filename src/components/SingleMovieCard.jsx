@@ -16,13 +16,14 @@ import {useSelector} from 'react-redux';
 import SubscriptionModal from './SubscriptionModal'; // Import the new modal component
 import {userSubscriptionCheck} from '../api/UserAPI';
 import FastImage from 'react-native-fast-image';
+import {showToast} from './ToastAlert';
 
 const imagePath = require('../assets/images/banner.png');
 
 export default function SingleMovieCard({movie, onMoviePressedFunc}) {
   const navigator = useNavigation();
 
-//   const [loading, setLoading] = useState(true);
+  //   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [key, setKey] = useState(0);
 
@@ -48,42 +49,48 @@ export default function SingleMovieCard({movie, onMoviePressedFunc}) {
     setKey(prevKey => prevKey + 1);
   };
 
-// console.log('IS LOADING === ', isLoading);
+  // console.log('IS LOADING === ', isLoading);
 
   return (
     <View style={styles.mainView}>
-        <TouchableOpacity
-          onPress={async () => {
-            setIsStatusCheck(true);
-            const statusCheck = await userSubscriptionCheck(subscriber.msisdn);
-            console.log('SUBSCRIPTION STATUS CHECK === ', statusCheck);
+      <TouchableOpacity
+        onPress={async () => {
+        //   setIsStatusCheck(true);
+        //   const statusCheck = await userSubscriptionCheck(subscriber.msisdn);
+        //   console.log('SUBSCRIPTION STATUS CHECK === ', statusCheck);
 
-            setIsStatusCheck(false);
-            const status =
-              statusCheck.data != null
-                ? statusCheck.data.subscription_status
-                : 'N/A';
-            if (status.toLowerCase() === 'active') {
-              onMoviePressedFunc(movie);
-            } else {
-              console.log('UNKNOWN SUBSCRIPTION STATUS');
+        //   setIsStatusCheck(false);
+        //   const status =
+        //     statusCheck.data != null
+        //       ? statusCheck.data.subscription_status
+        //       : 'N/A';
+        //   if (status.toLowerCase() === 'active') {
+            onMoviePressedFunc(movie);
+        //   } else if (status.toLowerCase() === 'inactive') {
+        //     setModalVisible(true);
+        //   } else {
+        //     showToast(
+        //       'Subscription Check',
+        //       'Unknown error occurred',
+        //       'error',
+        //       5000,
+        //     );
+        //     console.log('UNKNOWN SUBSCRIPTION STATUS');
+        //   }
+        //   console.log('STATUS CHECK RESPONSE === ', status);
+        }}>
+        <FastImage
+          source={{
+            uri: movie.default_thumbnail_filename,
+            headers: {Referer: 'https://mcini.tv'},
+            cache: FastImage.cacheControl.immutable,
+            priority: FastImage.priority.high,
+          }}
+          resizeMode={FastImage.resizeMode.cover}
+          style={[styles.webView, {width: size}]}
+        />
 
-              setModalVisible(true);
-            }
-            console.log('STATUS CHECK RESPONSE === ', status);
-          }}>
-          <FastImage
-            source={{
-              uri: movie.default_thumbnail_filename,
-              headers: {Referer: 'https://mcini.tv'},
-              cache: FastImage.cacheControl.immutable,
-              priority: FastImage.priority.high,
-            }}
-            resizeMode={FastImage.resizeMode.cover}
-            style={[styles.webView, {width: size}]}
-          />
-
-          {/* <WebView
+        {/* <WebView
             key={key}
             style={[styles.webView, {width: size}]}
             source={{
@@ -102,7 +109,7 @@ export default function SingleMovieCard({movie, onMoviePressedFunc}) {
               </View>
             )}
           /> */}
-        </TouchableOpacity>
+      </TouchableOpacity>
 
       {/* Subscription Modal */}
       <SubscriptionModal
