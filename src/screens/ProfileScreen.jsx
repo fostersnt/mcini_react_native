@@ -24,7 +24,7 @@ export default function ProfileScreen() {
     <ScrollView
       style={{
         flex: 1,
-        backgroundColor: AppStyles.generalColors.dark_four,
+        backgroundColor: AppStyles.generalColors.dark_one,
         paddingTop: 40,
         paddingHorizontal: 10
       }}

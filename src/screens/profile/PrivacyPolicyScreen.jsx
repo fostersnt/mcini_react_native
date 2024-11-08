@@ -50,13 +50,13 @@ export default function PrivacyPolicyScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: AppStyles.generalColors.dark_four,
+        backgroundColor: AppStyles.generalColors.dark_one,
         paddingTop: 40,
         padding: 10
     },
     itemContainer: {
         borderColor: AppStyles.generalColors.dark_one,
-        borderColor: 'grey',
+        // borderColor: 'grey',
         borderWidth: 1,
         padding: 10,
         marginBottom: AppStyles.generalMargin.higher,

@@ -32,7 +32,7 @@ const WatchListScreen = () => {
         width: videoWidth,
         height: videoWidth,
         margin: 5,
-        backgroundColor: AppStyles.generalColors.dark_four,
+        backgroundColor: AppStyles.generalColors.dark_one,
       }}>
       {loading && !error && (
         <ActivityIndicator size="large" color="#fff" style={styles.loader} />
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     // padding: 10,
     paddingTop: 40,
     paddingBottom: 20,
-    backgroundColor: AppStyles.generalColors.dark_four,
+    backgroundColor: AppStyles.generalColors.dark_one,
   },
   title: {
     marginTop: 5,
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: AppStyles.generalColors.dark_four,
+    backgroundColor: AppStyles.generalColors.dark_one,
   },
   emptyContainer: {
     color: AppStyles.generalColors.white_one,

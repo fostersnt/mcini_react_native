@@ -221,11 +221,11 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     paddingTop: 30,
-    backgroundColor: AppStyles.generalColors.dark_four,
+    backgroundColor: AppStyles.generalColors.dark_one,
   },
   collectionName: {
     fontWeight: AppStyles.generalFontWeight.weight_one,
-    fontSize: AppStyles.generalFontSize.large,
+    fontSize: AppStyles.generalFontSize.normal,
     color: AppStyles.generalColors.white_one,
     marginBottom: 10,
   },
@@ -252,6 +252,6 @@ const styles = StyleSheet.create({
   viewAllText: {
     color: AppStyles.generalColors.blue,
     fontWeight: AppStyles.generalFontWeight.weight_one,
-    fontSize: AppStyles.generalFontSize.large,
+    fontSize: 16,
   },
 });

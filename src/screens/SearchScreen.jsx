@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
   },
   mainContainer: {
     flex: 1,
-    backgroundColor: AppStyles.generalColors.dark_four,
+    backgroundColor: AppStyles.generalColors.dark_one,
     paddingTop: 40,
     padding: 10,
   },

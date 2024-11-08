@@ -129,7 +129,7 @@ export default function FavoriteScreen() {
     <View
       style={{
         flex: 1,
-        backgroundColor: AppStyles.generalColors.dark_four,
+        backgroundColor: AppStyles.generalColors.dark_one,
       }}>
       {renderContent()}
     </View>
