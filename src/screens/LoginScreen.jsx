@@ -1,19 +1,19 @@
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, StatusBar, Image, KeyboardAvoidingView, ImageBackground, ActivityIndicator, Platform } from 'react-native'
-import React, { useState, useEffect, useRef } from 'react'
-import { checkAuthAPI, allUserData } from '../api/UserAPI';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, StatusBar, KeyboardAvoidingView, ActivityIndicator, Platform } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { allUserData } from '../api/UserAPI';
 import { useNavigation } from '@react-navigation/native';
 import { AppStyles } from '../utilities/AppStyles';
 import { replaceFirstDigitWith233 } from '../utilities/Validations';
 import { showToast } from '../components/ToastAlert';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSubscriber } from '../redux/slice/SubscriberSlice';
+import { setSubscriber, setLoginStatus } from '../redux/slice/SubscriberSlice';
 import { setFavoriteMovies, setMovies, setWatchList } from '../redux/slice/MovieSlice';
 import Video from 'react-native-video';
 import LoadingPulse from '../animation/LoadingPulse';
 
 const bgVideo = require('../assets/videos/login_bg_video.mp4');
 
-const bannerImage = require('../assets/images/banner.png');
+// const bannerImage = require('../assets/images/banner.png');
 
 export default function LoginScreen() {
   const dispatch = useDispatch();
@@ -21,35 +21,6 @@ export default function LoginScreen() {
   const [isLoading, setIsLoading] = useState(false);
 
   const navigation = useNavigation();
-
-  const subscriberData = useSelector((state) => state.subscriber.subscriberDetails);
-
-  // useEffect(() => {
-  //   const authData = async () => {
-  //     try {
-  //       // setCurrentSubscriber(subscriberData);
-  //       console.log('DATA DATA === ', subscriberData);
-
-  //       if (subscriberData != null && subscriberData.msisdn != '') {
-  //         const response = await checkAuthAPI(subscriberData.msisdn);
-
-  //         const message = response['message'].toString().toLowerCase();
-
-  //         console.log('MESSAGE: ', message);
-
-  //         if (response.success == 'true' && message == 'user authenticated!') {
-  //           navigator.navigate('BottomTabNav', {
-  //             Screen: 'Login',
-  //           });
-  //         }
-  //       }
-  //     } catch (error) {
-  //       console.log('USE EFFECT ERROR AT LOGIN SCREEN: ', error.toString());
-  //     }
-  //   }
-  //   //Calling the authCheck function
-  //   authData();
-  // }, []);
 
   //LOGIN FUNCTION
   const handleLogin = async () => {
@@ -64,8 +35,6 @@ export default function LoginScreen() {
         setIsLoading(true);
 
         const formattedPhone = replaceFirstDigitWith233(phoneNumber);
-
-        // setPhone(formattedPhone);
 
         const responseData = await allUserData(formattedPhone);
 
@@ -89,6 +58,7 @@ export default function LoginScreen() {
             });
           }
 
+          dispatch(setLoginStatus('active'));
           dispatch(setSubscriber(responseData.subscriber));
           dispatch(setMovies(responseData.movies));
           dispatch(setFavoriteMovies(responseData.favorites));
@@ -185,12 +155,11 @@ export default function LoginScreen() {
   return (
     <View style={styles.container}>
       <Video
-        source={bgVideo} // Replace with the path to your video file
+        source={bgVideo}
         style={styles.backgroundVideo}
         resizeMode="cover"
         repeat
         muted
-        // fullscreen
         paused={false}
       />
 
@@ -221,9 +190,7 @@ export default function LoginScreen() {
               ]}
               placeholder="phone number"
               onChangeText={(text) => {
-                // if (phoneRef.current) {
-                  phoneRef.current = text;  // Set the phone value in ref
-                // }
+                  phoneRef.current = text;
               }}
             />
             <TouchableOpacity onPress={
@@ -262,12 +229,12 @@ const styles = StyleSheet.create({
   logoContainer: {
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   logo: {
     marginBottom: 20,
     width: 50,
-    height: 50
+    height: 50,
   },
   container: {
     flex: 1,
@@ -282,7 +249,7 @@ const styles = StyleSheet.create({
   title: {
     color: AppStyles.generalColors.blue,
     fontWeight: 'bold',
-    alignSelf: 'flex-start'
+    alignSelf: 'flex-start',
   },
   input: {
     backgroundColor: 'white',

@@ -1,19 +1,24 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 
 const SubscriberSlice = createSlice({
     name: 'subscriber',
     initialState: {
-        subscriberDetails: null
+        subscriberDetails: null,
+        loginStatus: null,
     },
 
     reducers: {
         setSubscriber: (state, action) => {
-            state.subscriberDetails = action.payload
-        }
-    }
+            state.subscriberDetails = action.payload;
+        },
+
+        setLoginStatus: (state, action) => {
+            state.loginStatus = action.payload;
+        },
+    },
 });
 
 export const {setSubscriber} = SubscriberSlice.actions;
 
-export default SubscriberSlice.reducer
+export default SubscriberSlice.reducer;
