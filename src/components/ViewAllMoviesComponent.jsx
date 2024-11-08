@@ -34,34 +34,35 @@ export default function ViewAllMoviesComponent() {
             >
               <SingleMovieCard similar_movies={similar_movies} movie={item} subscriber={subscriber} />
             </View>
-          )
+          );
         }}
       />
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   mainContainer: {
+    flex: 1,
     backgroundColor: AppStyles.generalColors.dark_one,
     paddingTop: 30,
-    paddingBottom: 40
+    paddingBottom: 40,
   },
   titleContainer: {
     // flex: 1,
     display: 'flex',
     // justifyContent: 'center',
     // alignItems: 'center',
-    marginLeft: 5
+    marginLeft: 5,
   },
   titleText: {
     fontSize: 20,
-    color: 'white'
+    color: 'white',
   },
   viewAllContainer: {
     flex: 1,
     paddingTop: 10,
     // height: '50%'
     // marginBottom: 20
-  }
-})
+  },
+});

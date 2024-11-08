@@ -19,6 +19,6 @@ const SubscriberSlice = createSlice({
     },
 });
 
-export const {setSubscriber} = SubscriberSlice.actions;
+export const {setSubscriber, setLoginStatus} = SubscriberSlice.actions;
 
 export default SubscriberSlice.reducer;

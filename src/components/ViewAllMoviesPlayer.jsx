@@ -50,7 +50,7 @@ const ViewAllMoviesPlayer = () => {
         let isFavoriteParameter = 0;
         //NB: setIsFavorite() doesn't immediately update the isFavorite state. That's how useSate() works 
         setIsFavorite(!isFavorite);
-        if (currentFavoriteState == true) {
+        if (currentFavoriteState === true) {
             const updatedFavorites = favorites != null && favorites.length > 0 ? favorites.filter((item) => item.id != singleMovie.id) : null;
             dispatch(setFavoriteMovies(updatedFavorites));
         } else {
@@ -61,8 +61,8 @@ const ViewAllMoviesPlayer = () => {
         const payload = {
             msisdn: `${subscriber.msisdn}`,
             isFavorite: `${isFavoriteParameter}`,
-            movieId: `${singleMovie.id}`
-        }
+            movieId: `${singleMovie.id}`,
+        };
 
         try {
             const result = await addOrRemoveFavorite(payload);
@@ -76,7 +76,7 @@ const ViewAllMoviesPlayer = () => {
     useEffect(() => {
         const checkInternet = async () => {
             const favoriteCheck = favorites != null && favorites.length > 0 ? favorites.some((item) => item.id == singleMovie.id) : false;
-            if (favoriteCheck == true) {
+            if (favoriteCheck === true) {
                 setIsFavorite(true);
             }
             const isActive = await isInternetActive();
@@ -87,7 +87,7 @@ const ViewAllMoviesPlayer = () => {
             }
         };
         checkInternet();
-    }, []);
+    }, [singleMovie.id, favorites]);
 
     const FavoriteIcon = React.memo(({ isFavorite, toggleFavorite }) => {
         return (
@@ -113,7 +113,7 @@ const ViewAllMoviesPlayer = () => {
                         height: 400,
                         zIndex: 1,
                     }}
-                    source={{ uri: singleMovie['video_url'], headers: { Referer: 'https://mcini.tv' } }}
+                    source={{ uri: singleMovie.video_url, headers: { Referer: 'https://mcini.tv' } }}
                     javaScriptEnabled
                     domStorageEnabled
                     onLoadStart={() => setLoading(true)}
