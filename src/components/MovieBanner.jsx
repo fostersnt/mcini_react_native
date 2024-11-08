@@ -1,8 +1,8 @@
-import {View, Text, StyleSheet, Image, Dimensions} from 'react-native';
+import {View, StyleSheet, Dimensions} from 'react-native';
 import React from 'react';
-import {AppStyles} from '../utilities/AppStyles';
-import WebView from 'react-native-webview';
 import FastImage from 'react-native-fast-image';
+import WebView from 'react-native-webview';
+import { Text } from 'react-native-animatable';
 
 export default function MovieBanner({movie}) {
   // console.log('WIDTH === ', myWidth);
@@ -10,9 +10,9 @@ export default function MovieBanner({movie}) {
         The value 10 is based on the padding given to the parent container of this component. This component is used
         in HomeScreen.js
     */
-  const {width: screenWidth, height: screenHeight} = Dimensions.get('screen');
-  const widthSize = screenWidth - 10;
-  const heightSize = screenHeight;
+  const {width: screenWidth} = Dimensions.get('window');
+  const widthSize = screenWidth - 20;
+  // const heightSize = screenHeight;
 
   const handleHttpError = syntheticEvent => {
     const {nativeEvent} = syntheticEvent;
@@ -25,7 +25,7 @@ export default function MovieBanner({movie}) {
   };
 
   return (
-    <View style={styles.webViewContainer}>
+    <View style={[styles.webViewContainer]}>
       <FastImage
         style={[styles.webView, {width: widthSize}]}
         source={{
@@ -34,10 +34,10 @@ export default function MovieBanner({movie}) {
           cache: FastImage.cacheControl.immutable,
         }}
         resizeMode={FastImage.resizeMode.cover}/>
-      {/* <WebView
+      {/*<WebView
         style={[styles.webView, {width: widthSize}]}
         source={{
-          uri: movie.default_thumbnail_filename,
+          uri: movie.video_url,
           headers: {Referer: 'https://mcini.tv'},
         }}
         javaScriptEnabled={true}
@@ -51,22 +51,21 @@ export default function MovieBanner({movie}) {
           </View>
         )}
         onRenderProcessGone={handleOnRenderProcessGone}
-      /> */}
+      />*/}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   webViewContainer: {
-    borderRadius: 40,
-    overflow: 'hidden',
+    // borderRadius: 20,
+    // overflow: 'hidden',
+    marginBottom: 10,
   },
   webView: {
-    // backgroundColor: AppStyles.generalColors.dark_four,
-    marginBottom: 10,
+    borderRadius: 20,
     height: 250,
-    // borderRadius: 60,
-    // overflow: 'hidden',
-    margin: 5,
+    margin: 10,
+    // marginHorizontal: 5,
   },
 });
