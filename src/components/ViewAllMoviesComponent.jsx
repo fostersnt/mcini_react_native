@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, FlatList, StatusBar } from 'react-native'
 import React from 'react'
-import { useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import MoviePlayerScreen from '../screens/MoviePlayerScreen';
 import WebView from 'react-native-webview';
 import ViewAllMoviesPlayer from './ViewAllMoviesPlayer';
@@ -9,14 +9,13 @@ import { AppStyles } from '../utilities/AppStyles';
 
 export default function ViewAllMoviesComponent() {
   const route = useRoute();
+  const navigator = useNavigation();
 
   const { similar_movies, subscriber } = route.params;
 
-  // console.log('COLLECTION NAME === ',  collection_name);
-  // console.log('SINGLE MOVIE === ',  single_movie);
-
-  // console.log('SIMILAR MOVIES VIEW ALL NOW === ', single_movie);
-  console.log('CATFISH');
+  const handleMoviePressedFunc = movie => {
+    navigator.navigate('ViewAllMoviesPlayer', {singleMovie: movie});
+  };
 
   return (
     <View style={styles.mainContainer}>
@@ -33,7 +32,7 @@ export default function ViewAllMoviesComponent() {
             <View
               style={styles.viewAllContainer}
             >
-              <SingleMovieCard similar_movies={similar_movies} movie={item} subscriber={subscriber} />
+              <SingleMovieCard movie={item} onMoviePressedFunc={handleMoviePressedFunc} />
             </View>
           );
         }}
