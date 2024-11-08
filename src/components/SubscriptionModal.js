@@ -19,7 +19,7 @@ const SubscriptionModal = ({
     network,
     plan_id,
     movie,
-    navigation
+    navigation,
 }) => {
 
     const handleSubscribe = async () => {
@@ -51,7 +51,7 @@ const SubscriptionModal = ({
                 setIsLoading(false);
                 setIsPaymentCheck(false);
                 const subscriptionStatus = verifySubscription['data'] != null ? verifySubscription['data'].subscription_status.toLowerCase() : 'N/A'.toLowerCase();
-                
+
                 if (subscriptionStatus === 'active') {
                     showToast('Verification Completed', verifySubscription['message'], 'success', 5000);
                     navigation.navigate('MoviePlayer', { singleMovie: movie });

@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import WebView from 'react-native-webview';
 import { AppStyles } from '../utilities/AppStyles';
+import Video from 'react-native-video';
 
 function MoviePlayerScreen() {
   const [loading, setLoading] = useState(true);
@@ -35,6 +36,15 @@ function MoviePlayerScreen() {
         <ActivityIndicator size="large" color="#fff" style={styles.loader} />
       )}
       {!error ? (
+      //   <Video
+      //   source={{ uri: singleMovie.video_url, headers: { Referer: 'https://mcini.tv' }}} // Replace with the path to your video file
+      //   style={styles.backgroundVideo}
+      //   resizeMode="cover"
+      //   repeat
+      //   muted
+      //   // fullscreen
+      //   paused={false}
+      // />
         <WebView
           key={key} // Add key to force re-render on retry
           style={styles.webView}
@@ -72,6 +82,7 @@ function MoviePlayerScreen() {
 const styles = StyleSheet.create({
   videoContainer: {
     flex: 1,
+    backgroundColor: AppStyles.generalColors.dark_four,
     // width: '100%',
     // height: '100%',
     // justifyContent: 'center',
