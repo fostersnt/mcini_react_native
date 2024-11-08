@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput, ScrollView, TouchableOpacity, Modal, ActivityIndicator } from 'react-native'
+import { View, Text, StyleSheet, TextInput, ScrollView, TouchableWithoutFeedback, Modal, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { AppStyles } from '../utilities/AppStyles';
 import AntIcons from 'react-native-vector-icons/AntDesign'
@@ -89,7 +89,7 @@ export default function ProfileScreen() {
           >Legal Information
           </Text>
           {/* INFORMATION ONE */}
-          <TouchableOpacity onPress={() => {
+          <TouchableWithoutFeedback onPress={() => {
             navigator.navigate('PrivacyPolicy')
             console.log('PRIVACY POLICY');
           }}>
@@ -102,9 +102,9 @@ export default function ProfileScreen() {
               </View>
               <IonIcons name='chevron-forward-outline' size={20} style={styles.iconStyle} />
             </View>
-          </TouchableOpacity>
+          </TouchableWithoutFeedback>
           {/* INFORMATION TWO */}
-          <TouchableOpacity onPress={() => {
+          <TouchableWithoutFeedback onPress={() => {
             navigator.navigate('TermsAndConditions')
             console.log('TERMS AND CONDITIONS');
           }}>
@@ -117,8 +117,8 @@ export default function ProfileScreen() {
               </View>
               <IonIcons name='chevron-forward-outline' size={20} style={styles.iconStyle} />
             </View>
-          </TouchableOpacity>
-          <TouchableOpacity
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback
             onPress={() => {
               navigator.navigate('WatchList');
             }}
@@ -132,8 +132,8 @@ export default function ProfileScreen() {
               </View>
               <IonIcons name='chevron-forward-outline' size={20} style={styles.iconStyle} />
             </View>
-          </TouchableOpacity>
-          <TouchableOpacity
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback
             onPress={async () => {
               const msisdn = subscriber['msisdn'];
               setIsLoading(true)
@@ -156,7 +156,7 @@ export default function ProfileScreen() {
                 }]}>Logout</Text>
               </View>
             </View>
-          </TouchableOpacity>
+          </TouchableWithoutFeedback>
         </View>
       </View>
 
