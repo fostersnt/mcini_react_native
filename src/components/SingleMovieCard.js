@@ -47,6 +47,7 @@ export default function SingleMovieCard({movie, onMoviePressedFunc}) {
     setError(false);
     setKey(prevKey => prevKey + 1);
   };
+
 // console.log('IS LOADING === ', isLoading);
 
   return (
