@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {
   View,
-  TouchableOpacity,
+  TouchableWithoutFeedback,
   Dimensions,
   StyleSheet,
   Text,
@@ -53,7 +53,7 @@ export default function SingleMovieCard({movie, onMoviePressedFunc}) {
 
   return (
     <View style={styles.mainView}>
-      <TouchableOpacity
+      <TouchableWithoutFeedback
         onPress={async () => {
         //   setIsStatusCheck(true);
         //   const statusCheck = await userSubscriptionCheck(subscriber.msisdn);
@@ -109,7 +109,7 @@ export default function SingleMovieCard({movie, onMoviePressedFunc}) {
               </View>
             )}
           /> */}
-      </TouchableOpacity>
+      </TouchableWithoutFeedback>
 
       {/* Subscription Modal */}
       <SubscriptionModal
