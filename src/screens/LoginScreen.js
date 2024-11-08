@@ -54,9 +54,9 @@ export default function LoginScreen() {
   //LOGIN FUNCTION
   const handleLogin = async () => {
     const phoneNumber = phoneRef.current;
-    console.log('CURRENT PHONE === ',  phoneNumber);
+    console.log('CURRENT PHONE LENGTH === ',  phoneNumber.length);
 
-    if (phoneNumber && phoneNumber.length < 1) {
+    if (phoneNumber != null && phoneNumber.length < 1) {
       showToast('Login Error', 'Phone number is required', 'error', 5000);
     } else {
       if (!isLoading) {

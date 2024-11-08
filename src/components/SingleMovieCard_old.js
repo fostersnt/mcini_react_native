@@ -34,35 +34,35 @@ export default function SingleMovieCard({ movie }) {
     const network = myData.network.mtn;
 
     return (
-        <View style={{ borderRadius: 25, overflow: 'hidden' }}>
+        // <View style={{ borderRadius: 25, overflow: 'hidden' }}>
             <TouchableOpacity
                 onPress={async () => {
-                    setIsStatusCheck(true)
+                    // setIsStatusCheck(true)
 
-                    const subStatus = subscriber != null ? subscriber.subscription_status : 'N/A';
+                    // const subStatus = subscriber != null ? subscriber.subscription_status : 'N/A';
 
-                    console.log('CHECK STARTED');
+                    // console.log('CHECK STARTED');
 
-                    const statusCheck = await userSubscriptionCheck(msisdn);
+                    // const statusCheck = await userSubscriptionCheck(msisdn);
 
-                    setIsStatusCheck(false)
+                    // setIsStatusCheck(false)
 
                     // console.log('CHECK COMPLETED === ', statusCheck);
 
-                    var message_type = statusCheck['success'] == 'true' ? 'success' : 'error';
+                    // var message_type = statusCheck['success'] == 'true' ? 'success' : 'error';
 
-                    if (statusCheck['data'] != null && statusCheck['data']['subscription_status'] == 'active') {
-                        setModalVisible(false)
+                    // if (statusCheck['data'] != null && statusCheck['data']['subscription_status'] == 'active') {
+                        // setModalVisible(false);
                         navigator.navigate('ViewAllMoviesPlayer', {
                             singleMovie: movie,
                         });
-                    } else if (statusCheck['data'] != null && statusCheck['data']['subscription_status'] == 'inactive') {
-                        showToast('Subscription status', 'You have no active subscription', message_type, 5000);
-                        setModalVisible(true)
-                    } else {
-                        showToast('Subscription status', statusCheck['message'], message_type, 5000);
-                        setModalVisible(true)
-                    }
+                    // } else if (statusCheck['data'] != null && statusCheck['data']['subscription_status'] == 'inactive') {
+                    //     showToast('Subscription status', 'You have no active subscription', message_type, 5000);
+                    //     setModalVisible(true)
+                    // } else {
+                    //     showToast('Subscription status', statusCheck['message'], message_type, 5000);
+                    //     setModalVisible(true)
+                    // }
                 }}
             >
 
@@ -171,17 +171,8 @@ export default function SingleMovieCard({ movie }) {
                 </Modal>
 
                 <WebView
-                    style={{
-                        backgroundColor: AppStyles.generalColors.dark_four,
-                        // padding: 10,
-                        // flex: 1,
-                        marginHorizontal: 5,
-                        // marginBottom: 10,
-                        width: size,
-                        height: 200
-                    }}
-                    // source={{ uri: movie['video_url'] }}
-                    source={{ uri: movie['default_thumbnail_filename'], headers: { Referer: 'https://mcini.tv' } }}
+                    style={[styles.singleMovie, {width: size}]}
+                    source={{ uri: movie.default_thumbnail_filename, headers: { Referer: 'https://mcini.tv' } }}
                     javaScriptEnabled={true}
                     domStorageEnabled={true}
                     allowsInlineMediaPlayback={true}
@@ -194,25 +185,32 @@ export default function SingleMovieCard({ movie }) {
                     )}
 
                 // onRenderProcessGone={handleOnRenderProcessGone}
-                >
-                </WebView>
+                />
             </TouchableOpacity>
-        </View>
-    )
+        // </View>
+    );
 }
 
 const styles = StyleSheet.create({
+    singleMovie: {
+        backgroundColor: AppStyles.generalColors.dark_four,
+        // padding: 10,
+        // flex: 1,
+        marginHorizontal: 5,
+        // marginBottom: 10,
+        height: 200,
+    },
     modalButtonsContainer: {
         marginTop: 30,
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     modalButtonRed: {
         width: 100,
         marginRight: 20,
         backgroundColor: 'red',
-        paddingVertical: 10
+        paddingVertical: 10,
     },
     modalButtonBlue: {
         width: 100,

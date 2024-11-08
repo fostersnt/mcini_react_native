@@ -45,6 +45,7 @@ export default function BottomTabNav() {
         component={HomeScreen}
         options={{
           tabBarIcon: renderHomeIcon,
+          unmountOnBlur: false,
         }}
       />
       <Tab.Screen
