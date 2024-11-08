@@ -8,7 +8,7 @@ import SingleMovieCard from './SingleMovieCard';
 import { AppStyles } from '../utilities/AppStyles';
 
 export default function ViewAllMoviesComponent() {
-  const route = useRoute()
+  const route = useRoute();
 
   const { similar_movies, subscriber } = route.params;
 
@@ -19,7 +19,7 @@ export default function ViewAllMoviesComponent() {
 
   return (
     <View style={styles.mainContainer}>
-      <StatusBar translucent backgroundColor={'transparent'}></StatusBar>
+      <StatusBar translucent backgroundColor={'transparent'} />
       <View style={styles.titleContainer}>
         <Text style={styles.titleText}>{similar_movies[0].collection_name}</Text>
       </View>
