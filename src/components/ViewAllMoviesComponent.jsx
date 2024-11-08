@@ -16,6 +16,7 @@ export default function ViewAllMoviesComponent() {
   // console.log('SINGLE MOVIE === ',  single_movie);
 
   // console.log('SIMILAR MOVIES VIEW ALL NOW === ', single_movie);
+  console.log('CATFISH');
 
   return (
     <View style={styles.mainContainer}>

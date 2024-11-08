@@ -46,8 +46,7 @@ const ViewAllMoviesPlayer = () => {
 
   const similar_movies = movies != null ? movies.filter((currentMovie) => currentMovie.collection_name === singleMovie.collection_name) : null;
 
-  console.log('SINGLE MOVIE COLLECTION NAME === ', singleMovie.collection_name);
-  
+  // console.log('SINGLE MOVIE COLLECTION NAME === ', singleMovie.collection_name);
 
   const isDescription = singleMovie?.description != null;
 
@@ -76,6 +75,7 @@ const ViewAllMoviesPlayer = () => {
       dispatch(addMovieToFavorites(singleMovie));
       isFavoriteParameter = 1;
     }
+
     //Set favorite action to the API
     const payload = {
       msisdn: `${subscriber.msisdn}`,
