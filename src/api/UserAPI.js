@@ -26,10 +26,11 @@ export const userLoginAPI = async phone => {
 
     return subscriberData;
   } catch (error) {
-    let message = prefix + error.toString();
+    let message = error.toString();
     return {
       success: 'false',
-      message: 'Sorry, an error occured',
+      message: message,
+      // message: 'Sorry, an error occured',
       data: null,
     };
   }
@@ -37,7 +38,7 @@ export const userLoginAPI = async phone => {
 
 //This function checks if subscriber is authenticated
 export const checkAuthAPI = async phone => {
-  phoneMain = replaceFirstDigitWith233(phone);
+  const phoneMain = replaceFirstDigitWith233(phone);
   const options = {
     method: 'POST',
     headers: {

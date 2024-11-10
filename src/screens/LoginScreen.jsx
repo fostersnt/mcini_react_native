@@ -5,13 +5,14 @@ import { useNavigation } from '@react-navigation/native';
 import { AppStyles } from '../utilities/AppStyles';
 import { replaceFirstDigitWith233 } from '../utilities/Validations';
 import { showToast } from '../components/ToastAlert';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setSubscriber, setLoginStatus } from '../redux/slice/SubscriberSlice';
 import { setFavoriteMovies, setMovies, setWatchList } from '../redux/slice/MovieSlice';
 import Video from 'react-native-video';
 import LoadingPulse from '../animation/LoadingPulse';
 
 const bgVideo = require('../assets/videos/login_bg_video.mp4');
+// const bgVideo = require('../assets/videos/login_bg_video_2.mp4');
 
 // const bannerImage = require('../assets/images/banner.png');
 
