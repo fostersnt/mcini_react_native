@@ -59,7 +59,7 @@ export default function FavoriteScreen() {
                       priority: FastImage.priority.high,
                     }}
                     resizeMode={FastImage.resizeMode.cover}
-                    style={[styles.fastImage, {width: screenWidth / 3}]}
+                    style={[styles.fastImage, {width: screenWidth / 3, height: 200}]}
                   />
                   <View style={{width: screenWidth / 2}}>
                     <Text
@@ -154,6 +154,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-start',
+    paddingTop: 10,
   },
   mainContainer: {
     backgroundColor: AppStyles.generalColors.dark_one,

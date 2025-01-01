@@ -75,7 +75,8 @@ export default function FavoriteScreen() {
                   domStorageEnabled={true}
                   allowsInlineMediaPlayback={true}
                   style={{
-                    borderRadius: 10
+                    borderRadius: 10,
+                    height: 200
                   }}
                 />
               </View>
@@ -91,7 +92,7 @@ export default function FavoriteScreen() {
                     flexWrap: 'wrap',
                     color: AppStyles.generalColors.white_one,
                   }}
-                >{reduceStringLengthh(item['video']['title'])}</Text>
+                >{reduceStringLength(item['video']['title'])}</Text>
               </View>
               <View>
                 <TouchableOpacity onPress={async () => {
