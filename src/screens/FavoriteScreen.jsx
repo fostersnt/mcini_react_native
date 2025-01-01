@@ -59,7 +59,7 @@ export default function FavoriteScreen() {
                       priority: FastImage.priority.high,
                     }}
                     resizeMode={FastImage.resizeMode.cover}
-                    style={[styles.fastImage, {width: screenWidth / 3}]}
+                    style={[styles.fastImage, {width: screenWidth / 3, height: 200}]}
                   />
                   <View style={{width: screenWidth / 2}}>
                     <Text
@@ -148,22 +148,24 @@ const styles = StyleSheet.create({
     fontWeight: AppStyles.generalFontWeight.weight_one,
   },
   imageAndTextContainer: {
-    paddingVertical: 25,
+    // paddingVertical: 25,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-start',
+    paddingTop: 10,
   },
   mainContainer: {
     backgroundColor: AppStyles.generalColors.dark_one,
     flex: 1,
-    height: 100,
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
     paddingHorizontal: 5,
+    marginTop: 5,
+    // marginVertical: 10,
     // paddingVertical: 30,
     // marginHorizontal: 10,
-    marginBottom: 10,
+    marginBottom: 5,
     borderRadius: 20,
   },
   fastImage: {

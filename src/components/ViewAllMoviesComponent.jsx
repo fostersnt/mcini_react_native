@@ -77,5 +77,6 @@ const styles = StyleSheet.create({
   viewAllContainer: {
     flex: 1,
     paddingTop: 10,
+    paddingHorizontal: 10
   },
 });
