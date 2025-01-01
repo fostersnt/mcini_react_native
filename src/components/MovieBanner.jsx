@@ -1,57 +1,70 @@
-import {View, StyleSheet, Dimensions} from 'react-native';
-import React from 'react';
-import FastImage from 'react-native-fast-image';
+import React, { useState } from 'react';
+import { View, StyleSheet, Dimensions, ActivityIndicator, Button } from 'react-native';
 import WebView from 'react-native-webview';
 import { Text } from 'react-native-animatable';
+import { AppStyles } from '../utilities/AppStyles';
 
-export default function MovieBanner({movie}) {
-  // console.log('WIDTH === ', myWidth);
-  /*
-        The value 10 is based on the padding given to the parent container of this component. This component is used
-        in HomeScreen.js
-    */
-  const {width: screenWidth} = Dimensions.get('window');
+export default function MovieBanner({ movie }) {
+  const { width: screenWidth } = Dimensions.get('window');
   const widthSize = screenWidth - 20;
-  // const heightSize = screenHeight;
 
-  const handleHttpError = syntheticEvent => {
-    const {nativeEvent} = syntheticEvent;
+  // State to manage loading and error
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+
+  const handleHttpError = (syntheticEvent) => {
+    const { nativeEvent } = syntheticEvent;
     console.log('HTTP Error:', nativeEvent);
+    setIsLoading(false);
+    setHasError(true);
   };
 
-  const handleOnRenderProcessGone = syntheticEvent => {
-    const {nativeEvent} = syntheticEvent;
+  const handleOnRenderProcessGone = (syntheticEvent) => {
+    const { nativeEvent } = syntheticEvent;
     console.warn('WebView Crashed: ', nativeEvent.didCrash);
+    setIsLoading(false);
+    setHasError(true);
+  };
+
+  const handleLoadEnd = () => {
+    setIsLoading(false);
+    setHasError(false);
+  };
+
+  const handleRetry = () => {
+    setIsLoading(true);
+    setHasError(false);
   };
 
   return (
     <View style={[styles.webViewContainer]}>
-      <FastImage
-        style={[styles.webView, {width: widthSize}]}
-        source={{
-          uri: movie.default_thumbnail_filename,
-          headers: {Referer: 'https://mcini.tv'},
-          cache: FastImage.cacheControl.immutable,
-        }}
-        resizeMode={FastImage.resizeMode.cover}/>
-      {/*<WebView
-        style={[styles.webView, {width: widthSize}]}
+      {isLoading && (
+        <ActivityIndicator style={styles.loader} size="large" color={AppStyles.generalColors.primary} />
+      )}
+      
+      {/* WebView */}
+      <WebView
+        style={[styles.webView, { width: widthSize }]}
         source={{
           uri: movie.video_url,
-          headers: {Referer: 'https://mcini.tv'},
+          headers: { Referer: 'https://mcini.tv' },
         }}
         javaScriptEnabled={true}
         domStorageEnabled={true}
         allowsInlineMediaPlayback={true}
-        onHttpError={handleHttpError}
-        onError={handleOnRenderProcessGone}
+        mediaPlaybackRequiresUserAction={false}
+        onLoadEnd={handleLoadEnd} // Called when loading is done
+        onHttpError={handleHttpError} // Handle HTTP errors
+        onError={handleOnRenderProcessGone} // Handle WebView crashes
         renderError={() => (
           <View style={styles.errorContainer}>
             <Text style={styles.errorText}>Failed to load page.</Text>
+            {hasError && (
+              <Button title="Retry" onPress={handleRetry} />
+            )}
           </View>
         )}
-        onRenderProcessGone={handleOnRenderProcessGone}
-      />*/}
+      />
     </View>
   );
 }
@@ -59,14 +72,28 @@ export default function MovieBanner({movie}) {
 const styles = StyleSheet.create({
   webViewContainer: {
     marginTop: 20,
-    // borderRadius: 20,
-    // overflow: 'hidden',
     marginBottom: 10,
   },
   webView: {
     borderRadius: 20,
     height: 250,
     margin: 10,
-    // marginHorizontal: 5,
+    backgroundColor: AppStyles.generalColors.dark_one,
+  },
+  loader: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: [{ translateX: -25 }, { translateY: -25 }],
+    backgroundColor: AppStyles.generalColors.blue,
+  },
+  errorContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 250,
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 16,
   },
 });

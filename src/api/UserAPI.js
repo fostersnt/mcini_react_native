@@ -36,6 +36,41 @@ export const userLoginAPI = async phone => {
   }
 };
 
+//This function sends email to subscriber
+export const sendEmail = async (phone, email, content) => {
+  var prefix = 'SUBSCRIBER EMAIL MESSAGE: ';
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify({
+      msisdn: phone,
+      email: email,
+      content: content,
+    }),
+  };
+
+  const url = `${BaseURL}/user/email`;
+
+  try {
+    const response = await fetch(url, options);
+
+    const subscriberData = await response.json();
+
+    return subscriberData;
+  } catch (error) {
+    let message = error.toString();
+    return {
+      success: 'false',
+      message: message,
+      // message: 'Sorry, an error occured',
+      data: null,
+    };
+  }
+};
+
 //This function checks if subscriber is authenticated
 export const checkAuthAPI = async phone => {
   const phoneMain = replaceFirstDigitWith233(phone);

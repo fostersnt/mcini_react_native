@@ -51,7 +51,7 @@ export default function HomeScreen() {
         }
         return nextIndex;
       });
-    }, 5000);
+    }, 20000);
 
     // Clear the interval when the component unmounts
     return () => clearInterval(intervalId);
