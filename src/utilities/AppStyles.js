@@ -12,7 +12,8 @@ export const AppStyles = {
         weight_two: 'regular',
     },
     generalColors: {
-        dark_one: '#2f333e',
+        // dark_one: '#2f333e',
+        dark_one: '#06090f',
         dark_two: '#2b2c31',
         dark_three: '#26272c',
         dark_four: '#1e1f24',

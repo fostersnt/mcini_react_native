@@ -46,6 +46,7 @@ export default function BottomTabNav() {
         options={{
           tabBarIcon: renderHomeIcon,
           unmountOnBlur: false,
+          headerShown: false,
         }}
       />
       <Tab.Screen
