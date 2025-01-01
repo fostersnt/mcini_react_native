@@ -14,6 +14,7 @@ import SingleMovieCard from '../components/SingleMovieCard';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import IonIcons from 'react-native-vector-icons/Ionicons';
+import { showToast } from '../components/ToastAlert';
 
 const MemoizedMovieBanner = memo(MovieBanner);
 const MemoizedSingleMovieCard = memo(SingleMovieCard);
@@ -22,6 +23,8 @@ export default function HomeScreen() {
   const navigator = useNavigation();
   const {width: screenWidth} = Dimensions.get('window');
   const mySize = screenWidth / 3;
+
+  const isFinished = useRef(false);
 
   const subscriber = useSelector(state => state.subscriber.subscriberDetails);
   const movies = useSelector(state => state.movie.movies);
@@ -64,11 +67,25 @@ export default function HomeScreen() {
     }
   }, [currentIndex, movieBannersNew.length]);
 
+  //! This useEffect is responsible for in-app notificatio
+  useEffect(() => {
+    const logText = () => {
+      if (isFinished.current !== true) {
+        showToast('WELCOME MESSAGE', 'You are welcome', 'success', 5000);
+        isFinished.current = true;
+        // console.log('NOTIFICATION IS RUNNING: ', isFinished.current);
+      }
+    };
+    setInterval(() => {
+      logText();
+    }, 2000);
+  }, []);
+
   const handleRefresh = () => {
     setIsRefreshing(true);
     // Refresh logic here
     console.log('REFRESHING');
-    
+
     setIsRefreshing(false);
   };
 
@@ -184,19 +201,18 @@ export default function HomeScreen() {
                     {item.collection_name}
                   </Text>
                   <TouchableWithoutFeedback
-                    onPress={
-                      () => {
-                        navigator.navigate('ViewAllMovies', {
-                          collection_name: item.collection_name,
-                        });
-                      }
-                    }
-                  >
+                    onPress={() => {
+                      navigator.navigate('ViewAllMovies', {
+                        collection_name: item.collection_name,
+                      });
+                    }}>
                     <View style={styles.viewAllContainer}>
-                    <Text style={styles.viewAllText}>
-                      View All
-                    </Text>
-                    <IonIcons name="chevron-forward" color={AppStyles.generalColors.blue} size={20} />
+                      <Text style={styles.viewAllText}>View All</Text>
+                      <IonIcons
+                        name="chevron-forward"
+                        color={AppStyles.generalColors.blue}
+                        size={20}
+                      />
                     </View>
                   </TouchableWithoutFeedback>
                 </View>

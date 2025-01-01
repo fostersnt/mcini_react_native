@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
     backgroundColor: AppStyles.generalColors.dark_one,
     paddingTop: 30,
     paddingBottom: 40,
+    paddingHorizontal: 5,
   },
   titleContainer: {
     display: 'flex',
@@ -77,6 +78,5 @@ const styles = StyleSheet.create({
   viewAllContainer: {
     flex: 1,
     paddingTop: 10,
-    paddingHorizontal: 10
   },
 });

@@ -129,11 +129,10 @@ export default function SingleMovieCard({movie, onMoviePressedFunc}) {
 // Styles
 const styles = StyleSheet.create({
   mainView: {
-    // borderRadius: 25,
     // overflow: 'hidden',
   },
   webView: {
-    borderRadius: 20,
+    // borderRadius: 20,
     backgroundColor: AppStyles.generalColors.dark_four,
     marginHorizontal: 5,
     height: 200,
@@ -181,7 +180,7 @@ const styles = StyleSheet.create({
     width: '80%',
     height: 200,
     backgroundColor: AppStyles.generalColors.dark_one,
-    borderRadius: 10,
+    // borderRadius: 10,
     padding: 20,
     justifyContent: 'center',
     alignItems: 'center',

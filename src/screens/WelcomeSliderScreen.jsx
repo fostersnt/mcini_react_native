@@ -182,6 +182,7 @@ import {useNavigation} from '@react-navigation/native';
 import Swiper from 'react-native-swiper';
 import {checkAuthAPI} from '../api/UserAPI';
 import {useSelector} from 'react-redux';
+import { AppStyles } from '../utilities/AppStyles';
 
 export default function WelcomeSliderScreen() {
   const subscriberData = useSelector(
@@ -258,9 +259,9 @@ export default function WelcomeSliderScreen() {
       {/* Second image */}
       <View style={styles.slide}>
         <Image source={images[1].image} style={styles.image} />
-        <View style={styles.absoluteTouchableOpacity}>
+        <View style={styles.absoluteTouchableOpacity_get_started}>
           <TouchableOpacity onPress={onSkipPress}>
-            <Text style={styles.skip}>Skip</Text>
+            <Text style={styles.skip}>Get Started</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -291,6 +292,14 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 20, // Adjust as needed for bottom margin
     right: 20,  // Adjust as needed for right margin
+  },
+  
+  absoluteTouchableOpacity_get_started: {
+    position: 'absolute',
+    bottom: 70, // Adjust as needed for bottom margin
+    // right: 50,  // Adjust as needed for right margin
+    backgroundColor: AppStyles.generalColors.blue,
+    padding: 10,
   },
   dot: {
     backgroundColor: 'rgba(255, 255, 255, 0.3)', // Semi-transparent white for inactive dots
