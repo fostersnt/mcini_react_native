@@ -130,6 +130,7 @@ export default function FavoriteScreen() {
       style={{
         flex: 1,
         backgroundColor: AppStyles.generalColors.dark_one,
+        paddingTop: 20,
       }}>
       {renderContent()}
     </View>
@@ -148,7 +149,8 @@ const styles = StyleSheet.create({
     fontWeight: AppStyles.generalFontWeight.weight_one,
   },
   imageAndTextContainer: {
-    paddingVertical: 25,
+    // paddingVertical: 25,
+    height: 200,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-start',
@@ -156,19 +158,13 @@ const styles = StyleSheet.create({
   mainContainer: {
     backgroundColor: AppStyles.generalColors.dark_one,
     flex: 1,
-    height: 100,
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
     paddingHorizontal: 5,
-    // paddingVertical: 30,
-    // marginHorizontal: 10,
     marginBottom: 10,
-    borderRadius: 20,
   },
   fastImage: {
-    height: 90,
     marginRight: 10,
-    borderRadius: 20,
   },
 });
