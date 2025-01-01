@@ -48,7 +48,7 @@ export default function HomeScreen() {
         }
         return nextIndex;
       });
-    }, 3000);
+    }, 5000);
 
     // Clear the interval when the component unmounts
     return () => clearInterval(intervalId);
@@ -67,6 +67,8 @@ export default function HomeScreen() {
   const handleRefresh = () => {
     setIsRefreshing(true);
     // Refresh logic here
+    console.log('REFRESHING');
+    
     setIsRefreshing(false);
   };
 

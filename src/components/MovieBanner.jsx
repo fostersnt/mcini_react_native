@@ -58,6 +58,7 @@ export default function MovieBanner({movie}) {
 
 const styles = StyleSheet.create({
   webViewContainer: {
+    marginTop: 20,
     // borderRadius: 20,
     // overflow: 'hidden',
     marginBottom: 10,
