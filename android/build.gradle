@@ -20,6 +20,9 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        //! The lines below were newly added
+        // maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        // maven { url 'https://www.jitpack.io' }
     }
     dependencies {
         classpath("com.android.tools.build:gradle")
