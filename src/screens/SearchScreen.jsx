@@ -5,6 +5,7 @@ import {
   FlatList,
   TextInput,
   TouchableOpacity,
+  StatusBar,
 } from 'react-native';
 import React, {useRef, useState} from 'react';
 import {AppStyles} from '../utilities/AppStyles';
@@ -56,6 +57,7 @@ export default function SearchScreen() {
 
   return (
     <View style={styles.mainContainer}>
+      {/* <StatusBar hidden={true}></StatusBar> */}
       <View style={styles.searchContainer}>
         <TextInput
           style={styles.inputStyle}
@@ -136,10 +138,11 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: AppStyles.generalColors.dark_one,
-    paddingTop: 40,
+    // paddingTop: 40,
     padding: 10,
   },
   searchContainer: {
+    marginTop: 50,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
