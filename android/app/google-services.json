@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "269539097367",
+    "project_id": "mcini-mobile-app",
+    "storage_bucket": "mcini-mobile-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:269539097367:android:99ef438df43330ee119552",
+        "android_client_info": {
+          "package_name": "com.mcini"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZZbKggTAjK7EnrdMSNb3S1TrFW094YTQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

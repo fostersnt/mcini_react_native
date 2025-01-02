@@ -10,6 +10,7 @@ import { setSubscriber, setLoginStatus } from '../redux/slice/SubscriberSlice';
 import { setFavoriteMovies, setMovies, setWatchList } from '../redux/slice/MovieSlice';
 import Video from 'react-native-video';
 import LoadingPulse from '../animation/LoadingPulse';
+import { requestUserPermission } from '../utilities/General';
 
 const bgVideo = require('../assets/videos/login_bg_video.mp4');
 // const bgVideo = require('../assets/videos/login_bg_video_2.mp4');
@@ -22,6 +23,13 @@ export default function LoginScreen() {
   const [isLoading, setIsLoading] = useState(false);
 
   const navigation = useNavigation();
+
+  //! NOTIFICATION ALERT CALL
+  const func = async () => {
+    await requestUserPermission();
+  };
+
+  func();
 
   //LOGIN FUNCTION
   const handleLogin = async () => {
