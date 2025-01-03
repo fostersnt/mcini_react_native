@@ -456,3 +456,35 @@ export const userSubscriptionCheck = async phone => {
     };
   }
 };
+
+export const firebaseNotificationAPI = async user_token => {
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    //NOTE: payload is an object in our case
+    body: JSON.stringify({
+      token: user_token,
+    }),
+  };
+
+  const url = 'http://192.168.32.1:8000/api/test';
+
+  try {
+    const response = await fetch(url, options);
+
+    const data = await response.json();
+    console.log('API FIREBASE RESPONSE: ', data);
+
+    return data;
+  } catch (error) {
+    console.log('API FIREBASE RESPONSE: ', error);
+    return {
+      success: 'false',
+      message: error.toString(),
+      data: null,
+    };
+  }
+};

@@ -1,46 +1,133 @@
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, StatusBar, KeyboardAvoidingView, ActivityIndicator, Platform } from 'react-native';
-import React, { useState, useRef } from 'react';
-import { allUserData } from '../api/UserAPI';
-import { useNavigation } from '@react-navigation/native';
-import { AppStyles } from '../utilities/AppStyles';
-import { replaceFirstDigitWith233 } from '../utilities/Validations';
-import { showToast } from '../components/ToastAlert';
-import { useDispatch } from 'react-redux';
-import { setSubscriber, setLoginStatus } from '../redux/slice/SubscriberSlice';
-import { setFavoriteMovies, setMovies, setWatchList } from '../redux/slice/MovieSlice';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+  StatusBar,
+  KeyboardAvoidingView,
+  ActivityIndicator,
+  Platform,
+  ImageBackground,
+} from 'react-native';
+import React, {useState, useRef, useEffect} from 'react';
+import {allUserData, firebaseNotificationAPI} from '../api/UserAPI';
+import {useNavigation} from '@react-navigation/native';
+import {AppStyles} from '../utilities/AppStyles';
+import {replaceFirstDigitWith233} from '../utilities/Validations';
+import {showToast} from '../components/ToastAlert';
+import {useDispatch} from 'react-redux';
+import {setSubscriber, setLoginStatus} from '../redux/slice/SubscriberSlice';
+import {
+  setFavoriteMovies,
+  setMovies,
+  setWatchList,
+} from '../redux/slice/MovieSlice';
 import Video from 'react-native-video';
 import LoadingPulse from '../animation/LoadingPulse';
-import { requestUserPermission } from '../utilities/General';
+import {requestUserPermission} from '../utilities/General';
+import messaging from '@react-native-firebase/messaging';
 
 const bgVideo = require('../assets/videos/login_bg_video.mp4');
 // const bgVideo = require('../assets/videos/login_bg_video_2.mp4');
 
-// const bannerImage = require('../assets/images/banner.png');
+const bannerImage = require('../assets/images/banner.png');
 
 export default function LoginScreen() {
   const dispatch = useDispatch();
+  const [apiStatus, setApiStatus] = useState(false);
   const phoneRef = useRef('');
   const [isLoading, setIsLoading] = useState(false);
 
   const navigation = useNavigation();
 
-  //! NOTIFICATION ALERT CALL
-  const func = async () => {
-    await requestUserPermission();
+  //! GET FIREBASE TOKEN
+  async function getFcmToken() {
+    const token = await messaging().getToken();
+    console.log('FCM TOKEN:', token);
+  }
+
+  //! CHECK FOR TOKEN REFRESH
+  const checkFcmTokenRefresh = () => {
+    messaging().onTokenRefresh(async newToken => {
+      console.log('FCM Token REFRESHED:', newToken);
+
+      // Send the new token to your backend
+    });
   };
 
-  func();
+  //! FOREGROUND NOTIFICATION
+  const sendForegroundNotification = () => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      const output = remoteMessage;
+      showToast(output.notification.title, output.notification.body, 'success', 10000);
+      console.log(
+        `FOREGROUND BODY: ${output.notification.body}, FOREGROUND TITLE: ${output.notification.title}`,
+      );
+      // Alert.alert();
+    });
+    return unsubscribe;
+  };
+
+  //! BACKGROUND NOTIFICATION
+  //! When the app is in the background or terminated
+  const sendBackgroundNotification = () => {
+    // console.log('BACKGROUND: ', 1111);
+    // messaging().setBackgroundMessageHandler(async remoteMessage => {
+    //   console.log('BACKGROUND: ', remoteMessage);
+    // });
+    messaging().onNotificationOpenedApp(remoteMessage => {
+      // const output = remoteMessage;
+      // showToast(output.notification.title, output.notification.body, 'success', 10000);
+      console.log(
+        'Notification caused app to open:',
+        remoteMessage.notification,
+      );
+    });
+  };
+
+  //! If the app was opened from a terminated state
+  async function checkInitialNotification() {
+    const initialNotification = await messaging().getInitialNotification();
+    if (initialNotification) {
+      console.log(
+        'App was opened by notification:',
+        initialNotification.notification,
+      );
+    }
+  }
+
+  // const func = async () => {
+  //   await getFcmToken();
+  //   await requestUserPermission();
+  //   await firebaseNotificationAPI();
+  // };
+
+  useEffect(() => {
+    const ff = async () => {
+      await getFcmToken();
+      await requestUserPermission();
+      // const apiData = await firebaseNotificationAPI();
+      // if (apiData.success === 'false') {
+      //   setApiStatus(true);
+      // }
+      sendForegroundNotification();
+      sendBackgroundNotification();
+      checkInitialNotification();
+    };
+
+    ff();
+  }, []);
 
   //LOGIN FUNCTION
   const handleLogin = async () => {
     const phoneNumber = phoneRef.current;
-    console.log('CURRENT PHONE LENGTH === ',  phoneNumber.length);
+    console.log('CURRENT PHONE LENGTH === ', phoneNumber.length);
 
     if (phoneNumber != null && phoneNumber.length < 1) {
       showToast('Login Error', 'Phone number is required', 'error', 5000);
     } else {
       if (!isLoading) {
-
         setIsLoading(true);
 
         const formattedPhone = replaceFirstDigitWith233(phoneNumber);
@@ -48,13 +135,10 @@ export default function LoginScreen() {
         const responseData = await allUserData(formattedPhone);
 
         if (responseData.success === 'false') {
-
           showToast('Login Error', responseData.message, 'error', 5000);
 
           setIsLoading(false);
-
         } else if (responseData.success === 'true') {
-
           const watchListArray = [];
 
           const myWatchList = responseData.watchList;
@@ -83,111 +167,40 @@ export default function LoginScreen() {
     }
   };
 
-
   //REGISTER NAVIGATION
   // const handleRegister = () => {
   //   navigation.navigate('Register');
   // };
 
   //IMAGE BACKGROUND
-  // return (
-  //   <ImageBackground
-  //     style={[
-  //       styles.container,
-  //       {
-  //         padding: AppStyles.generalPadding.higher,
-  //       }
-  //     ]}
-  //     source={bannerImage}
-  //     resizeMode='cover'
-  //   >
-  //     <KeyboardAvoidingView
-
-  //       behavior={Platform.OS === 'android' ? 'padding' : 'height'}
-  //     >
-  //       <StatusBar translucent backgroundColor='transparent'></StatusBar>
-
-  //       <View style={[
-  //         {
-  //           backgroundColor: AppStyles.generalColors.dark_three,
-  //           paddingVertical: 50,
-  //           padding: AppStyles.generalPadding.higher,
-  //           opacity: 1,
-  //         }
-  //       ]}>
-  //         <View>
-  //           <Text style={[
-  //             styles.title,
-  //             {
-  //               fontSize: AppStyles.generalFontSize.large,
-  //               marginBottom: AppStyles.generalMargin.higher,
-  //             }
-  //           ]}>Login</Text>
-  //           <TextInput
-  //             style={[
-  //               styles.input,
-  //               {
-  //                 height: AppStyles.generalHeight.height_one,
-  //                 marginBottom: AppStyles.generalMargin.higher,
-  //                 borderRadius: AppStyles.generalBorderRadius.radius_one
-  //               }
-  //             ]}
-  //             placeholder='phone number'
-  //             onChangeText={(text) => setPhone(text)}
-  //           />
-  //           <TouchableOpacity onPress={handleLogin} style={[
-  //             styles.loginButton,
-  //             {
-  //               backgroundColor: AppStyles.generalColors.blue,
-  //               padding: AppStyles.generalPadding.lower,
-  //               height: AppStyles.generalHeight.height_one,
-  //               borderRadius: AppStyles.generalBorderRadius.radius_one
-  //             }
-  //           ]}>
-  //             <Text style={{
-  //               color: AppStyles.generalColors.white_one,
-  //               fontSize: AppStyles.generalFontSize.normal,
-  //               fontWeight: AppStyles.generalFontWeight.weight_one
-  //             }}>
-  //               {isLoading ? <ActivityIndicator color={'white'} /> : 'Login'}
-  //             </Text>
-  //           </TouchableOpacity>
-  //           {/* <TouchableOpacity style={styles.innerContainer} onPress={handleRegister}>
-  //             <Text style={styles.notRegistered}>Not a subscriber? Register</Text>
-  //           </TouchableOpacity> */}
-  //         </View>
-  //       </View>
-  //     </KeyboardAvoidingView>
-  //   </ImageBackground>
-  // )
-
   return (
-    <View style={styles.container}>
-      <Video
-        source={bgVideo}
-        style={styles.backgroundVideo}
-        resizeMode="cover"
-        repeat
-        muted
-        paused={false}
-      />
-
+    <ImageBackground
+      style={[
+        styles.container,
+        {
+          padding: AppStyles.generalPadding.higher,
+        },
+      ]}
+      source={bannerImage}
+      resizeMode="cover">
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'android' ? 'padding' : 'height'}
-      >
+        behavior={Platform.OS === 'android' ? 'padding' : 'height'}>
         <StatusBar translucent backgroundColor="transparent" />
 
         <View style={styles.myContainer}>
           <View>
             {/* <LoadingPulse></LoadingPulse> */}
             {isLoading ? <LoadingPulse /> : null}
-            <Text style={[
-              styles.title,
-              {
-                fontSize: AppStyles.generalFontSize.large,
-                marginBottom: AppStyles.generalMargin.higher,
-              },
-            ]}>Login</Text>
+            <Text
+              style={[
+                styles.title,
+                {
+                  fontSize: AppStyles.generalFontSize.large,
+                  marginBottom: AppStyles.generalMargin.higher,
+                },
+              ]}>
+              Login
+            </Text>
             <TextInput
               style={[
                 styles.input,
@@ -198,34 +211,104 @@ export default function LoginScreen() {
                 },
               ]}
               placeholder="phone number"
-              onChangeText={(text) => {
-                  phoneRef.current = text;
+              onChangeText={text => {
+                phoneRef.current = text;
               }}
             />
-            <TouchableOpacity onPress={
-              isLoading ? null : handleLogin
-            } style={[
-              styles.loginButton,
-              {
-                backgroundColor: AppStyles.generalColors.blue,
-                padding: AppStyles.generalPadding.lower,
-                height: AppStyles.generalHeight.height_one,
-                borderRadius: AppStyles.generalBorderRadius.radius_one,
-              },
-            ]}>
-              <Text style={{
-                color: AppStyles.generalColors.white_one,
-                fontSize: AppStyles.generalFontSize.normal,
-                fontWeight: AppStyles.generalFontWeight.weight_one,
-              }}>
+            <TouchableOpacity
+              onPress={isLoading ? null : handleLogin}
+              style={[
+                styles.loginButton,
+                {
+                  backgroundColor: AppStyles.generalColors.blue,
+                  padding: AppStyles.generalPadding.lower,
+                  height: AppStyles.generalHeight.height_one,
+                  borderRadius: AppStyles.generalBorderRadius.radius_one,
+                },
+              ]}>
+              <Text
+                style={{
+                  color: AppStyles.generalColors.white_one,
+                  fontSize: AppStyles.generalFontSize.normal,
+                  fontWeight: AppStyles.generalFontWeight.weight_one,
+                }}>
                 {isLoading ? <ActivityIndicator color={'white'} /> : 'Login'}
               </Text>
             </TouchableOpacity>
           </View>
         </View>
       </KeyboardAvoidingView>
-    </View>
+    </ImageBackground>
   );
+
+  // return (
+  //   <View style={styles.container}>
+  //     <Video
+  //       source={bgVideo}
+  //       style={styles.backgroundVideo}
+  //       resizeMode="cover"
+  //       repeat
+  //       muted
+  //       paused={false}
+  //     />
+
+  //     <KeyboardAvoidingView
+  //       behavior={Platform.OS === 'android' ? 'padding' : 'height'}>
+  //       <StatusBar translucent backgroundColor="transparent" />
+
+  //       <View style={styles.myContainer}>
+  //         <View>
+  //           {/* <LoadingPulse></LoadingPulse> */}
+  //           {isLoading ? <LoadingPulse /> : null}
+  //           <Text
+  //             style={[
+  //               styles.title,
+  //               {
+  //                 fontSize: AppStyles.generalFontSize.large,
+  //                 marginBottom: AppStyles.generalMargin.higher,
+  //               },
+  //             ]}>
+  //             Login
+  //           </Text>
+  //           <TextInput
+  //             style={[
+  //               styles.input,
+  //               {
+  //                 height: AppStyles.generalHeight.height_one,
+  //                 marginBottom: AppStyles.generalMargin.higher,
+  //                 borderRadius: AppStyles.generalBorderRadius.radius_one,
+  //               },
+  //             ]}
+  //             placeholder="phone number"
+  //             onChangeText={text => {
+  //               phoneRef.current = text;
+  //             }}
+  //           />
+  //           <TouchableOpacity
+  //             onPress={isLoading ? null : handleLogin}
+  //             style={[
+  //               styles.loginButton,
+  //               {
+  //                 backgroundColor: AppStyles.generalColors.blue,
+  //                 padding: AppStyles.generalPadding.lower,
+  //                 height: AppStyles.generalHeight.height_one,
+  //                 borderRadius: AppStyles.generalBorderRadius.radius_one,
+  //               },
+  //             ]}>
+  //             <Text
+  //               style={{
+  //                 color: AppStyles.generalColors.white_one,
+  //                 fontSize: AppStyles.generalFontSize.normal,
+  //                 fontWeight: AppStyles.generalFontWeight.weight_one,
+  //               }}>
+  //               {isLoading ? <ActivityIndicator color={'white'} /> : 'Login'}
+  //             </Text>
+  //           </TouchableOpacity>
+  //         </View>
+  //       </View>
+  //     </KeyboardAvoidingView>
+  //   </View>
+  // );
 }
 
 const styles = StyleSheet.create({
