@@ -25,7 +25,7 @@ import {
 } from '../redux/slice/MovieSlice';
 import Video from 'react-native-video';
 import LoadingPulse from '../animation/LoadingPulse';
-import {requestUserPermission} from '../utilities/General';
+import {checkInitialNotification, getFcmToken, requestUserPermission, sendBackgroundNotification, sendForegroundNotification} from '../utilities/General';
 import messaging from '@react-native-firebase/messaging';
 
 const bgVideo = require('../assets/videos/login_bg_video.mp4');
@@ -41,66 +41,6 @@ export default function LoginScreen() {
   const [isLoading, setIsLoading] = useState(false);
 
   const navigation = useNavigation();
-
-  //! GET FIREBASE TOKEN
-  async function getFcmToken() {
-    return await messaging().getToken();
-  }
-
-  //! CHECK FOR TOKEN REFRESH
-  const checkFcmTokenRefresh = () => {
-    messaging().onTokenRefresh(async newToken => {
-      console.log('FCM Token REFRESHED:', newToken);
-
-      // Send the new token to your backend
-    });
-  };
-
-  //! FOREGROUND NOTIFICATION
-  const sendForegroundNotification = () => {
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
-      const output = remoteMessage;
-      showToast(
-        output.notification.title,
-        output.notification.body,
-        'success',
-        10000,
-      );
-      console.log(
-        `FOREGROUND BODY: ${output.notification.body}, FOREGROUND TITLE: ${output.notification.title}`,
-      );
-      // Alert.alert();
-    });
-    return unsubscribe;
-  };
-
-  //! BACKGROUND NOTIFICATION
-  //! When the app is in the background or terminated
-  const sendBackgroundNotification = () => {
-    // console.log('BACKGROUND: ', 1111);
-    // messaging().setBackgroundMessageHandler(async remoteMessage => {
-    //   console.log('BACKGROUND: ', remoteMessage);
-    // });
-    messaging().onNotificationOpenedApp(remoteMessage => {
-      // const output = remoteMessage;
-      // showToast(output.notification.title, output.notification.body, 'success', 10000);
-      console.log(
-        'Notification caused app to open:',
-        remoteMessage.notification,
-      );
-    });
-  };
-
-  //! If the app was opened from a terminated state
-  async function checkInitialNotification() {
-    const initialNotification = await messaging().getInitialNotification();
-    if (initialNotification) {
-      console.log(
-        'App was opened by notification:',
-        initialNotification.notification,
-      );
-    }
-  }
 
   useEffect(() => {
     const ff = async () => {

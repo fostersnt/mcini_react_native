@@ -14,15 +14,25 @@ import SingleMovieCard from '../components/SingleMovieCard';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import IonIcons from 'react-native-vector-icons/Ionicons';
-import { showToast } from '../components/ToastAlert';
+import {showToast} from '../components/ToastAlert';
+import {NotificationModal} from '../components/NotificationModal';
+import { checkInitialNotification, sendBackgroundNotification, sendForegroundNotification } from '../utilities/General';
 
 const MemoizedMovieBanner = memo(MovieBanner);
 const MemoizedSingleMovieCard = memo(SingleMovieCard);
 
 export default function HomeScreen() {
+  const [isNotificationModalVisible, setNotificationModalVisible] =
+    useState(false);
+
   const navigator = useNavigation();
-  const {width: screenWidth} = Dimensions.get('window');
+  const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
   const mySize = screenWidth / 3;
+
+  const modalTitle = useRef('');
+  const modalContent = useRef('');
+  const modalWidth = useRef(screenWidth);
+  const modalHeight = useRef(screenHeight / 2);
 
   const isFinished = useRef(false);
 
@@ -67,19 +77,24 @@ export default function HomeScreen() {
     }
   }, [currentIndex, movieBannersNew.length]);
 
-  //! This useEffect is responsible for in-app notificatio
+  //! This useEffect is responsible for in-app notification
   useEffect(() => {
-    const logText = () => {
-      if (isFinished.current !== true) {
-        showToast('WELCOME MESSAGE', 'You are welcome', 'success', 5000);
-        isFinished.current = true;
-        // console.log('NOTIFICATION IS RUNNING: ', isFinished.current);
-      }
-    };
-    setInterval(() => {
-      logText();
-    }, 2000);
-  }, []);
+      const ff = async () => {
+        sendForegroundNotification();
+        sendBackgroundNotification();
+        checkInitialNotification();
+
+        modalTitle.current = 'Welcome';
+        modalContent.current = 'Hello world';
+        // modalWidth
+
+        setTimeout(() => {
+          setNotificationModalVisible(true);
+        }, 2000);
+      };
+
+      ff();
+  }, [isNotificationModalVisible]);
 
   const handleRefresh = () => {
     setIsRefreshing(true);
@@ -162,6 +177,17 @@ export default function HomeScreen() {
         barStyle={'light-content'}
         backgroundColor={AppStyles.generalColors.dark_four}
         translucent={true}
+      />
+      <NotificationModal
+        isVisible={isNotificationModalVisible}
+        onClose={() => setNotificationModalVisible(false)}
+        title={modalTitle.current}
+        content={modalContent.current}
+        image={require('../assets/images/banner.png')} // Adjust path to your image
+        imageWidth={200}
+        imageHeight={100}
+        modalWidth={modalWidth.current}
+        modalHeight={modalHeight.current}
       />
       <FlatList
         initialNumToRender={3}
