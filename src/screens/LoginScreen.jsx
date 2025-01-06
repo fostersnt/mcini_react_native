@@ -37,14 +37,14 @@ export default function LoginScreen() {
   const dispatch = useDispatch();
   const [apiStatus, setApiStatus] = useState(false);
   const phoneRef = useRef('');
+  const deviceToken = useRef('');
   const [isLoading, setIsLoading] = useState(false);
 
   const navigation = useNavigation();
 
   //! GET FIREBASE TOKEN
   async function getFcmToken() {
-    const token = await messaging().getToken();
-    console.log('FCM TOKEN:', token);
+    return await messaging().getToken();
   }
 
   //! CHECK FOR TOKEN REFRESH
@@ -60,7 +60,12 @@ export default function LoginScreen() {
   const sendForegroundNotification = () => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       const output = remoteMessage;
-      showToast(output.notification.title, output.notification.body, 'success', 10000);
+      showToast(
+        output.notification.title,
+        output.notification.body,
+        'success',
+        10000,
+      );
       console.log(
         `FOREGROUND BODY: ${output.notification.body}, FOREGROUND TITLE: ${output.notification.title}`,
       );
@@ -97,15 +102,10 @@ export default function LoginScreen() {
     }
   }
 
-  // const func = async () => {
-  //   await getFcmToken();
-  //   await requestUserPermission();
-  //   await firebaseNotificationAPI();
-  // };
-
   useEffect(() => {
     const ff = async () => {
-      await getFcmToken();
+      deviceToken.current = await getFcmToken();
+      console.log('FCM TOKEN useRef:', deviceToken.current);
       await requestUserPermission();
       // const apiData = await firebaseNotificationAPI();
       // if (apiData.success === 'false') {
