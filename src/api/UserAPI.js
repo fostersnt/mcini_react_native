@@ -4,7 +4,7 @@ import {BaseURL} from './BaseURL';
 import {movieListAPI} from './MovieAPI';
 
 //This function sends subscriber login request
-export const userLoginAPI = async phone => {
+export const userLoginAPI = async (phone, token) => {
   var prefix = 'SUBSCRIBER MESSAGE: ';
   const options = {
     method: 'POST',
@@ -14,8 +14,12 @@ export const userLoginAPI = async phone => {
     },
     body: JSON.stringify({
       msisdn: phone,
+      token: token,
     }),
   };
+
+  console.log('LOGIN PAYLOAD: ', `MSISDN: ${phone}, TOKEN: ${token}`);
+  
 
   const url = `${BaseURL}/user/login`;
 
@@ -251,7 +255,7 @@ export const userWatchListAPI = async phone => {
 };
 
 //-------------------This function put all user data together---------------------------
-export const allUserData = async subscriberMsisdn => {
+export const allUserData = async (subscriberMsisdn, deviceToken) => {
   var success = 'false';
   var message = '';
   var subscriber = null;
@@ -259,7 +263,7 @@ export const allUserData = async subscriberMsisdn => {
   var favorites = null;
   var watchList = null;
 
-  const loginResponse = await userLoginAPI(subscriberMsisdn);
+  const loginResponse = await userLoginAPI(subscriberMsisdn, deviceToken);
   // console.log('=== USER LOGIN API STARTED === ', loginResponse['data'].user);
 
   // const allMovies = await movieListAPI();

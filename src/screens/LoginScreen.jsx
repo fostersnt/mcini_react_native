@@ -105,7 +105,7 @@ export default function LoginScreen() {
   useEffect(() => {
     const ff = async () => {
       deviceToken.current = await getFcmToken();
-      console.log('FCM TOKEN useRef:', deviceToken.current);
+      // console.log('FCM TOKEN useRef:', deviceToken.current);
       await requestUserPermission();
       // const apiData = await firebaseNotificationAPI();
       // if (apiData.success === 'false') {
@@ -132,7 +132,7 @@ export default function LoginScreen() {
 
         const formattedPhone = replaceFirstDigitWith233(phoneNumber);
 
-        const responseData = await allUserData(formattedPhone);
+        const responseData = await allUserData(formattedPhone, deviceToken.current);
 
         if (responseData.success === 'false') {
           showToast('Login Error', responseData.message, 'error', 5000);
