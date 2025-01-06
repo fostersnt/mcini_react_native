@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalContainer: {
-    // backgroundColor: 'white',
+    backgroundColor: '#1a434e',
     borderRadius: 10,
     padding: 20,
     alignItems: 'center',
@@ -71,7 +71,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   button: {
-    backgroundColor: '#6C63FF', // Violet theme color
+    backgroundColor: AppStyles.generalColors.blue, // Violet theme color
+    // backgroundColor: '#6C63FF', // Violet theme color
     borderRadius: 5,
     paddingVertical: 10,
     paddingHorizontal: 20,

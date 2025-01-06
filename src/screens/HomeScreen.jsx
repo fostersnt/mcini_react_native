@@ -31,7 +31,7 @@ export default function HomeScreen() {
 
   const modalTitle = useRef('');
   const modalContent = useRef('');
-  const modalWidth = useRef(screenWidth);
+  const modalWidth = useRef(screenWidth - 20);
   const modalHeight = useRef(screenHeight / 2);
 
   const isFinished = useRef(false);
@@ -42,8 +42,12 @@ export default function HomeScreen() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const movieBannersNew =
-    movies && movies.length > 0 ? movies.slice(0, 10) : [];
+  //! OLD MOVIE BANNER
+  // const movieBannersNew =
+  //   movies && movies.length > 0 ? movies.slice(0, 10) : [];
+
+  //! OLD MOVIE BANNER
+  const movieBannersNew = [1,2,3];
 
   const bannerFlatListRef = useRef(null); // Reference to the FlatList for banners
 
@@ -94,7 +98,7 @@ export default function HomeScreen() {
       };
 
       ff();
-  }, [isNotificationModalVisible]);
+  }, []);
 
   const handleRefresh = () => {
     setIsRefreshing(true);
@@ -208,8 +212,9 @@ export default function HomeScreen() {
                 maxToRenderPerBatch={1}
                 // pagingEnabled
                 data={movieBannersNew}
-                keyExtractor={item => item.id.toString()}
-                renderItem={({item}) => <MemoizedMovieBanner movie={item} />}
+                // keyExtractor={item => item.id.toString()}
+                keyExtractor={item => item}
+                renderItem={({item}) => <MemoizedMovieBanner movieKey={item} />}
                 horizontal
                 snapToInterval={screenWidth} // Snap to the width of each banner
                 snapToAlignment="center" // Align each banner to the center

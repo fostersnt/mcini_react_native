@@ -3,10 +3,16 @@ import { View, StyleSheet, Dimensions, ActivityIndicator, Button } from 'react-n
 import WebView from 'react-native-webview';
 import { Text } from 'react-native-animatable';
 import { AppStyles } from '../utilities/AppStyles';
+import Video from 'react-native-video';
+import RNFS from 'react-native-fs';
+import { videos } from '../utilities/banner_videos';
 
-export default function MovieBanner({ movie }) {
+export default function MovieBanner({ movieKey }) {
   const { width: screenWidth } = Dimensions.get('window');
   const widthSize = screenWidth - 20;
+
+  // console.log('MOVIE: ', movie);
+  // const static_videos = videos;
 
   // State to manage loading and error
   const [isLoading, setIsLoading] = useState(true);
@@ -36,6 +42,26 @@ export default function MovieBanner({ movie }) {
     setHasError(false);
   };
 
+   // Dynamically resolve the video key
+   const getVideoSource = (key) => {
+    var video_url = '';
+    switch (key) {
+      case 1:
+        return require('../assets/videos/banner_movies/OMOGE.mp4');
+      case 2:
+        return require('../assets/videos/banner_movies/Emaa_Pe_Aware.mp4');
+      case 3:
+        return require('../assets/videos/banner_movies/AMERICAN_BOY.mp4');
+      default:
+       return ''
+    }
+  };
+
+  const videoSource = getVideoSource(movieKey);
+
+  console.log('MOVIE: ', videoSource);
+  
+
   return (
     <View style={[styles.webViewContainer]}>
       {isLoading && (
@@ -43,10 +69,11 @@ export default function MovieBanner({ movie }) {
       )}
       
       {/* WebView */}
-      <WebView
+      {/* <WebView
         style={[styles.webView, { width: widthSize }]}
         source={{
-          uri: movie.video_url,
+          // uri: movie.video_url,
+          uri: movie,
           headers: { Referer: 'https://mcini.tv' },
         }}
         javaScriptEnabled={true}
@@ -64,6 +91,12 @@ export default function MovieBanner({ movie }) {
             )}
           </View>
         )}
+      /> */}
+      <Video
+        source={require('../assets/videos/banner_movies/Emaa_Pe_Aware.mp4')} // Local video
+        style={[styles.video, { width: widthSize }]}
+        controls={true}
+        resizeMode="contain"
       />
     </View>
   );
@@ -75,6 +108,12 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   webView: {
+    borderRadius: 20,
+    height: 250,
+    margin: 10,
+    backgroundColor: AppStyles.generalColors.dark_one,
+  },
+  video: {
     borderRadius: 20,
     height: 250,
     margin: 10,
