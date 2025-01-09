@@ -65,7 +65,7 @@ export default function HomeScreen() {
         }
         return nextIndex;
       });
-    }, 20000);
+    }, 30000);
 
     // Clear the interval when the component unmounts
     return () => clearInterval(intervalId);
@@ -74,6 +74,8 @@ export default function HomeScreen() {
   useEffect(() => {
     // Scroll to the next index every time currentIndex changes
     if (bannerFlatListRef.current && movieBannersNew.length > 0) {
+      // console.log('CURRENT MOVIE INDEX: ', currentIndex);
+
       bannerFlatListRef.current.scrollToIndex({
         animated: true,
         index: currentIndex,
@@ -93,7 +95,7 @@ export default function HomeScreen() {
         // modalWidth
 
         setTimeout(() => {
-          setNotificationModalVisible(true);
+          // setNotificationModalVisible(true);
         }, 2000);
       };
 

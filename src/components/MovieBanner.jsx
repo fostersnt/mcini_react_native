@@ -1,14 +1,20 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Dimensions, ActivityIndicator, Button } from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+  ActivityIndicator,
+  Button,
+} from 'react-native';
 import WebView from 'react-native-webview';
-import { Text } from 'react-native-animatable';
-import { AppStyles } from '../utilities/AppStyles';
+import {Text} from 'react-native-animatable';
+import {AppStyles} from '../utilities/AppStyles';
 import Video from 'react-native-video';
 import RNFS from 'react-native-fs';
-import { videos } from '../utilities/banner_videos';
+import {videos} from '../utilities/banner_videos';
 
-export default function MovieBanner({ movieKey }) {
-  const { width: screenWidth } = Dimensions.get('window');
+export default function MovieBanner({movieKey}) {
+  const {width: screenWidth} = Dimensions.get('window');
   const widthSize = screenWidth - 20;
 
   // console.log('MOVIE: ', movie);
@@ -18,15 +24,15 @@ export default function MovieBanner({ movieKey }) {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
 
-  const handleHttpError = (syntheticEvent) => {
-    const { nativeEvent } = syntheticEvent;
+  const handleHttpError = syntheticEvent => {
+    const {nativeEvent} = syntheticEvent;
     console.log('HTTP Error:', nativeEvent);
     setIsLoading(false);
     setHasError(true);
   };
 
-  const handleOnRenderProcessGone = (syntheticEvent) => {
-    const { nativeEvent } = syntheticEvent;
+  const handleOnRenderProcessGone = syntheticEvent => {
+    const {nativeEvent} = syntheticEvent;
     console.warn('WebView Crashed: ', nativeEvent.didCrash);
     setIsLoading(false);
     setHasError(true);
@@ -42,32 +48,42 @@ export default function MovieBanner({ movieKey }) {
     setHasError(false);
   };
 
-   // Dynamically resolve the video key
-   const getVideoSource = (key) => {
+  // Dynamically resolve the video key
+  const getVideoSource = key => {
     var video_url = '';
     switch (key) {
       case 1:
-        return require('../assets/videos/banner_movies/OMOGE.mp4');
+        video_url = require('../assets/videos/banner_movies/OMOGE.mp4');
+        break;
       case 2:
-        return require('../assets/videos/banner_movies/Emaa_Pe_Aware.mp4');
+        video_url = require('../assets/videos/banner_movies/Emaa_Pe_Aware.mp4');
+        break;
       case 3:
-        return require('../assets/videos/banner_movies/AMERICAN_BOY.mp4');
+        video_url = require('../assets/videos/banner_movies/AMERICAN_BOY.mp4');
+        break;
       default:
-       return ''
+        video_url = '';
     }
+
+    return video_url;
   };
+
+  // console.log('MOVIE ARRAY ID: ', movieKey);
 
   const videoSource = getVideoSource(movieKey);
 
-  console.log('MOVIE: ', videoSource);
-  
+  // console.log('MOVIE: ', videoSource);
 
   return (
     <View style={[styles.webViewContainer]}>
       {isLoading && (
-        <ActivityIndicator style={styles.loader} size="large" color={AppStyles.generalColors.primary} />
+        <ActivityIndicator
+          style={styles.loader}
+          size="large"
+          color={AppStyles.generalColors.primary}
+        />
       )}
-      
+
       {/* WebView */}
       {/* <WebView
         style={[styles.webView, { width: widthSize }]}
@@ -93,10 +109,13 @@ export default function MovieBanner({ movieKey }) {
         )}
       /> */}
       <Video
-        source={require('../assets/videos/banner_movies/Emaa_Pe_Aware.mp4')} // Local video
-        style={[styles.video, { width: widthSize }]}
-        controls={true}
-        resizeMode="contain"
+        source={videoSource}
+        style={[styles.video, {width: widthSize}]}
+        // controls={true}
+        // resizeMode="contain"
+        autoPlay={true}
+        playInBackground={false}
+        playWhenInactive={true}
       />
     </View>
   );
@@ -123,7 +142,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '50%',
     left: '50%',
-    transform: [{ translateX: -25 }, { translateY: -25 }],
+    transform: [{translateX: -25}, {translateY: -25}],
     backgroundColor: AppStyles.generalColors.blue,
   },
   errorContainer: {
