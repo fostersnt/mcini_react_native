@@ -474,7 +474,7 @@ export const firebaseNotificationAPI = async user_token => {
     }),
   };
 
-  const url = 'http://192.168.32.1:8000/api/test';
+  const url = `${BaseURL}/api/test`;
 
   try {
     const response = await fetch(url, options);
