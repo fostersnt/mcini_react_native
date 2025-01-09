@@ -1,0 +1,41 @@
+export const NotificationMessages = {
+    user_on_boarding: {
+        sign_up: {
+            item_1: 'Welcome to mCini! Start exploring African classics, trending series, and exclusive shorts. Your cinematic journey begins here.',
+            item_2: 'Thanks for signing up! Discover a world of stories, from timeless African cinema to fresh new wave hits.',
+            item_3: "Ready for unlimited entertainment? Explore mCini's vast collection of movies, series, and documentaries right away!",
+            item_4: 'Your account is set up! Dive into genres you love classic films, thrilling series, and more await.',
+            item_5: 'Welcome aboard! Save your favorite movies, create a watchlist, and enjoy cinema on your terms.',
+            item_6: 'Discover films and stories that connect with your world. Start streaming your first movie today!',
+            item_7: 'Get ready for non-stop entertainment! From timeless African classics to trending series, mCini has it all.',
+            item_8: "On mCini, you're always one click away from incredible storytelling. Start your journey now!",
+            item_9: 'Need help getting started? Browse by category or check out our featured picks your next favorite film is waiting.',
+            item_10: "You're all set! Explore, watch, and enjoy African stories like never before.",
+        },
+        login_and_engagement: {
+            item_1: "You're just a click away from non-stop entertainment. Continue where you left off!",
+            item_2: "Looking for something fresh? We've got new titles you'll love. Start exploring now!",
+            item_3: 'Ready for another binge? Check out our latest releases and trending picks.',
+            item_4: 'Log in and join the excitement! Fresh stories, big entertainment, and unforgettable moments await.',
+            item_5: 'Discover something new today! Explore documentaries, shorts, and series that spark your curiosity.',
+            item_6: 'Ready to unwind? Grab your popcorn and start streaming your queue is waiting!',
+            item_7: 'Back for more? Continue watching or explore fresh picks just added to mCini.',
+            item_8: 'Your next great watch is one click away. Dive into our latest collection!',
+            item_9: 'Missed us? Great new content is waiting log in and start streaming.',
+        },
+        after_successful_login: {
+            item_1: "Welcome back! We've added exciting new films and series start exploring.",
+            item_2: 'Welcome back! New movies have been added dive in and find your next favorite.',
+            item_3: "Missed anything while you were away? Check out what's trending now on mCini.",
+            item_4: 'Continue where you left off or browse new categories for fresh entertainment.',
+            item_5: 'Ready for a new adventure? Dive into our latest documentaries and shorts.',
+            item_6: "It's binge time! Pick up where you stopped or find something new.",
+            item_7: 'Your watchlist is ready continue watching or discover something fresh today!',
+            item_8: 'New arrivals alert! Explore the latest African cinema and trending shorts.',
+            item_9: "We've got something special for you! Start watching our recommended picks.",
+            item_10: 'Feeling adventurous? Explore new genres and discover hidden gems.',
+            item_11: 'Welcome back to endless entertainment! Find something you love and start watching.',
+
+        },
+    },
+};

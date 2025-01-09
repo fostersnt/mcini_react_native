@@ -29,10 +29,10 @@ export default function HomeScreen() {
   const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
   const mySize = screenWidth / 3;
 
-  const modalTitle = useRef('');
-  const modalContent = useRef('');
-  const modalWidth = useRef(screenWidth - 20);
-  const modalHeight = useRef(screenHeight / 2);
+  const [modalTitle, setmodalTitle] = useState('');
+  const [modalContent, setmodalContent] = useState('');
+  const [modalWidth, setmodalWidth] = useState(screenWidth - 50);
+  const [modalHeight, setmodalHeight] = useState(screenHeight / 2);
 
   const isFinished = useRef(false);
 
@@ -90,13 +90,12 @@ export default function HomeScreen() {
         sendBackgroundNotification();
         checkInitialNotification();
 
-        modalTitle.current = 'Welcome';
-        modalContent.current = 'Hello world';
-        // modalWidth
+        setmodalTitle('Welcome');
+        setmodalContent('Hello world');
 
         setTimeout(() => {
-          // setNotificationModalVisible(true);
-        }, 2000);
+          setNotificationModalVisible(true);
+        }, 1000);
       };
 
       ff();
@@ -192,8 +191,8 @@ export default function HomeScreen() {
         image={require('../assets/images/banner.png')} // Adjust path to your image
         imageWidth={200}
         imageHeight={100}
-        modalWidth={modalWidth.current}
-        modalHeight={modalHeight.current}
+        modalWidth={modalWidth}
+        modalHeight={modalHeight}
       />
       <FlatList
         initialNumToRender={3}
