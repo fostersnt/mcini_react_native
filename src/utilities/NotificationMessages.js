@@ -38,4 +38,32 @@ export const NotificationMessages = {
 
         },
     },
+    user_with_active_subscritpion: {
+        absent_for_two_days: {
+            item_1: "It's been a while! We’ve got fresh new releases waiting for you log in and start watching.",
+            item_2: 'Miss us? You’ve got movies waiting in your queue. Pick up where you left off!',
+            item_3: 'New wave films, trending series, and exclusive shorts are calling your name. Come back for more!',
+            item_4: "Ready to be entertained again? We've added exciting content just for you!",
+            item_5: "Your next great watch is only a tap away. Come back and explore what's new.",
+            item_6: "Haven't watched in a while? Check out our most popular picks this month.",
+            item_7: 'Make your return count new genres and exclusive content await',
+            item_8: "It's time to catch up on the latest hits! Your watchlist is ready to go.",
+            item_9: 'Come back and rediscover the world of African cinema your next favorite is waiting.',
+
+        },
+    },
+    user_with_inactive_subscritpion: {
+        absent_for_two_days: {
+            item_1: "",
+            item_2: 'Miss us? You’ve got movies waiting in your queue. Pick up where you left off!',
+            item_3: 'New wave films, trending series, and exclusive shorts are calling your name. Come back for more!',
+            item_4: "Ready to be entertained again? We've added exciting content just for you!",
+            item_5: "Your next great watch is only a tap away. Come back and explore what's new.",
+            item_6: "Haven't watched in a while? Check out our most popular picks this month.",
+            item_7: 'Make your return count new genres and exclusive content await',
+            item_8: "It's time to catch up on the latest hits! Your watchlist is ready to go.",
+            item_9: 'Come back and rediscover the world of African cinema your next favorite is waiting.',
+
+        },
+    },
 };
