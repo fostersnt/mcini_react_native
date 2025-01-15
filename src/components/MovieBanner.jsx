@@ -114,8 +114,8 @@ export default function MovieBanner({movieKey}) {
         // controls={true}
         // resizeMode="contain"
         autoPlay={true}
-        playInBackground={false}
-        playWhenInactive={true}
+        // playInBackground={false}
+        // playWhenInactive={true}
       />
     </View>
   );

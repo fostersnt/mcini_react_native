@@ -21,7 +21,7 @@ export const NotificationModal = ({
       onRequestClose={onClose}
     >
       <View style={styles.overlay}>
-        <View style={[styles.modalContainer, { width: modalWidth, height: modalHeight, backgroundColor: AppStyles.generalColors.dark_one }]}>
+        <View style={[styles.modalContainer, { width: modalWidth, height: modalHeight }]}>
           {image && (
             <Image source={image} style={[styles.image, {width: imageWidth, height: imageHeight}]} resizeMode="contain" />
           )}
@@ -44,9 +44,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalContainer: {
-    backgroundColor: '#1a434e',
-    borderRadius: 10,
-    padding: 20,
+    backgroundColor: '#f5f6fa',
+    // backgroundColor: '#1a434e',
+    // borderRadius: 10,
+    padding: 10,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
