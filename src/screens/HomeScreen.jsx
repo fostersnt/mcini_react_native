@@ -94,10 +94,11 @@ export default function HomeScreen() {
         setmodalContent('Hello world');
 
         setTimeout(() => {
-          setNotificationModalVisible(true);
+          // setNotificationModalVisible(true);
         }, 1000);
       };
 
+      
       ff();
   }, []);
 

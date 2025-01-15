@@ -116,6 +116,7 @@ export default function MovieBanner({movieKey}) {
         autoPlay={true}
         // playInBackground={false}
         // playWhenInactive={true}
+        muted={true}
       />
     </View>
   );
