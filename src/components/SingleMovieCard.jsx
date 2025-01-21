@@ -26,7 +26,7 @@ export default function SingleMovieCard({movie, onMoviePressedFunc}) {
   const subscriber = useSelector(state => state.subscriber.subscriberDetails);
 
   const {width: screenWidth} = Dimensions.get('screen');
-  const size = screenWidth / 3 - 25; // Calculate WebView size
+  const size = screenWidth / 3 + 20; // Calculate WebView size
 
   const [modalVisible, setModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     // overflow: 'hidden',
   },
   webView: {
-    // borderRadius: 20,
+    borderRadius: 15,
     backgroundColor: AppStyles.generalColors.dark_four,
     marginHorizontal: 5,
     height: 200,

@@ -9,28 +9,13 @@ export default function WelcomeSliderScreen() {
 
   const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
 
-  // Single image to show
   const image = imagePath;
-
-  // useEffect(() => {
-  //   // Navigate after 3 seconds
-  //   const timer = setTimeout(() => {
-  //     navigator.navigate('Home'); // Navigate to Home or your desired screen
-  //   }, 3000);
-
-  //   // Cleanup the timer when the component is unmounted
-  //   return () => clearTimeout(timer);
-  // }, [navigator]);
 
   return (
     <View style={styles.container}>
-      {/* Single full-screen image */}
       <Image source={image} style={styles.image} />
-      
-      {/* Overlay with text and button */}
       <View style={styles.overlay}>
         <Text style={styles.text}>Immerse yourself in the richness of African cinema</Text>
-        
         <TouchableOpacity style={styles.button} onPress={() => navigator.navigate('Login')}>
           <Text style={styles.buttonText}>Get Started</Text>
         </TouchableOpacity>
@@ -48,7 +33,7 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
-    resizeMode: 'cover', // Ensure the image covers the entire screen
+    resizeMode: 'cover',
   },
   overlay: {
     position: 'absolute',
