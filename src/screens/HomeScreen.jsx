@@ -97,7 +97,6 @@ export default function HomeScreen() {
           // setNotificationModalVisible(true);
         }, 1000);
       };
- 
       ff();
   }, []);
 

@@ -15,6 +15,7 @@ import ViewAllMoviesPlayer from '../components/ViewAllMoviesPlayer';
 import {AppStyles} from '../utilities/AppStyles';
 import WatchListScreen from '../screens/WatchListScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import GetStartedScreen from '../screens/GetStarted';
 
 const Stack = createNativeStackNavigator();
 
@@ -72,6 +73,10 @@ export default function AppNavigation() {
         <Stack.Screen
           name="ViewAllMoviesPlayer"
           component={ViewAllMoviesPlayer}
+        />
+        <Stack.Screen
+          name="GetStarted"
+          component={GetStartedScreen}
         />
         <Stack.Screen
           name="BottomTabNav"
