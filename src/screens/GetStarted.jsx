@@ -29,7 +29,7 @@ export default function WelcomeSliderScreen() {
       
       {/* Overlay with text and button */}
       <View style={styles.overlay}>
-        <Text style={styles.text}>Welcome to Our App</Text>
+        <Text style={styles.text}>Immerse yourself in the richness of African cinema</Text>
         
         <TouchableOpacity style={styles.button} onPress={() => navigator.navigate('Login')}>
           <Text style={styles.buttonText}>Get Started</Text>
@@ -58,19 +58,29 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent overlay
+    backgroundColor: 'rgba(5, 0, 0, 0.6)',
+    // backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent overlay
   },
   text: {
+    position: 'absolute',
+    bottom: 200,
     color: '#fff',
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 20,
+    textAlign: 'center',
   },
   button: {
+    width: '80%',
+    // marginHorizontal: 20,
+    position: 'absolute',
+    bottom: 100,
     backgroundColor: '#1E90FF', // A blue button
     paddingVertical: 12,
-    paddingHorizontal: 30,
-    borderRadius: 30,
+    // paddingHorizontal: 30,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   buttonText: {
     color: '#fff',
