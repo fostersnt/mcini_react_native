@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, FlatList, StatusBar} from 'react-native';
+import {View, Text, StyleSheet, FlatList, StatusBar, Dimensions} from 'react-native';
 import React from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import SingleMovieCard from './SingleMovieCard';
@@ -8,6 +8,10 @@ import {useSelector} from 'react-redux';
 export default function ViewAllMoviesComponent() {
   const route = useRoute();
   const navigator = useNavigation();
+  
+  const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
+    const myWidth = screenWidth / 3 - 5;
+  // const width = screenWidth / 3;
 
   const movies = useSelector(state => state.movie.movies);
 
@@ -50,6 +54,8 @@ export default function ViewAllMoviesComponent() {
               <SingleMovieCard
                 movie={item}
                 onMoviePressedFunc={handleMoviePressedFunc}
+                myWidth={myWidth}
+                myHeight={200}
               />
             </View>
           );
@@ -65,7 +71,7 @@ const styles = StyleSheet.create({
     backgroundColor: AppStyles.generalColors.dark_one,
     paddingTop: 30,
     paddingBottom: 40,
-    paddingHorizontal: 5,
+    // paddingHorizontal: 5,
   },
   titleContainer: {
     display: 'flex',
@@ -78,5 +84,6 @@ const styles = StyleSheet.create({
   viewAllContainer: {
     flex: 1,
     paddingTop: 10,
+    // marginHorizontal: 5,
   },
 });

@@ -15,8 +15,9 @@ import FastImage from 'react-native-fast-image';
 import {showToast} from './ToastAlert';
 
 const imagePath = require('../assets/images/banner.png');
+// const screenWidth = Dimensions.get('screen');
 
-export default function SingleMovieCard({movie, onMoviePressedFunc}) {
+export default function SingleMovieCard({movie, onMoviePressedFunc, myWidth, myHeight}) {
   const navigator = useNavigation();
 
   //   const [loading, setLoading] = useState(true);
@@ -26,7 +27,9 @@ export default function SingleMovieCard({movie, onMoviePressedFunc}) {
   const subscriber = useSelector(state => state.subscriber.subscriberDetails);
 
   const {width: screenWidth} = Dimensions.get('screen');
-  const size = screenWidth / 3 + 20; // Calculate WebView size
+  // const size = screenWidth / 3 + 20; // Calculate WebView size
+  // const size = myWidth; // Calculate WebView size
+  
 
   const [modalVisible, setModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -82,7 +85,7 @@ export default function SingleMovieCard({movie, onMoviePressedFunc}) {
             priority: FastImage.priority.high,
           }}
           resizeMode={FastImage.resizeMode.cover}
-          style={[styles.webView, {width: size}]}
+          style={[styles.webView, {width: myWidth, height: myHeight}]}
         />
 
         {/* <WebView
@@ -135,7 +138,6 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     backgroundColor: AppStyles.generalColors.dark_four,
     marginHorizontal: 5,
-    height: 200,
     zIndex: 1, // Ensure WebView stays behind the loader
   },
   loader: {

@@ -29,6 +29,8 @@ export default function HomeScreen() {
   const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
   const mySize = screenWidth / 3;
 
+    const size = screenWidth / 3 + 20; // Calculate WebView size
+
   const [modalTitle, setmodalTitle] = useState('');
   const [modalContent, setmodalContent] = useState('');
   const [modalWidth, setmodalWidth] = useState(screenWidth - 50);
@@ -154,6 +156,8 @@ export default function HomeScreen() {
           <MemoizedSingleMovieCard
             movie={item}
             onMoviePressedFunc={handleMoviePressedFunc}
+            myWidth={size}
+            myHeight={200}
           />
         )}
         // ListFooterComponent={
