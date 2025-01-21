@@ -59,7 +59,7 @@ export default function FavoriteScreen() {
                       priority: FastImage.priority.high,
                     }}
                     resizeMode={FastImage.resizeMode.cover}
-                    style={[styles.fastImage, {width: screenWidth / 3, height: 200}]}
+                    style={[styles.fastImage, {width: screenWidth / 3 + 20, height: 200}]}
                   />
                   <View style={{width: screenWidth / 2}}>
                     <Text
@@ -166,6 +166,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   fastImage: {
+    borderRadius: 15,
     marginRight: 10,
   },
 });

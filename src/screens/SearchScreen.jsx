@@ -13,12 +13,29 @@ import Etypto from 'react-native-vector-icons/Entypo';
 import Octicons from 'react-native-vector-icons/Octicons';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
+import {userSubscriptionCheck} from '../api/UserAPI';
+import {showToast} from '../components/ToastAlert';
+import SubscriptionModal from '../components/SubscriptionModal';
+import { userData } from '../apiData/UserData';
 
 export default function SearchScreen() {
   const movies = useSelector(state => state.movie.movies);
+  const [currentMovie, setcurrentMovie] = useState(null);
+  const subscriber = useSelector(state => state.subscriber.subscriberDetails);
+
+  const myData = userData;
+    const msisdn = subscriber ? subscriber.msisdn : 'N/A';
+    const plan_id = myData.MTN_dailyPlanId;
+    const network = myData.network.mtn;
 
   const [foundMovies, setFoundMovies] = useState([]);
   // const [inputText, setInputText] = useState([]);
+
+  //!Modal control
+  const [modalVisible, setModalVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isStatusCheck, setIsStatusCheck] = useState(false);
+  const [isPaymentCheck, setIsPaymentCheck] = useState(false);
 
   const inputRef = useRef();
 
@@ -97,13 +114,42 @@ export default function SearchScreen() {
               <View style={styles.componentContainer}>
                 <TouchableOpacity
                   onPress={() => {
-                    navigator.navigate('MoviePlayer', {singleMovie: item});
+                    setcurrentMovie(item);
+                    async () => {
+                      setIsStatusCheck(true);
+                      const statusCheck = await userSubscriptionCheck(
+                        subscriber.msisdn,
+                      );
+                      console.log(
+                        'SUBSCRIPTION STATUS CHECK === ',
+                        statusCheck,
+                      );
+
+                      setIsStatusCheck(false);
+                      const status =
+                        statusCheck.data != null
+                          ? statusCheck.data.subscription_status
+                          : 'N/A';
+                      if (status.toLowerCase() === 'active') {
+                        navigator.navigate('MoviePlayer', {singleMovie: item});
+                        // onMoviePressedFunc(movie);
+                      } else if (status.toLowerCase() === 'inactive') {
+                        setModalVisible(true);
+                      } else {
+                        showToast(
+                          'Subscription Check',
+                          'Unknown error occurred',
+                          'error',
+                          5000,
+                        );
+                        console.log('SEARCH_SCREEN: Uknown Subscription status');
+                      }
+                      console.log('SEARCH_SCREEN: Status Check Response === ', status);
+                    };
                   }}>
                   <View style={styles.movieTitleContainer}>
                     <Octicons name="history" size={20} color={'white'} />
-                    <Text style={styles.movieTitle}>
-                      {item.title}
-                    </Text>
+                    <Text style={styles.movieTitle}>{item.title}</Text>
                   </View>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -118,6 +164,21 @@ export default function SearchScreen() {
           keyExtractor={item => item.id.toString()}
         />
       )}
+      <SubscriptionModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        isLoading={isLoading}
+        setIsLoading={setIsLoading}
+        isStatusCheck={isStatusCheck}
+        setIsStatusCheck={setIsStatusCheck}
+        isPaymentCheck={isPaymentCheck}
+        setIsPaymentCheck={setIsPaymentCheck}
+        msisdn={msisdn}
+        network={network}
+        plan_id={plan_id}
+        movie={currentMovie}
+        navigation={navigator}
+      />
     </View>
   );
 }
@@ -125,7 +186,7 @@ export default function SearchScreen() {
 const styles = StyleSheet.create({
   movieTitle: {
     color: 'white',
-    marginLeft: 10
+    marginLeft: 10,
   },
   movieTitleContainer: {
     display: 'flex',
