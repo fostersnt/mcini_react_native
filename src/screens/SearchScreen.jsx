@@ -5,7 +5,6 @@ import {
   FlatList,
   TextInput,
   TouchableOpacity,
-  StatusBar,
 } from 'react-native';
 import React, {useRef, useState} from 'react';
 import {AppStyles} from '../utilities/AppStyles';
@@ -13,29 +12,28 @@ import Etypto from 'react-native-vector-icons/Entypo';
 import Octicons from 'react-native-vector-icons/Octicons';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
+import SubscriptionModal from '../components/SubscriptionModal';
 import {userSubscriptionCheck} from '../api/UserAPI';
 import {showToast} from '../components/ToastAlert';
-import SubscriptionModal from '../components/SubscriptionModal';
-import { userData } from '../apiData/UserData';
+import {userData} from '../apiData/UserData';
 
 export default function SearchScreen() {
   const movies = useSelector(state => state.movie.movies);
-  const [currentMovie, setcurrentMovie] = useState(null);
   const subscriber = useSelector(state => state.subscriber.subscriberDetails);
 
-  const myData = userData;
-    const msisdn = subscriber ? subscriber.msisdn : 'N/A';
-    const plan_id = myData.MTN_dailyPlanId;
-    const network = myData.network.mtn;
-
   const [foundMovies, setFoundMovies] = useState([]);
+  const [myMovie, setMyMovie] = useState(null);
   // const [inputText, setInputText] = useState([]);
 
-  //!Modal control
   const [modalVisible, setModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isStatusCheck, setIsStatusCheck] = useState(false);
   const [isPaymentCheck, setIsPaymentCheck] = useState(false);
+
+  const myData = userData;
+  const msisdn = subscriber ? subscriber.msisdn : 'N/A';
+  const plan_id = myData.MTN_dailyPlanId;
+  const network = myData.network.mtn;
 
   const inputRef = useRef();
 
@@ -71,6 +69,10 @@ export default function SearchScreen() {
       // setInputText('');
     }
   };
+
+  // const onMoviePressedFunc = () => {
+  //   navigator.navigate('MoviePlayer', {singleMovie: currentMovie});
+  // };
 
   return (
     <View style={styles.mainContainer}>
@@ -113,39 +115,35 @@ export default function SearchScreen() {
             return (
               <View style={styles.componentContainer}>
                 <TouchableOpacity
-                  onPress={() => {
-                    setcurrentMovie(item);
-                    async () => {
-                      setIsStatusCheck(true);
-                      const statusCheck = await userSubscriptionCheck(
-                        subscriber.msisdn,
-                      );
-                      console.log(
-                        'SUBSCRIPTION STATUS CHECK === ',
-                        statusCheck,
-                      );
+                  onPress={async () => {
+                    setMyMovie(item);
+                    setIsStatusCheck(true);
+                    const statusCheck = await userSubscriptionCheck(
+                      subscriber.msisdn,
+                    );
+                    console.log('SUBSCRIPTION STATUS CHECK === ', statusCheck);
 
-                      setIsStatusCheck(false);
-                      const status =
-                        statusCheck.data != null
-                          ? statusCheck.data.subscription_status
-                          : 'N/A';
-                      if (status.toLowerCase() === 'active') {
-                        navigator.navigate('MoviePlayer', {singleMovie: item});
-                        // onMoviePressedFunc(movie);
-                      } else if (status.toLowerCase() === 'inactive') {
-                        setModalVisible(true);
-                      } else {
-                        showToast(
-                          'Subscription Check',
-                          'Unknown error occurred',
-                          'error',
-                          5000,
-                        );
-                        console.log('SEARCH_SCREEN: Uknown Subscription status');
-                      }
-                      console.log('SEARCH_SCREEN: Status Check Response === ', status);
-                    };
+                    setIsStatusCheck(false);
+                    const status =
+                      statusCheck.data != null
+                        ? statusCheck.data.subscription_status
+                        : 'N/A';
+                    if (status.toLowerCase() === 'active') {
+                      navigator.navigate('MoviePlayer', {
+                        singleMovie: myMovie,
+                      });
+                    } else if (status.toLowerCase() === 'inactive') {
+                      setModalVisible(true);
+                    } else {
+                      showToast(
+                        'Subscription Check',
+                        'Unknown error occurred',
+                        'error',
+                        5000,
+                      );
+                      console.log('UNKNOWN SUBSCRIPTION STATUS');
+                    }
+                    console.log('STATUS CHECK RESPONSE === ', status);
                   }}>
                   <View style={styles.movieTitleContainer}>
                     <Octicons name="history" size={20} color={'white'} />
@@ -176,7 +174,7 @@ export default function SearchScreen() {
         msisdn={msisdn}
         network={network}
         plan_id={plan_id}
-        movie={currentMovie}
+        movie={myMovie}
         navigation={navigator}
       />
     </View>

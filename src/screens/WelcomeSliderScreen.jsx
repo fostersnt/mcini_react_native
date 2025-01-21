@@ -16,7 +16,7 @@ export default function WelcomeSliderScreen() {
     // Navigate after 2 seconds
     const timer = setTimeout(() => {
       navigator.navigate('GetStarted');
-    }, 3000);
+    }, 4000);
 
     // Cleanup the timer when the component is unmounted
     return () => clearTimeout(timer);
