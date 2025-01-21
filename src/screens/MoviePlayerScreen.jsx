@@ -19,7 +19,10 @@ function MoviePlayerScreen() {
 
   const route = useRoute();
 
-  const singleMovie = route.params?.singleMovie;
+  const {singleMovie} = route.params;
+  // const singleMovie = route.params?.singleMovie;
+console.log("SINGLE MOVIE === ", singleMovie);
+
 
   const handleRetry = () => {
     setLoading(true)

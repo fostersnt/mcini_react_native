@@ -133,67 +133,6 @@ const ViewAllMoviesPlayer = () => {
   });
 
   const renderMainMovie = () => (
-    <View style={{alignItems: 'center'}}>
-      {loading && !error && (
-        <ActivityIndicator size="large" color="#fff" style={styles.loader} />
-      )}
-      {!error ? (
-        <View style={[styles.webView, {width: widthSize}]}>
-          <WebView
-            key={key}
-            source={{
-              uri: singleMovie.video_url,
-              headers: {Referer: 'https://mcini.tv'},
-            }}
-            javaScriptEnabled
-            domStorageEnabled
-            onLoadStart={() => setLoading(true)}
-            onLoadEnd={() => setLoading(false)}
-            onError={() => setError(true)}
-            allowsInlineMediaPlayback
-            // mediaPlaybackRequiresUserAction={false}
-            // onShouldStartLoadWithRequest={(request) => {
-            //     return request.url.startsWith('https://trusted-video-source.com');  // Filter out non-trusted sources
-            // }}
-          />
-          {isDescription && (
-            <Text style={[styles.descriptionText]}>
-              {singleMovie.description}
-            </Text>
-          )}
-        </View>
-      ) : (
-        <View style={[styles.retryContainer, {width: widthSize}]}>
-          <View style={[styles.retryView, {width: widthSize / 2}]}>
-            <Button title="Retry" onPress={handleRetry} />
-          </View>
-        </View>
-      )}
-      {/* {isDescription && (
-        <View style={[styles.descriptionContainer]}>
-          <View style={{paddingHorizontal: 20}}>
-            <Text style={styles.descriptionText}>
-              {singleMovie.description}
-            </Text>
-          </View>
-        </View>
-      )} */}
-      <View
-        style={[styles.iconsContainer, {marginTop: isDescription ? 0 : 20}]}>
-        <FontAwesome
-          name="thumbs-o-up"
-          size={25}
-          color="#fff"
-          style={{marginLeft: 10}}
-        />
-        <Entypo name="share" size={25} color="#fff" style={{marginLeft: 20}} />
-        <FavoriteIcon isFavorite={isFavorite} toggleFavorite={toggleFavorite} />
-      </View>
-    </View>
-  );
-
-  return (
-    <View style={styles.contentContainer}>
       <View style={{alignItems: 'center'}}>
         {loading && !error && (
           <ActivityIndicator size="large" color="#fff" style={styles.loader} />
@@ -230,6 +169,15 @@ const ViewAllMoviesPlayer = () => {
             </View>
           </View>
         )}
+        {/* {isDescription && (
+        <View style={[styles.descriptionContainer]}>
+          <View style={{paddingHorizontal: 20}}>
+            <Text style={styles.descriptionText}>
+              {singleMovie.description}
+            </Text>
+          </View>
+        </View>
+      )} */}
         <View
           style={[styles.iconsContainer, {marginTop: isDescription ? 0 : 20}]}>
           <FontAwesome
@@ -250,23 +198,30 @@ const ViewAllMoviesPlayer = () => {
           />
         </View>
       </View>
+  );
+
+  return (
+    <View style={styles.contentContainer}>
       {/* renderMainMovie() */}
       <FlatList
         contentContainerStyle={styles.flatlistContainer}
         numColumns={3}
-        data={similar_movies}
-        // data={[{id: 0, title: 'my video'}, ...similar_movies]}
+        data={[{id: 0, title: 'my video'}, ...similar_movies]}
         keyExtractor={item => item.id.toString()}
-        renderItem={({item}) => (
-          <View style={{marginBottom: 10}}>
-            <SingleMovieCard
-              movie={item}
-              onMoviePressedFunc={handleSingleMoviePress}
-              myWidth={myWidth}
-              myHeight={myHeight}
-            />
-          </View>
-        )}
+        renderItem={({item}) =>
+          item.id === 0 ? (
+            renderMainMovie()
+          ) : (
+            <View style={{marginBottom: 10}}>
+              <SingleMovieCard
+                movie={item}
+                onMoviePressedFunc={handleSingleMoviePress}
+                myWidth={myWidth}
+                myHeight={myHeight}
+              />
+            </View>
+          )
+        }
       />
     </View>
   );
@@ -284,7 +239,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   flatlistContainer: {
-    // alignItems: 'center',
+    // flex: 1,
+    // display: 'flex',
+    // justifyContent: 'center', // Center items vertically
+    alignItems: 'center', // Center items horizontally
+    // flexGrow: 1,              // Make the content take up the full height of the screen
   },
   webView: {
     backgroundColor: AppStyles.generalColors.dark_four,

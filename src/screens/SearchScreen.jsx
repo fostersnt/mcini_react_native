@@ -112,11 +112,12 @@ export default function SearchScreen() {
         <FlatList
           data={foundMovies}
           renderItem={({item}) => {
+            setMyMovie(item);
             return (
               <View style={styles.componentContainer}>
                 <TouchableOpacity
                   onPress={async () => {
-                    setMyMovie(item);
+                    // console.log("PRESSED === ", item);
                     setIsStatusCheck(true);
                     const statusCheck = await userSubscriptionCheck(
                       subscriber.msisdn,
@@ -129,6 +130,8 @@ export default function SearchScreen() {
                         ? statusCheck.data.subscription_status
                         : 'N/A';
                     if (status.toLowerCase() === 'active') {
+                      console.log("MY MOVIE === ", myMovie);
+                      
                       navigator.navigate('MoviePlayer', {
                         singleMovie: myMovie,
                       });
