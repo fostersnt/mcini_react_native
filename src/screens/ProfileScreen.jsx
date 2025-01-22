@@ -135,17 +135,18 @@ export default function ProfileScreen() {
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
             onPress={async () => {
-              const msisdn = subscriber['msisdn'];
-              setIsLoading(true)
-              const response = await userLogout(subscriber['msisdn']);
-              if (response['success'] == 'true' && response['data']['login_status'].toLowerCase() == 'inactive') {
-                setIsLoading(false)
-                navigator.navigate('WelcomeSlider');
+              const msisdn = subscriber.msisdn;
+              setIsLoading(true);
+              const response = await userLogout(msisdn);
+              // const response = await userLogout(subscriber['msisdn']);
+              if (response.success === 'true' && response.data.login_status.toLowerCase() === 'inactive') {
+                setIsLoading(false);
+                navigator.navigate('Login');
               } else {
                 setIsLoading(false)
                 showToast('Logout Error:', 'Unable to logout', 'error', 5000);
               }
-              console.log('LOGOUT ACTION TRIGGERED === ', response['data']['login_status'].toLowerCase());
+              console.log('LOGOUT ACTION TRIGGERED === ', response.data.login_status.toLowerCase());
             }}
           >
             <View style={[styles.logout]}>
