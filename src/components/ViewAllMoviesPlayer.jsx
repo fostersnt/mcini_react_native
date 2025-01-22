@@ -132,69 +132,9 @@ const ViewAllMoviesPlayer = () => {
     );
   });
 
-  const renderMainMovie = () => (
-    <View style={{alignItems: 'center'}}>
-      {loading && !error && (
-        <ActivityIndicator size="large" color="#fff" style={styles.loader} />
-      )}
-      {!error ? (
-        <View style={[styles.webView, {width: widthSize}]}>
-          <WebView
-            key={key}
-            source={{
-              uri: singleMovie.video_url,
-              headers: {Referer: 'https://mcini.tv'},
-            }}
-            javaScriptEnabled
-            domStorageEnabled
-            onLoadStart={() => setLoading(true)}
-            onLoadEnd={() => setLoading(false)}
-            onError={() => setError(true)}
-            allowsInlineMediaPlayback
-            // mediaPlaybackRequiresUserAction={false}
-            // onShouldStartLoadWithRequest={(request) => {
-            //     return request.url.startsWith('https://trusted-video-source.com');  // Filter out non-trusted sources
-            // }}
-          />
-          {isDescription && (
-            <Text style={[styles.descriptionText]}>
-              {singleMovie.description}
-            </Text>
-          )}
-        </View>
-      ) : (
-        <View style={[styles.retryContainer, {width: widthSize}]}>
-          <View style={[styles.retryView, {width: widthSize / 2}]}>
-            <Button title="Retry" onPress={handleRetry} />
-          </View>
-        </View>
-      )}
-      {/* {isDescription && (
-        <View style={[styles.descriptionContainer]}>
-          <View style={{paddingHorizontal: 20}}>
-            <Text style={styles.descriptionText}>
-              {singleMovie.description}
-            </Text>
-          </View>
-        </View>
-      )} */}
-      <View
-        style={[styles.iconsContainer, {marginTop: isDescription ? 0 : 20}]}>
-        <FontAwesome
-          name="thumbs-o-up"
-          size={25}
-          color="#fff"
-          style={{marginLeft: 10}}
-        />
-        <Entypo name="share" size={25} color="#fff" style={{marginLeft: 20}} />
-        <FavoriteIcon isFavorite={isFavorite} toggleFavorite={toggleFavorite} />
-      </View>
-    </View>
-  );
-
   return (
     <View style={styles.contentContainer}>
-      <View style={{alignItems: 'center'}}>
+      <View>
         {loading && !error && (
           <ActivityIndicator size="large" color="#fff" style={styles.loader} />
         )}
@@ -288,9 +228,9 @@ const styles = StyleSheet.create({
   },
   webView: {
     backgroundColor: AppStyles.generalColors.dark_four,
-    height: 400,
+    height: 350,
     zIndex: 1,
-    marginHorizontal: 5,
+    // marginHorizontal: 5,
   },
   loader: {
     position: 'absolute',
@@ -302,7 +242,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     paddingTop: 30,
-    backgroundColor: AppStyles.generalColors.dark_four,
+    backgroundColor: AppStyles.generalColors.dark_one,
   },
   descriptionContainer: {
     // alignItems: 'center',
@@ -312,10 +252,12 @@ const styles = StyleSheet.create({
   },
   descriptionText: {
     color: 'white',
+    backgroundColor: AppStyles.generalColors.dark_one,
     fontSize: 16,
     // flexWrap: 'wrap',
     // textAlign: 'left',
-    // paddingHorizontal: 20,
+    paddingHorizontal: 10,
+    paddingVertical: 20,
   },
   iconsContainer: {
     marginBottom: 20,
