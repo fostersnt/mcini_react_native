@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
     top: '50%',
     left: '50%',
-    // transform: [{translateX: -25}, {translateY: -25}],
+    transform: [{translateX: -25}, {translateY: -25}],
     // backgroundColor: AppStyles.generalColors.blue,
     // marginBottom: 100,
     justifyContent: 'center',
