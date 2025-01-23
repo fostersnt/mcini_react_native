@@ -77,11 +77,13 @@ export default function MovieBanner({movieKey}) {
   return (
     <View style={[styles.webViewContainer]}>
       {isLoading && (
-        <ActivityIndicator
-          style={styles.loader}
-          size="large"
-          color={AppStyles.generalColors.primary}
-        />
+        <View style={styles.indicatorContainer}>
+          <ActivityIndicator
+            style={styles.loader}
+            size="large"
+            color={AppStyles.generalColors.white_one}
+          />
+        </View>
       )}
       <Video
         source={videoSource}
@@ -94,7 +96,10 @@ export default function MovieBanner({movieKey}) {
         muted={true}
         onBuffer={() => {
           setIsLoading(true);
-          console.log('Video is buffering... === ', movieKey)
+          console.log('Video is buffering... === ', movieKey);
+        }}
+        onLoad={() => {
+          setIsLoading(false);
         }}
         onError={error => console.error('Video error: ', error)}
         bufferConfig={{
@@ -109,9 +114,20 @@ export default function MovieBanner({movieKey}) {
 }
 
 const styles = StyleSheet.create({
+  indicatorContainer: {
+    position: 'absolute',
+    zIndex: 1,
+    top: '50%',
+    left: '50%',
+    // transform: [{translateX: -25}, {translateY: -25}],
+    // backgroundColor: AppStyles.generalColors.blue,
+    // marginBottom: 100,
+    justifyContent: 'center',
+  },
   webViewContainer: {
     marginTop: 20,
     marginBottom: 10,
+    position: 'relative',
   },
   video: {
     borderRadius: 15,
@@ -121,11 +137,12 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   loader: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: [{translateX: -25}, {translateY: -25}],
-    backgroundColor: AppStyles.generalColors.blue,
+    // position: 'absolute',
+    // top: '50%',
+    // left: '50%',
+    // transform: [{translateX: -25}, {translateY: -25}],
+    // zIndex: 1,
+    // backgroundColor: AppStyles.generalColors.blue,
   },
   errorContainer: {
     justifyContent: 'center',
