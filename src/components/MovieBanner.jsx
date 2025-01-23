@@ -21,7 +21,7 @@ export default function MovieBanner({movieKey}) {
   // const static_videos = videos;
 
   // State to manage loading and error
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
 
   const handleHttpError = syntheticEvent => {
@@ -83,31 +83,6 @@ export default function MovieBanner({movieKey}) {
           color={AppStyles.generalColors.primary}
         />
       )}
-
-      {/* WebView */}
-      {/* <WebView
-        style={[styles.webView, { width: widthSize }]}
-        source={{
-          // uri: movie.video_url,
-          uri: movie,
-          headers: { Referer: 'https://mcini.tv' },
-        }}
-        javaScriptEnabled={true}
-        domStorageEnabled={true}
-        allowsInlineMediaPlayback={true}
-        mediaPlaybackRequiresUserAction={false}
-        onLoadEnd={handleLoadEnd} // Called when loading is done
-        onHttpError={handleHttpError} // Handle HTTP errors
-        onError={handleOnRenderProcessGone} // Handle WebView crashes
-        renderError={() => (
-          <View style={styles.errorContainer}>
-            <Text style={styles.errorText}>Failed to load page.</Text>
-            {hasError && (
-              <Button title="Retry" onPress={handleRetry} />
-            )}
-          </View>
-        )}
-      /> */}
       <Video
         source={videoSource}
         style={[styles.video, {width: widthSize}]}
@@ -117,6 +92,17 @@ export default function MovieBanner({movieKey}) {
         playInBackground={true}
         playWhenInactive={true}
         muted={true}
+        onBuffer={() => {
+          setIsLoading(true);
+          console.log('Video is buffering... === ', movieKey)
+        }}
+        onError={error => console.error('Video error: ', error)}
+        bufferConfig={{
+          minBufferMs: 15000, // Minimum time before buffering starts
+          maxBufferMs: 50000, // Maximum buffering time
+          bufferForPlaybackMs: 5000, // How long to buffer before starting playback
+          bufferForPlaybackAfterRebufferMs: 5000, // Buffer after rebuffer
+        }}
       />
     </View>
   );
@@ -127,17 +113,12 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 10,
   },
-  webView: {
-    borderRadius: 20,
-    height: 250,
-    margin: 10,
-    backgroundColor: AppStyles.generalColors.dark_one,
-  },
   video: {
-    borderRadius: 20,
+    borderRadius: 15,
     height: 250,
     margin: 10,
     backgroundColor: AppStyles.generalColors.dark_one,
+    overflow: 'hidden',
   },
   loader: {
     position: 'absolute',
