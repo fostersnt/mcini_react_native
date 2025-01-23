@@ -112,10 +112,10 @@ export default function MovieBanner({movieKey}) {
         source={videoSource}
         style={[styles.video, {width: widthSize}]}
         // controls={true}
-        // resizeMode="contain"
+        resizeMode="cover"
         autoPlay={true}
-        // playInBackground={false}
-        // playWhenInactive={true}
+        playInBackground={true}
+        playWhenInactive={true}
         muted={true}
       />
     </View>

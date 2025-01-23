@@ -31,7 +31,7 @@ import messaging from '@react-native-firebase/messaging';
 const bgVideo = require('../assets/videos/login_bg_video.mp4');
 // const bgVideo = require('../assets/videos/login_bg_video_2.mp4');
 
-const bannerImage = require('../assets/images/banner.png');
+const bannerImage = require('../assets/images/login_image.png');
 
 export default function LoginScreen() {
   const dispatch = useDispatch();
