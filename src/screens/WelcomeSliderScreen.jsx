@@ -1,5 +1,5 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { View, Image, StyleSheet } from 'react-native';
+import React, { useEffect } from 'react';
 const imagePath = require('../assets/images/splash_screen.png');
 import { Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';

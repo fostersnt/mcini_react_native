@@ -1,4 +1,3 @@
-import {View, Text, StatusBar} from 'react-native';
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -14,7 +13,6 @@ import ViewAllMoviesComponent from '../components/ViewAllMoviesComponent';
 import ViewAllMoviesPlayer from '../components/ViewAllMoviesPlayer';
 import {AppStyles} from '../utilities/AppStyles';
 import WatchListScreen from '../screens/WatchListScreen';
-import ProfileScreen from '../screens/ProfileScreen';
 import GetStartedScreen from '../screens/GetStarted';
 
 const Stack = createNativeStackNavigator();

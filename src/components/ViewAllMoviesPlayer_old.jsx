@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,7 +7,6 @@ import {
   TouchableWithoutFeedback,
   ActivityIndicator,
   Button,
-  ScrollView,
 } from 'react-native';
 import WebView from 'react-native-webview';
 import {Dimensions} from 'react-native';

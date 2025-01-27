@@ -4,13 +4,11 @@ import {
   StyleSheet,
   Text,
   View,
-  StatusBar,
   ActivityIndicator,
   Button,
 } from 'react-native';
 import WebView from 'react-native-webview';
 import { AppStyles } from '../utilities/AppStyles';
-import Video from 'react-native-video';
 
 function MoviePlayerScreen() {
   const [loading, setLoading] = useState(true);

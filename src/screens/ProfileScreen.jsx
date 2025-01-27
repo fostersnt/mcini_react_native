@@ -2,10 +2,8 @@ import { View, Text, StyleSheet, TextInput, ScrollView, TouchableWithoutFeedback
 import React, { useEffect, useState } from 'react'
 import { AppStyles } from '../utilities/AppStyles';
 import AntIcons from 'react-native-vector-icons/AntDesign'
-import Icon from 'react-native-vector-icons/FontAwesome5'
 import IonIcons from 'react-native-vector-icons/Ionicons'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import OctIcons from 'react-native-vector-icons/Octicons'
 import { useNavigation } from '@react-navigation/native';
 import { userLogout } from '../api/UserAPI';
 import { showToast } from '../components/ToastAlert';

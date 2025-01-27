@@ -14,10 +14,8 @@ import SingleMovieCard from '../components/SingleMovieCard';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import IonIcons from 'react-native-vector-icons/Ionicons';
-import {showToast} from '../components/ToastAlert';
 import {NotificationModal} from '../components/NotificationModal';
 import { checkInitialNotification, sendBackgroundNotification, sendForegroundNotification } from '../utilities/General';
-import Video from 'react-native-video';
 
 const MemoizedMovieBanner = memo(MovieBanner);
 const MemoizedSingleMovieCard = memo(SingleMovieCard);

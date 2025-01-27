@@ -11,7 +11,7 @@ import {
   ImageBackground,
 } from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
-import {allUserData, firebaseNotificationAPI} from '../api/UserAPI';
+import {allUserData} from '../api/UserAPI';
 import {useNavigation} from '@react-navigation/native';
 import {AppStyles} from '../utilities/AppStyles';
 import {replaceFirstDigitWith233} from '../utilities/Validations';
@@ -23,7 +23,6 @@ import {
   setMovies,
   setWatchList,
 } from '../redux/slice/MovieSlice';
-import Video from 'react-native-video';
 import LoadingPulse from '../animation/LoadingPulse';
 import {checkInitialNotification, getFcmToken, requestUserPermission, sendBackgroundNotification, sendForegroundNotification} from '../utilities/General';
 import messaging from '@react-native-firebase/messaging';

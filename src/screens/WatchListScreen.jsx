@@ -4,16 +4,12 @@ import {
   Text,
   FlatList,
   StyleSheet,
-  TouchableOpacity,
   Dimensions,
-  StatusBar,
   ActivityIndicator,
-  Button,
 } from 'react-native';
 import {WebView} from 'react-native-webview';
 import {useSelector} from 'react-redux';
 import {AppStyles} from '../utilities/AppStyles';
-import * as Animatable from 'react-native-animatable';
 
 const WatchListScreen = () => {
   const [loading, setLoading] = useState(true);
