@@ -17,9 +17,11 @@ import IonIcons from 'react-native-vector-icons/Ionicons';
 import {showToast} from '../components/ToastAlert';
 import {NotificationModal} from '../components/NotificationModal';
 import { checkInitialNotification, sendBackgroundNotification, sendForegroundNotification } from '../utilities/General';
+import Video from 'react-native-video';
 
 const MemoizedMovieBanner = memo(MovieBanner);
 const MemoizedSingleMovieCard = memo(SingleMovieCard);
+// const bgVideo = require('../assets/videos/login_bg_video.mp4');
 
 export default function HomeScreen() {
   const [isNotificationModalVisible, setNotificationModalVisible] =
@@ -197,6 +199,14 @@ export default function HomeScreen() {
         modalWidth={modalWidth}
         modalHeight={modalHeight}
       />
+      {/* <Video
+        source={bgVideo}
+        style={styles.backgroundVideo}
+        resizeMode="cover"
+        repeat
+        muted
+        paused={false}
+      /> */}
       <FlatList
         initialNumToRender={3}
         data={[{collection_name: 'bannerCollection'}, ...groupedDataArray]}
@@ -261,7 +271,12 @@ export default function HomeScreen() {
   );
 }
 
+
 const styles = StyleSheet.create({
+  // backgroundVideo: {
+  //   width: 400,
+  //   height: 200,
+  // },
   mainFlatListView: {
     marginBottom: 20,
   },

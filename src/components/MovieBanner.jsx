@@ -12,6 +12,9 @@ import {AppStyles} from '../utilities/AppStyles';
 import Video from 'react-native-video';
 import RNFS from 'react-native-fs';
 import {videos} from '../utilities/banner_videos';
+import FastImage from 'react-native-fast-image';
+
+const loadingImage = require('../assets/images/banner.png');
 
 export default function MovieBanner({movieKey}) {
   const {width: screenWidth} = Dimensions.get('window');
@@ -78,6 +81,10 @@ export default function MovieBanner({movieKey}) {
     <View style={[styles.webViewContainer]}>
       {isLoading && (
         <View style={styles.indicatorContainer}>
+          {/* <FastImage
+          source={loadingImage}
+          style={[styles.myImage, {width: widthSize}]}
+          /> */}
           <ActivityIndicator
             style={styles.loader}
             size="large"
@@ -94,6 +101,7 @@ export default function MovieBanner({movieKey}) {
         playInBackground={true}
         playWhenInactive={true}
         muted={true}
+        paused={false}
         onBuffer={() => {
           setIsLoading(true);
           console.log('Video is buffering... === ', movieKey);
@@ -101,13 +109,22 @@ export default function MovieBanner({movieKey}) {
         onLoad={() => {
           setIsLoading(false);
         }}
-        onError={error => console.error('Video error: ', error)}
-        bufferConfig={{
-          minBufferMs: 15000, // Minimum time before buffering starts
-          maxBufferMs: 50000, // Maximum buffering time
-          bufferForPlaybackMs: 5000, // How long to buffer before starting playback
-          bufferForPlaybackAfterRebufferMs: 5000, // Buffer after rebuffer
-        }}
+        poster={loadingImage}
+        // posterResizeMode="cover"
+        // bufferConfig={{
+        //   minBufferMs: 2500,
+        //   maxBufferMs: 3000,
+        //   bufferForPlaybackMs: 2500,
+        //   bufferForPlaybackAfterRebufferMs: 2500,
+        // }}
+        ignoreSilentSwitch={'ignore'}
+        // useTextureView={false}
+        controls={false}
+        disableFocus={true}
+        repeat={true}
+        hideShutterView
+        // minLoadRetryCount={5}
+        shutterColor="transparent"
       />
     </View>
   );
@@ -116,18 +133,30 @@ export default function MovieBanner({movieKey}) {
 const styles = StyleSheet.create({
   indicatorContainer: {
     position: 'absolute',
-    zIndex: 1,
-    top: '50%',
-    left: '50%',
-    transform: [{translateX: -25}, {translateY: -25}],
+    zIndex: 2,
+    // top: 25,
+    // left: 25,
+    // transform: [{translateX: -25}, {translateY: -25}],
     // backgroundColor: AppStyles.generalColors.blue,
     // marginBottom: 100,
     justifyContent: 'center',
   },
+  loader: {
+    position: 'absolute',
+    transform: [{translateX: -25}, {translateY: -25}],
+    top: '50%',
+    left: '50%',
+    // zIndex: 1,
+  },
+  // myImage: {
+  //   height: 250,
+  //   margin: 10,
+  // },
   webViewContainer: {
     marginTop: 20,
     marginBottom: 10,
     position: 'relative',
+    borderRadius: 15,
   },
   video: {
     borderRadius: 15,
@@ -136,14 +165,7 @@ const styles = StyleSheet.create({
     backgroundColor: AppStyles.generalColors.dark_one,
     overflow: 'hidden',
   },
-  loader: {
-    // position: 'absolute',
-    // top: '50%',
-    // left: '50%',
-    // transform: [{translateX: -25}, {translateY: -25}],
-    // zIndex: 1,
-    // backgroundColor: AppStyles.generalColors.blue,
-  },
+
   errorContainer: {
     justifyContent: 'center',
     alignItems: 'center',
