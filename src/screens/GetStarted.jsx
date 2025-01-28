@@ -1,5 +1,5 @@
 import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 const imagePath = require('../assets/images/get_started_screen.png');
 import {Dimensions} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
@@ -9,8 +9,6 @@ import {AppStyles} from '../utilities/AppStyles';
 export default function WelcomeSliderScreen() {
   const navigator = useNavigation();
   const [sliderIndex, setSliderIndex] = useState(0);
-
-  const {width: screenWidth, height: screenHeight} = Dimensions.get('screen');
 
   const image = imagePath;
 
@@ -37,7 +35,6 @@ export default function WelcomeSliderScreen() {
     <View style={styles.container}>
       <Image source={image} style={styles.image} />
       <View style={styles.overlay}>
-        {/* <Swiper style={styles.swiper}> */}
         <View style={styles.swiperContainer}>
           <Swiper
             loop={false}
@@ -86,33 +83,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(5, 0, 0, 0.6)',
-    // backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent overlay
   },
   text: {
-    // position: 'absolute',
-    // bottom: 200,
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
-    // marginBottom: 20,
     textAlign: 'center',
   },
 
   swiperContainer: {
-    // flex: 1,
-    // justifyContent: 'center',
     padding: 10,
     marginHorizontal: 20,
     alignContent: 'center',
     borderRadius: 10,
     position: 'absolute',
-    // top: 200,
     left: 10,
     right: 10,
     bottom: 200,
     zIndex: 1,
-    // fontSize: 20,
-    // marginBottom: 20,
     backgroundColor: '#090402',
     height: 150,
     alignItems: 'center',
@@ -120,12 +108,10 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '80%',
-    // marginHorizontal: 20,
     position: 'absolute',
     bottom: 100,
-    backgroundColor: '#1E90FF', // A blue button
+    backgroundColor: AppStyles.generalColors.blue,
     paddingVertical: 12,
-    // paddingHorizontal: 30,
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
@@ -137,7 +123,7 @@ const styles = StyleSheet.create({
   },
 
   dot: {
-    backgroundColor: AppStyles.generalColors.white_one, // Semi-transparent white for inactive dots
+    backgroundColor: AppStyles.generalColors.white_one,
     width: 8,
     height: 8,
     borderRadius: 4,
@@ -147,7 +133,7 @@ const styles = StyleSheet.create({
     marginBottom: 3,
   },
   activeDot: {
-    backgroundColor: AppStyles.generalColors.blue, // Fully opaque white for active dot
+    backgroundColor: AppStyles.generalColors.blue,
     width: 30,
     height: 8,
     borderRadius: 4,
