@@ -37,7 +37,8 @@ export default function WelcomeSliderScreen() {
       <Image source={image} style={styles.image} />
       {/* Apply LinearGradient to the overlay */}
       <LinearGradient
-        colors={['rgba(5, 0, 0, 0)', 'rgba(5, 0, 0, 0.9)']} // Gradient from transparent to dark
+        colors={['rgba(5, 0, 0, 0)', 'rgba(5, 0, 0, 5)']} // Gradient from transparent to dark
+        // colors={['rgba(5, 0, 0, 0)', 'rgba(5, 0, 0, 0.9)']} // Gradient from transparent to dark
         style={styles.overlay}
       >
         <View style={styles.swiperContainer}>
