@@ -127,7 +127,6 @@ export default function LoginScreen() {
         <StatusBar translucent backgroundColor="transparent" />
 
         <View style={styles.myContainer}>
-          <View>
             {/* <LoadingPulse></LoadingPulse> */}
             {isLoading ? <LoadingPulse /> : null}
             <Text
@@ -138,7 +137,7 @@ export default function LoginScreen() {
                   marginBottom: AppStyles.generalMargin.higher,
                 },
               ]}>
-              Login
+              Log into mCini
             </Text>
             <TextInput
               style={[
@@ -174,13 +173,10 @@ export default function LoginScreen() {
                 {isLoading ? <ActivityIndicator color={'white'} /> : 'Login'}
               </Text>
             </TouchableOpacity>
-          </View>
         </View>
       </KeyboardAvoidingView>
     </ImageBackground>
   );
-
-  // return (
   //   <View style={styles.container}>
   //     <Video
   //       source={bgVideo}
@@ -252,25 +248,19 @@ export default function LoginScreen() {
 
 const styles = StyleSheet.create({
   myContainer: {
-    opacity: 1,
+    // opacity: 1,
+    // flex: 1,
+    // display: 'flex',
+    // justifyContent: 'center',
+    alignItems: 'center',
     // backgroundColor: AppStyles.generalColors.dark_three,
     paddingVertical: 50,
-    padding: AppStyles.generalPadding.higher,
-  },
-  logoContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  logo: {
-    marginBottom: 20,
-    width: 50,
-    height: 50,
+    // padding: AppStyles.generalPadding.higher,
   },
   container: {
     flex: 1,
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
   },
   // errorText: {
   //   color: 'red',
@@ -278,18 +268,18 @@ const styles = StyleSheet.create({
   //   marginBottom: 20,
   // },
   title: {
-    color: AppStyles.generalColors.blue,
+    color: AppStyles.generalColors.white_one,
     fontWeight: 'bold',
-    alignSelf: 'flex-start',
+    // alignSelf: 'flex-start',
   },
   input: {
     backgroundColor: 'white',
     color: AppStyles.generalColors.dark_four,
-    width: '100%',
+    width: '90%',
     paddingHorizontal: 10,
   },
   loginButton: {
-    width: '100%',
+    width: '90%',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
