@@ -24,13 +24,21 @@ import {
   setWatchList,
 } from '../redux/slice/MovieSlice';
 import LoadingPulse from '../animation/LoadingPulse';
-import {checkInitialNotification, getFcmToken, requestUserPermission, sendBackgroundNotification, sendForegroundNotification} from '../utilities/General';
+import {
+  checkInitialNotification,
+  getFcmToken,
+  requestUserPermission,
+  sendBackgroundNotification,
+  sendForegroundNotification,
+} from '../utilities/General';
 import messaging from '@react-native-firebase/messaging';
+import LinearGradient from 'react-native-linear-gradient';
 
-const bgVideo = require('../assets/videos/login_bg_video.mp4');
+// const bgVideo = require('../assets/videos/login_bg_video.mp4');
 // const bgVideo = require('../assets/videos/login_bg_video_2.mp4');
 
-const bannerImage = require('../assets/images/login_image.png');
+const bannerImage = require('../assets/images/get_started_screen.png');
+// const bannerImage = require('../assets/images/login_image.png');
 
 export default function LoginScreen() {
   const dispatch = useDispatch();
@@ -71,7 +79,10 @@ export default function LoginScreen() {
 
         const formattedPhone = replaceFirstDigitWith233(phoneNumber);
 
-        const responseData = await allUserData(formattedPhone, deviceToken.current);
+        const responseData = await allUserData(
+          formattedPhone,
+          deviceToken.current,
+        );
 
         if (responseData.success === 'false') {
           showToast('Login Error', responseData.message, 'error', 5000);
@@ -122,57 +133,62 @@ export default function LoginScreen() {
       ]}
       source={bannerImage}
       resizeMode="cover">
+        <LinearGradient
+          colors={['rgba(73, 59, 59, 0)', 'rgba(5, 0, 0, 5)']} // Gradient from transparent to dark
+          // colors={['rgba(5, 0, 0, 0)', 'rgba(5, 0, 0, 0.9)']} // Gradient from transparent to dark
+          style={styles.overlay}
+        />
       <KeyboardAvoidingView
         behavior={Platform.OS === 'android' ? 'padding' : 'height'}>
         <StatusBar translucent backgroundColor="transparent" />
 
         <View style={styles.myContainer}>
-            {/* <LoadingPulse></LoadingPulse> */}
-            {isLoading ? <LoadingPulse /> : null}
+          {/* <LoadingPulse></LoadingPulse> */}
+          {isLoading ? <LoadingPulse /> : null}
+          <Text
+            style={[
+              styles.title,
+              {
+                fontSize: AppStyles.generalFontSize.large,
+                marginBottom: AppStyles.generalMargin.higher,
+              },
+            ]}>
+            Log into mCini
+          </Text>
+          <TextInput
+            style={[
+              styles.input,
+              {
+                height: AppStyles.generalHeight.height_one,
+                marginBottom: AppStyles.generalMargin.higher,
+                borderRadius: AppStyles.generalBorderRadius.radius_one,
+              },
+            ]}
+            placeholder="phone number"
+            onChangeText={text => {
+              phoneRef.current = text;
+            }}
+          />
+          <TouchableOpacity
+            onPress={isLoading ? null : handleLogin}
+            style={[
+              styles.loginButton,
+              {
+                backgroundColor: AppStyles.generalColors.blue,
+                padding: AppStyles.generalPadding.lower,
+                height: AppStyles.generalHeight.height_one,
+                borderRadius: AppStyles.generalBorderRadius.radius_one,
+              },
+            ]}>
             <Text
-              style={[
-                styles.title,
-                {
-                  fontSize: AppStyles.generalFontSize.large,
-                  marginBottom: AppStyles.generalMargin.higher,
-                },
-              ]}>
-              Log into mCini
+              style={{
+                color: AppStyles.generalColors.white_one,
+                fontSize: AppStyles.generalFontSize.normal,
+                fontWeight: AppStyles.generalFontWeight.weight_one,
+              }}>
+              {isLoading ? <ActivityIndicator color={'white'} /> : 'Login'}
             </Text>
-            <TextInput
-              style={[
-                styles.input,
-                {
-                  height: AppStyles.generalHeight.height_one,
-                  marginBottom: AppStyles.generalMargin.higher,
-                  borderRadius: AppStyles.generalBorderRadius.radius_one,
-                },
-              ]}
-              placeholder="phone number"
-              onChangeText={text => {
-                phoneRef.current = text;
-              }}
-            />
-            <TouchableOpacity
-              onPress={isLoading ? null : handleLogin}
-              style={[
-                styles.loginButton,
-                {
-                  backgroundColor: AppStyles.generalColors.blue,
-                  padding: AppStyles.generalPadding.lower,
-                  height: AppStyles.generalHeight.height_one,
-                  borderRadius: AppStyles.generalBorderRadius.radius_one,
-                },
-              ]}>
-              <Text
-                style={{
-                  color: AppStyles.generalColors.white_one,
-                  fontSize: AppStyles.generalFontSize.normal,
-                  fontWeight: AppStyles.generalFontWeight.weight_one,
-                }}>
-                {isLoading ? <ActivityIndicator color={'white'} /> : 'Login'}
-              </Text>
-            </TouchableOpacity>
+          </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
     </ImageBackground>
@@ -267,6 +283,16 @@ const styles = StyleSheet.create({
   //   fontWeight: 'bold',
   //   marginBottom: 20,
   // },
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingBottom: 50, // Add padding to ensure the button is visible in the dark area
+  },
   title: {
     color: AppStyles.generalColors.white_one,
     fontWeight: 'bold',
