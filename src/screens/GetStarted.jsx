@@ -1,10 +1,11 @@
-import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
 const imagePath = require('../assets/images/get_started_screen.png');
-import {Dimensions} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import { Dimensions } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import Swiper from 'react-native-swiper';
-import {AppStyles} from '../utilities/AppStyles';
+import { AppStyles } from '../utilities/AppStyles';
+import LinearGradient from 'react-native-linear-gradient'; // Import the LinearGradient component
 
 export default function WelcomeSliderScreen() {
   const navigator = useNavigation();
@@ -34,7 +35,11 @@ export default function WelcomeSliderScreen() {
   return (
     <View style={styles.container}>
       <Image source={image} style={styles.image} />
-      <View style={styles.overlay}>
+      {/* Apply LinearGradient to the overlay */}
+      <LinearGradient
+        colors={['rgba(5, 0, 0, 0)', 'rgba(5, 0, 0, 0.9)']} // Gradient from transparent to dark
+        style={styles.overlay}
+      >
         <View style={styles.swiperContainer}>
           <Swiper
             loop={false}
@@ -43,22 +48,23 @@ export default function WelcomeSliderScreen() {
             dot={<View style={styles.dot} />}
             activeDot={<View style={styles.activeDot} />}
             onIndexChanged={onIndexChangedFunc}
-            index={sliderIndex}>
+            index={sliderIndex}
+          >
             <Text style={styles.text}>
               Immerse yourself in the richness of African cinema
             </Text>
             <Text style={styles.text}>
-            Unique and diverse viewing experience for audiences worldwide
+              Unique and diverse viewing experience for audiences worldwide
             </Text>
           </Swiper>
         </View>
-        {/* </Swiper> */}
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigator.navigate('Login')}>
+          onPress={() => navigator.navigate('Login')}
+        >
           <Text style={styles.buttonText}>Get Started</Text>
         </TouchableOpacity>
-      </View>
+      </LinearGradient>
     </View>
   );
 }
@@ -82,7 +88,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(5, 0, 0, 0.6)',
+    paddingBottom: 50, // Add padding to ensure the button is visible in the dark area
   },
   text: {
     color: '#fff',
@@ -101,7 +107,6 @@ const styles = StyleSheet.create({
     right: 10,
     bottom: 200,
     zIndex: 1,
-    // backgroundColor: '#090402',
     height: 150,
     alignItems: 'center',
     textAlign: 'center',
