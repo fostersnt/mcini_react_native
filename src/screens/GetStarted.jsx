@@ -1,6 +1,7 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
-const imagePath = require('../assets/images/get_started_screen.png');
+const imagePath = require('../assets/images/new_image.png');
+// const imagePath = require('../assets/images/get_started_screen.png');
 import { Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Swiper from 'react-native-swiper';
