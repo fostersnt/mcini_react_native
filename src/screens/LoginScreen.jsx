@@ -307,6 +307,7 @@ const styles = StyleSheet.create({
   loginButton: {
     width: '90%',
     display: 'flex',
+    paddingVertical: 12,
     justifyContent: 'center',
     alignItems: 'center',
   },
