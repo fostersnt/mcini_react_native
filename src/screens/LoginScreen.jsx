@@ -159,7 +159,7 @@ export default function LoginScreen() {
             style={[
               styles.input,
               {
-                height: AppStyles.generalHeight.height_one,
+                // height: AppStyles.generalHeight.height_one,
                 marginBottom: AppStyles.generalMargin.higher,
                 borderRadius: AppStyles.generalBorderRadius.radius_one,
               },
@@ -175,8 +175,8 @@ export default function LoginScreen() {
               styles.loginButton,
               {
                 backgroundColor: AppStyles.generalColors.blue,
-                padding: AppStyles.generalPadding.lower,
-                height: AppStyles.generalHeight.height_one,
+                // padding: AppStyles.generalPadding.higher,
+                // height: AppStyles.generalHeight.height_one,
                 borderRadius: AppStyles.generalBorderRadius.radius_one,
               },
             ]}>
@@ -306,9 +306,9 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     width: '90%',
-    display: 'flex',
     paddingVertical: 12,
-    justifyContent: 'center',
+    // display: 'flex',
+    // justifyContent: 'center',
     alignItems: 'center',
   },
   // loginText: {
