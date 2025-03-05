@@ -15,7 +15,7 @@ const WelcomeTransition = () => {
     const animationTimeout = setTimeout(() => {
       Animated.timing(animation, {
         toValue: 1,
-        duration: 2000,
+        duration: 700,
         easing: Easing.bezier(0.4, 0.0, 0.2, 1), // Material Design easing
         useNativeDriver: false,
       }).start();
